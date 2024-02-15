@@ -143,7 +143,6 @@ class HomeController extends Controller
         }
         else
         {
-            return 1;
             if(!file_exists(storage_path() . "/installed"))
             {
                 header('location:install');
