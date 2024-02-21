@@ -603,6 +603,251 @@
                     </div>
                 </div>
             </div>
+            <!--bonus-->
+            <!-- <div class="col-md-6">
+                <div class="card set-card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-11">
+                                <h5><?php echo e(__('Bonus')); ?></h5>
+                            </div>
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Create Overtime')): ?>
+                                <div class="col-1 text-end">
+                                    <a data-url="<?php echo e(route('overtimes.create', $employee->id)); ?>" data-ajax-popup="true"
+                                        data-title="<?php echo e(__('Create Overtime')); ?>" data-bs-toggle="tooltip" title=""
+                                        class="btn btn-sm btn-primary" data-bs-original-title="<?php echo e(__('Create')); ?>">
+                                        <i class="ti ti-plus"></i>
+                                    </a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <div class=" card-body table-border-style" style=" overflow:auto">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th><?php echo e(__('Employee Name')); ?></th>
+                                        <th><?php echo e(__('Bonus Type')); ?></th>
+                                        <th><?php echo e(__('Amount')); ?></th>
+                                        <?php if(\Auth::user()->type != 'employee'): ?>
+                                            <th><?php echo e(__('Action')); ?></th>
+                                        <?php endif; ?>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $__currentLoopData = $overtimes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $overtime): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <tr>
+                                            <td><?php echo e(!empty($overtime->employee()) ? $overtime->employee()->name : ''); ?>
+
+                                            </td>
+                                            <td><?php echo e($overtime->title); ?></td>
+                                            <td><?php echo e($overtime->number_of_days); ?></td>
+                                            <td><?php echo e($overtime->hours); ?></td>
+                                            <td><?php echo e(\Auth::user()->priceFormat($overtime->rate)); ?></td>
+                                            <td class="Action">
+                                                <span>
+                                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Edit Overtime')): ?>
+                                                        <div class="action-btn bg-info ms-2">
+                                                            <a class="mx-3 btn btn-sm  align-items-center"
+                                                                data-url="<?php echo e(URL::to('overtime/' . $overtime->id . '/edit')); ?>"
+                                                                data-ajax-popup="true" data-size="md"
+                                                                data-bs-toggle="tooltip" title=""
+                                                                data-title="<?php echo e(__('Edit OverTime')); ?>"
+                                                                data-bs-original-title="<?php echo e(__('Edit')); ?>">
+                                                                <i class="ti ti-pencil text-white"></i>
+                                                            </a>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Delete Overtime')): ?>
+                                                        <div class="action-btn bg-danger ms-2">
+                                                            <?php echo Form::open([
+                                                                'method' => 'DELETE',
+                                                                'route' => ['overtime.destroy', $overtime->id],
+                                                                'id' => 'delete-form-' . $overtime->id,
+                                                            ]); ?>
+
+                                                            <a class="mx-3 btn btn-sm  align-items-center bs-pass-para"
+                                                                data-bs-toggle="tooltip" title=""
+                                                                data-bs-original-title="Delete" aria-label="Delete"><i
+                                                                    class="ti ti-trash text-white text-white"></i></a>
+                                                            </form>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+             <!--provident funds deductions-->
+             <!-- <div class="col-md-6">
+                <div class="card set-card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-11">
+                                <h5><?php echo e(__('Provident Funds Deductions')); ?></h5>
+                            </div>
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Create Overtime')): ?>
+                                <div class="col-1 text-end">
+                                    <a data-url="<?php echo e(route('overtimes.create', $employee->id)); ?>" data-ajax-popup="true"
+                                        data-title="<?php echo e(__('Create Overtime')); ?>" data-bs-toggle="tooltip" title=""
+                                        class="btn btn-sm btn-primary" data-bs-original-title="<?php echo e(__('Create')); ?>">
+                                        <i class="ti ti-plus"></i>
+                                    </a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <div class=" card-body table-border-style" style=" overflow:auto">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th><?php echo e(__('Employee Name')); ?></th>
+                                        <th><?php echo e(__('Percentage')); ?></th>
+                                        <th><?php echo e(__('Amount')); ?></th>
+                                        <?php if(\Auth::user()->type != 'employee'): ?>
+                                            <th><?php echo e(__('Action')); ?></th>
+                                        <?php endif; ?>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $__currentLoopData = $overtimes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $overtime): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <tr>
+                                            <td><?php echo e(!empty($overtime->employee()) ? $overtime->employee()->name : ''); ?>
+
+                                            </td>
+                                            <td><?php echo e($overtime->title); ?></td>
+                                            <td><?php echo e($overtime->number_of_days); ?></td>
+                                            <td><?php echo e($overtime->hours); ?></td>
+                                            <td><?php echo e(\Auth::user()->priceFormat($overtime->rate)); ?></td>
+                                            <td class="Action">
+                                                <span>
+                                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Edit Overtime')): ?>
+                                                        <div class="action-btn bg-info ms-2">
+                                                            <a class="mx-3 btn btn-sm  align-items-center"
+                                                                data-url="<?php echo e(URL::to('overtime/' . $overtime->id . '/edit')); ?>"
+                                                                data-ajax-popup="true" data-size="md"
+                                                                data-bs-toggle="tooltip" title=""
+                                                                data-title="<?php echo e(__('Edit OverTime')); ?>"
+                                                                data-bs-original-title="<?php echo e(__('Edit')); ?>">
+                                                                <i class="ti ti-pencil text-white"></i>
+                                                            </a>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Delete Overtime')): ?>
+                                                        <div class="action-btn bg-danger ms-2">
+                                                            <?php echo Form::open([
+                                                                'method' => 'DELETE',
+                                                                'route' => ['overtime.destroy', $overtime->id],
+                                                                'id' => 'delete-form-' . $overtime->id,
+                                                            ]); ?>
+
+                                                            <a class="mx-3 btn btn-sm  align-items-center bs-pass-para"
+                                                                data-bs-toggle="tooltip" title=""
+                                                                data-bs-original-title="Delete" aria-label="Delete"><i
+                                                                    class="ti ti-trash text-white text-white"></i></a>
+                                                            </form>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            <!--tax deductions-->
+            <!-- <div class="col-md-6">
+                <div class="card set-card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-11">
+                                <h5><?php echo e(__('Tax Deductions')); ?></h5>
+                            </div>
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Create Overtime')): ?>
+                                <div class="col-1 text-end">
+                                    <a data-url="<?php echo e(route('overtimes.create', $employee->id)); ?>" data-ajax-popup="true"
+                                        data-title="<?php echo e(__('Create Overtime')); ?>" data-bs-toggle="tooltip" title=""
+                                        class="btn btn-sm btn-primary" data-bs-original-title="<?php echo e(__('Create')); ?>">
+                                        <i class="ti ti-plus"></i>
+                                    </a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <div class=" card-body table-border-style" style=" overflow:auto">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th><?php echo e(__('Employee Name')); ?></th>
+                                        <th><?php echo e(__('Type')); ?></th>
+                                        <th><?php echo e(__('Percentage')); ?></th>
+                                        <th><?php echo e(__('Amount')); ?></th>
+                                        <?php if(\Auth::user()->type != 'employee'): ?>
+                                            <th><?php echo e(__('Action')); ?></th>
+                                        <?php endif; ?>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $__currentLoopData = $overtimes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $overtime): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <tr>
+                                            <td><?php echo e(!empty($overtime->employee()) ? $overtime->employee()->name : ''); ?>
+
+                                            </td>
+                                            <td><?php echo e($overtime->title); ?></td>
+                                            <td><?php echo e($overtime->title); ?></td>
+                                            <td><?php echo e($overtime->number_of_days); ?></td>
+                                            <td><?php echo e($overtime->hours); ?></td>
+                                            <td><?php echo e(\Auth::user()->priceFormat($overtime->rate)); ?></td>
+                                            <td class="Action">
+                                                <span>
+                                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Edit Overtime')): ?>
+                                                        <div class="action-btn bg-info ms-2">
+                                                            <a class="mx-3 btn btn-sm  align-items-center"
+                                                                data-url="<?php echo e(URL::to('overtime/' . $overtime->id . '/edit')); ?>"
+                                                                data-ajax-popup="true" data-size="md"
+                                                                data-bs-toggle="tooltip" title=""
+                                                                data-title="<?php echo e(__('Edit OverTime')); ?>"
+                                                                data-bs-original-title="<?php echo e(__('Edit')); ?>">
+                                                                <i class="ti ti-pencil text-white"></i>
+                                                            </a>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Delete Overtime')): ?>
+                                                        <div class="action-btn bg-danger ms-2">
+                                                            <?php echo Form::open([
+                                                                'method' => 'DELETE',
+                                                                'route' => ['overtime.destroy', $overtime->id],
+                                                                'id' => 'delete-form-' . $overtime->id,
+                                                            ]); ?>
+
+                                                            <a class="mx-3 btn btn-sm  align-items-center bs-pass-para"
+                                                                data-bs-toggle="tooltip" title=""
+                                                                data-bs-original-title="Delete" aria-label="Delete"><i
+                                                                    class="ti ti-trash text-white text-white"></i></a>
+                                                            </form>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
         </div>
     </div>
 <?php $__env->stopSection(); ?>

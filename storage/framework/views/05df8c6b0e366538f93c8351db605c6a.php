@@ -132,8 +132,10 @@
                     <div class="avatar">
                         <a href="<?php echo e(!empty($employee->user->avatar) ? asset(Storage::url('uploads/avatar')) . '/' . $employee->user->avatar : asset(Storage::url('uploads/avatar')) . '/avatar.png'); ?>"
                             target="_blank">
-                            <img src="<?php echo e(!empty($employee->user->avatar) ? asset(Storage::url('uploads/avatar')) . '/' . $employee->user->avatar : asset(Storage::url('uploads/avatar')) . '/avatar.png'); ?>"
-                                class="rounded-circle" style="width: 25%">
+                            <!-- <img src="<?php echo e(!empty($employee->user->avatar) ? asset(Storage::url('uploads/avatar')) . '/' . $employee->user->avatar : asset(Storage::url('uploads/avatar')) . '/avatar.png'); ?>"
+                                class="rounded-circle" style="width: 25%"> -->
+                                <img src="<?php echo e(asset( '/assets/images/user/avatar-4.jpg' )); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="rounded-circle"  style="width: 25%" />
+
                         </a>
 
                     </div>

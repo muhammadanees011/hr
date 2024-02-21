@@ -1,5 +1,5 @@
 <?php
-    // $logos = asset(Storage::url('uploads/logo/'));
+    //$logos = asset(Storage::url('uploads/logo/'));
     $logos = \App\Models\Utility::get_file('uploads/logo/');
 
     $company_logo = Utility::getValByName('company_logo');
@@ -26,9 +26,15 @@
 
         <a href="<?php echo e(route('home')); ?>" class="b-brand">
             <!-- ========   change your logo hear   ============ -->
-            <img src="<?php echo e($logos . $logo . '?' . time()); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo logo-lg"
-                style="height: 40px;" />
+            <!-- <img src="<?php echo e($logos . $logo . '?' . time()); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo logo-lg"
+                style="height: 40px;" /> -->
+            <!-- <p style="font-weight:bold;">
+                <?php echo e($logos); ?>
 
+            </p> -->
+            <img src="<?php echo e(asset( '/assets/images/HRMPRO-logos_transparent.png' )); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo" style="height:175px;width:100%;"/>
+            <!-- <img src="<?php echo e(asset( '/assets/uploads/logo/logo-dark.png' )); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo logo-lg" style="height: 40px;" /> -->
+            <!-- <img src="<?php echo e(asset('assets/images/theme-3.svg')); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo logo-lg" style="height: 40px;" /> -->
         </a>
 
     </div>
@@ -187,7 +193,21 @@
                         <li class="dash-item">
                             <a class="dash-link" href="<?php echo e(route('payslip.index')); ?>"><?php echo e(__('Payslip')); ?></a>
                         </li>
-
+                        <!-- <li class="dash-item">
+                            <a class="dash-link"><?php echo e(__('Provident Funds')); ?></a>
+                        </li>
+                        <li class="dash-item">
+                            <a class="dash-link"><?php echo e(__('Tax Statement')); ?></a>
+                        </li>
+                        <li class="dash-item">
+                            <a class="dash-link"><?php echo e(__('Leave Encashment')); ?></a>
+                        </li>
+                        <li class="dash-item">
+                            <a class="dash-link"><?php echo e(__('Pensions')); ?></a>
+                        </li>
+                        <li class="dash-item">
+                            <a class="dash-link"><?php echo e(__('Payroll Setup')); ?></a>
+                        </li> -->
                     </ul>
                 </li>
             <?php endif; ?>

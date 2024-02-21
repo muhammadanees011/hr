@@ -1,5 +1,5 @@
 @php
-    // $logos = asset(Storage::url('uploads/logo/'));
+    //$logos = asset(Storage::url('uploads/logo/'));
     $logos = \App\Models\Utility::get_file('uploads/logo/');
 
     $company_logo = Utility::getValByName('company_logo');
@@ -27,9 +27,14 @@
 
         <a href="{{ route('home') }}" class="b-brand">
             <!-- ========   change your logo hear   ============ -->
-            <img src="{{ $logos . $logo . '?' . time() }}" alt="{{ env('APP_NAME') }}" class="logo logo-lg"
-                style="height: 40px;" />
-
+            <!-- <img src="{{ $logos . $logo . '?' . time() }}" alt="{{ env('APP_NAME') }}" class="logo logo-lg"
+                style="height: 40px;" /> -->
+            <!-- <p style="font-weight:bold;">
+                {{ $logos}}
+            </p> -->
+            <img src="{{asset( '/assets/images/HRMPRO-logos_transparent.png' )}}" alt="{{ env('APP_NAME') }}" class="logo" style="height:175px;width:100%;"/>
+            <!-- <img src="{{asset( '/assets/uploads/logo/logo-dark.png' )}}" alt="{{ env('APP_NAME') }}" class="logo logo-lg" style="height: 40px;" /> -->
+            <!-- <img src="{{asset('assets/images/theme-3.svg')}}" alt="{{ env('APP_NAME') }}" class="logo logo-lg" style="height: 40px;" /> -->
         </a>
 
     </div>
@@ -192,7 +197,21 @@
                         <li class="dash-item">
                             <a class="dash-link" href="{{ route('payslip.index') }}">{{ __('Payslip') }}</a>
                         </li>
-
+                        <!-- <li class="dash-item">
+                            <a class="dash-link">{{ __('Provident Funds') }}</a>
+                        </li>
+                        <li class="dash-item">
+                            <a class="dash-link">{{ __('Tax Statement') }}</a>
+                        </li>
+                        <li class="dash-item">
+                            <a class="dash-link">{{ __('Leave Encashment') }}</a>
+                        </li>
+                        <li class="dash-item">
+                            <a class="dash-link">{{ __('Pensions') }}</a>
+                        </li>
+                        <li class="dash-item">
+                            <a class="dash-link">{{ __('Payroll Setup') }}</a>
+                        </li> -->
                     </ul>
                 </li>
             @endif

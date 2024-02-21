@@ -150,16 +150,16 @@ class HomeController extends Controller
             }
             else
             {
-                $settings = Utility::settings();
-                if($settings['display_landing_page'] == 'on' && \Schema::hasTable('landing_page_settings'))
-                {
-                    $get_section = LandingPageSection::orderBy('section_order', 'ASC')->get();
-                    return view('landingpage::layouts.landingpage',compact('get_section'));
-                }
-                else
-                {
+                // $settings = Utility::settings();
+                // if($settings['display_landing_page'] == 'on' && \Schema::hasTable('landing_page_settings'))
+                // {
+                //     $get_section = LandingPageSection::orderBy('section_order', 'ASC')->get();
+                //     return view('landingpage::layouts.landingpage',compact('get_section'));
+                // }
+                // else
+                // {
                     return redirect('login');
-                }
+                // }
 
             }
         }

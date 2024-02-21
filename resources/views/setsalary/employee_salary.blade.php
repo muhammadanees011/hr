@@ -591,6 +591,245 @@
                     </div>
                 </div>
             </div>
+            <!--bonus-->
+            <!-- <div class="col-md-6">
+                <div class="card set-card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-11">
+                                <h5>{{ __('Bonus') }}</h5>
+                            </div>
+                            @can('Create Overtime')
+                                <div class="col-1 text-end">
+                                    <a data-url="{{ route('overtimes.create', $employee->id) }}" data-ajax-popup="true"
+                                        data-title="{{ __('Create Overtime') }}" data-bs-toggle="tooltip" title=""
+                                        class="btn btn-sm btn-primary" data-bs-original-title="{{ __('Create') }}">
+                                        <i class="ti ti-plus"></i>
+                                    </a>
+                                </div>
+                            @endcan
+                        </div>
+                    </div>
+                    <div class=" card-body table-border-style" style=" overflow:auto">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>{{ __('Employee Name') }}</th>
+                                        <th>{{ __('Bonus Type') }}</th>
+                                        <th>{{ __('Amount') }}</th>
+                                        @if (\Auth::user()->type != 'employee')
+                                            <th>{{ __('Action') }}</th>
+                                        @endif
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($overtimes as $overtime)
+                                        <tr>
+                                            <td>{{ !empty($overtime->employee()) ? $overtime->employee()->name : '' }}
+                                            </td>
+                                            <td>{{ $overtime->title }}</td>
+                                            <td>{{ $overtime->number_of_days }}</td>
+                                            <td>{{ $overtime->hours }}</td>
+                                            <td>{{ \Auth::user()->priceFormat($overtime->rate) }}</td>
+                                            <td class="Action">
+                                                <span>
+                                                    @can('Edit Overtime')
+                                                        <div class="action-btn bg-info ms-2">
+                                                            <a class="mx-3 btn btn-sm  align-items-center"
+                                                                data-url="{{ URL::to('overtime/' . $overtime->id . '/edit') }}"
+                                                                data-ajax-popup="true" data-size="md"
+                                                                data-bs-toggle="tooltip" title=""
+                                                                data-title="{{ __('Edit OverTime') }}"
+                                                                data-bs-original-title="{{ __('Edit') }}">
+                                                                <i class="ti ti-pencil text-white"></i>
+                                                            </a>
+                                                        </div>
+                                                    @endcan
+                                                    @can('Delete Overtime')
+                                                        <div class="action-btn bg-danger ms-2">
+                                                            {!! Form::open([
+                                                                'method' => 'DELETE',
+                                                                'route' => ['overtime.destroy', $overtime->id],
+                                                                'id' => 'delete-form-' . $overtime->id,
+                                                            ]) !!}
+                                                            <a class="mx-3 btn btn-sm  align-items-center bs-pass-para"
+                                                                data-bs-toggle="tooltip" title=""
+                                                                data-bs-original-title="Delete" aria-label="Delete"><i
+                                                                    class="ti ti-trash text-white text-white"></i></a>
+                                                            </form>
+                                                        </div>
+                                                    @endcan
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+             <!--provident funds deductions-->
+             <!-- <div class="col-md-6">
+                <div class="card set-card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-11">
+                                <h5>{{ __('Provident Funds Deductions') }}</h5>
+                            </div>
+                            @can('Create Overtime')
+                                <div class="col-1 text-end">
+                                    <a data-url="{{ route('overtimes.create', $employee->id) }}" data-ajax-popup="true"
+                                        data-title="{{ __('Create Overtime') }}" data-bs-toggle="tooltip" title=""
+                                        class="btn btn-sm btn-primary" data-bs-original-title="{{ __('Create') }}">
+                                        <i class="ti ti-plus"></i>
+                                    </a>
+                                </div>
+                            @endcan
+                        </div>
+                    </div>
+                    <div class=" card-body table-border-style" style=" overflow:auto">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>{{ __('Employee Name') }}</th>
+                                        <th>{{ __('Percentage') }}</th>
+                                        <th>{{ __('Amount') }}</th>
+                                        @if (\Auth::user()->type != 'employee')
+                                            <th>{{ __('Action') }}</th>
+                                        @endif
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($overtimes as $overtime)
+                                        <tr>
+                                            <td>{{ !empty($overtime->employee()) ? $overtime->employee()->name : '' }}
+                                            </td>
+                                            <td>{{ $overtime->title }}</td>
+                                            <td>{{ $overtime->number_of_days }}</td>
+                                            <td>{{ $overtime->hours }}</td>
+                                            <td>{{ \Auth::user()->priceFormat($overtime->rate) }}</td>
+                                            <td class="Action">
+                                                <span>
+                                                    @can('Edit Overtime')
+                                                        <div class="action-btn bg-info ms-2">
+                                                            <a class="mx-3 btn btn-sm  align-items-center"
+                                                                data-url="{{ URL::to('overtime/' . $overtime->id . '/edit') }}"
+                                                                data-ajax-popup="true" data-size="md"
+                                                                data-bs-toggle="tooltip" title=""
+                                                                data-title="{{ __('Edit OverTime') }}"
+                                                                data-bs-original-title="{{ __('Edit') }}">
+                                                                <i class="ti ti-pencil text-white"></i>
+                                                            </a>
+                                                        </div>
+                                                    @endcan
+                                                    @can('Delete Overtime')
+                                                        <div class="action-btn bg-danger ms-2">
+                                                            {!! Form::open([
+                                                                'method' => 'DELETE',
+                                                                'route' => ['overtime.destroy', $overtime->id],
+                                                                'id' => 'delete-form-' . $overtime->id,
+                                                            ]) !!}
+                                                            <a class="mx-3 btn btn-sm  align-items-center bs-pass-para"
+                                                                data-bs-toggle="tooltip" title=""
+                                                                data-bs-original-title="Delete" aria-label="Delete"><i
+                                                                    class="ti ti-trash text-white text-white"></i></a>
+                                                            </form>
+                                                        </div>
+                                                    @endcan
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            <!--tax deductions-->
+            <!-- <div class="col-md-6">
+                <div class="card set-card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-11">
+                                <h5>{{ __('Tax Deductions') }}</h5>
+                            </div>
+                            @can('Create Overtime')
+                                <div class="col-1 text-end">
+                                    <a data-url="{{ route('overtimes.create', $employee->id) }}" data-ajax-popup="true"
+                                        data-title="{{ __('Create Overtime') }}" data-bs-toggle="tooltip" title=""
+                                        class="btn btn-sm btn-primary" data-bs-original-title="{{ __('Create') }}">
+                                        <i class="ti ti-plus"></i>
+                                    </a>
+                                </div>
+                            @endcan
+                        </div>
+                    </div>
+                    <div class=" card-body table-border-style" style=" overflow:auto">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>{{ __('Employee Name') }}</th>
+                                        <th>{{ __('Type') }}</th>
+                                        <th>{{ __('Percentage') }}</th>
+                                        <th>{{ __('Amount') }}</th>
+                                        @if (\Auth::user()->type != 'employee')
+                                            <th>{{ __('Action') }}</th>
+                                        @endif
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($overtimes as $overtime)
+                                        <tr>
+                                            <td>{{ !empty($overtime->employee()) ? $overtime->employee()->name : '' }}
+                                            </td>
+                                            <td>{{ $overtime->title }}</td>
+                                            <td>{{ $overtime->title }}</td>
+                                            <td>{{ $overtime->number_of_days }}</td>
+                                            <td>{{ $overtime->hours }}</td>
+                                            <td>{{ \Auth::user()->priceFormat($overtime->rate) }}</td>
+                                            <td class="Action">
+                                                <span>
+                                                    @can('Edit Overtime')
+                                                        <div class="action-btn bg-info ms-2">
+                                                            <a class="mx-3 btn btn-sm  align-items-center"
+                                                                data-url="{{ URL::to('overtime/' . $overtime->id . '/edit') }}"
+                                                                data-ajax-popup="true" data-size="md"
+                                                                data-bs-toggle="tooltip" title=""
+                                                                data-title="{{ __('Edit OverTime') }}"
+                                                                data-bs-original-title="{{ __('Edit') }}">
+                                                                <i class="ti ti-pencil text-white"></i>
+                                                            </a>
+                                                        </div>
+                                                    @endcan
+                                                    @can('Delete Overtime')
+                                                        <div class="action-btn bg-danger ms-2">
+                                                            {!! Form::open([
+                                                                'method' => 'DELETE',
+                                                                'route' => ['overtime.destroy', $overtime->id],
+                                                                'id' => 'delete-form-' . $overtime->id,
+                                                            ]) !!}
+                                                            <a class="mx-3 btn btn-sm  align-items-center bs-pass-para"
+                                                                data-bs-toggle="tooltip" title=""
+                                                                data-bs-original-title="Delete" aria-label="Delete"><i
+                                                                    class="ti ti-trash text-white text-white"></i></a>
+                                                            </form>
+                                                        </div>
+                                                    @endcan
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
         </div>
     </div>
 @endsection

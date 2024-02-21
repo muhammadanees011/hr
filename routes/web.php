@@ -96,7 +96,7 @@ use Illuminate\Support\Facades\Artisan;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
 });
 
 // Route::get('/dashboard', function () {

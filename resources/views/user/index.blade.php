@@ -114,8 +114,11 @@
                     <div class="avatar">
                         <a href="{{ !empty($user->avatar) ? asset(Storage::url('uploads/avatar/' . $user->avatar)) : asset(Storage::url('uploads/avatar/avatar.png')) }}"
                             target="_blank">
-                            <img src="{{ !empty($user->avatar) ? asset(Storage::url('uploads/avatar/' . $user->avatar)) : asset(Storage::url('uploads/avatar/avatar.png')) }}"
-                                class="rounded-circle" style="width: 30%">
+                            <!-- <img src="{{ !empty($user->avatar) ? asset(Storage::url('uploads/avatar/' . $user->avatar)) : asset(Storage::url('uploads/avatar/avatar.png')) }}"
+                                class="rounded-circle" style="width: 30%"> -->
+
+                                <img src="{{asset( '/assets/images/user/avatar-4.jpg' )}}" alt="{{ env('APP_NAME') }}" class="rounded-circle" style="width: 30%" />
+
                         </a>
                     </div>
                     <h4 class="mt-2 text-primary">{{ $user->name }}</h4>

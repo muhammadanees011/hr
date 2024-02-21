@@ -155,9 +155,10 @@
                     <div class="container">
                         <div class="navbar-brand">
                             <a href="#">
-                                <img src="{{ $logos . '/' . (isset($logo) && !empty($logo) ? $logo . '?' . time() : 'logo-dark.png' . '?' . time()) }}"
+                                <!-- <img src="{{ $logos . '/' . (isset($logo) && !empty($logo) ? $logo . '?' . time() : 'logo-dark.png' . '?' . time()) }}"
                                     class="logo" alt="{{ config('app.name', 'HRMGO') }}" alt="logo"
-                                    loading="lazy" style="max-height: 50px;" />
+                                    loading="lazy" style="max-height: 50px;" /> -->
+                                    <img src="{{asset( '/assets/images/HRMPRO-logos_transparent.png' )}}" alt="{{ env('APP_NAME') }}" class="logo" style="height:105px;width:100%;"/>
                             </a>
                         </div>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"

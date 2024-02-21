@@ -26,9 +26,11 @@
                     <a class="dash-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#"
                         role="button" aria-haspopup="false" aria-expanded="false">
                         <span class="theme-avtar">
-                            <img alt="#"
+                            <!-- <img alt="#"
                                 src="<?php echo e(!empty($users->avatar) ? $profile . '/' . $users->avatar : $profile . '/avatar.png'); ?>"
-                                class="header-avtar" style="width: 100%; border-radius: 50%;">
+                                class="header-avtar" style="width: 100%; border-radius: 50%;"> -->
+                                <img src="<?php echo e(asset( '/assets/images/user/avatar-5.jpg' )); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo logo-lg" style="width: 100%; border-radius: 50%;" />
+
                         </span>
                         <span class="hide-mob ms-2"> <?php echo e(__('Hi, ')); ?><?php echo e(Auth::user()->name); ?>!
                             <i class="ti ti-chevron-down drp-arrow nocolor hide-mob"></i>
