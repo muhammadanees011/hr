@@ -80,6 +80,10 @@ use App\Http\Controllers\AllowanceOptionController;
 use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\NotificationTemplatesController;
 use App\Http\Controllers\PayslipTypeController;
+use App\Http\Controllers\BonusController;
+use App\Http\Controllers\TaxRuleController;
+use App\Http\Controllers\ProvidentFundsPolicyController;
+use App\Http\Controllers\OverTimePolicyController;
 use App\Http\Controllers\TemplateController;
 use Illuminate\Support\Facades\Artisan;
 
@@ -418,76 +422,24 @@ Route::group(['middleware' => ['verified']], function () {
         ]
     );
 
-
     //payslip
+    Route::resource('paysliptype', PayslipTypeController::class)->middleware(['auth','XSS',]);
+    Route::resource('allowance', AllowanceController::class)->middleware(['auth','XSS',]);
+    Route::resource('commission', CommissionController::class)->middleware(['auth','XSS',]);
+    Route::resource('allowanceoption', AllowanceOptionController::class)->middleware(['auth','XSS',]);
+    Route::resource('loanoption', LoanOptionController::class)->middleware(['auth','XSS',]);
+    Route::resource('deductionoption', DeductionOptionController::class)->middleware(['auth','XSS',]);
+    Route::resource('loan', LoanController::class)->middleware(['auth','XSS',]);
+    Route::resource('saturationdeduction', SaturationDeductionController::class)->middleware(['auth','XSS',]);
+    Route::resource('overtime', OvertimeController::class)->middleware(['auth','XSS',]);
 
-    Route::resource('paysliptype', PayslipTypeController::class)->middleware(
-        [
-            'auth',
-            'XSS',
-        ]
-    );
+    //payroll-setup
+    Route::resource('bonus', BonusController::class)->middleware(['auth','XSS',]);
+    Route::get('delete-bonus/{id}', [BonusController::class,'deleteBonus'])->name('deleteBonus')->middleware(['auth','XSS',]);
+    Route::resource('taxrules', TaxRuleController::class)->middleware(['auth','XSS',]);
+    Route::resource('providentfundspolicy', ProvidentFundsPolicyController::class)->middleware(['auth','XSS',]);
+    Route::resource('overtimepolicy', OverTimePolicyController::class)->middleware(['auth','XSS',]);
 
-
-    Route::resource('allowance', AllowanceController::class)->middleware(
-        [
-            'auth',
-            'XSS',
-        ]
-    );
-
-
-    Route::resource('commission', CommissionController::class)->middleware(
-        [
-            'auth',
-            'XSS',
-        ]
-    );
-
-    Route::resource('allowanceoption', AllowanceOptionController::class)->middleware(
-        [
-            'auth',
-            'XSS',
-        ]
-    );
-
-    Route::resource('loanoption', LoanOptionController::class)->middleware(
-        [
-            'auth',
-            'XSS',
-        ]
-    );
-
-    Route::resource('deductionoption', DeductionOptionController::class)->middleware(
-        [
-            'auth',
-            'XSS',
-        ]
-    );
-
-
-    Route::resource('loan', LoanController::class)->middleware(
-        [
-            'auth',
-            'XSS',
-        ]
-    );
-
-
-    Route::resource('saturationdeduction', SaturationDeductionController::class)->middleware(
-        [
-            'auth',
-            'XSS',
-        ]
-    );
-
-
-    Route::resource('overtime', OvertimeController::class)->middleware(
-        [
-            'auth',
-            'XSS',
-        ]
-    );
 
     Route::post('event/getdepartment', [EventController::class, 'getdepartment'])->name('event.getdepartment')->middleware(
         [
