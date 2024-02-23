@@ -23,6 +23,15 @@
             <dd class="col-sm-9 text-sm">{{($interviewSchedule->applications)?$interviewSchedule->applications->phone:'-'}}</dd>
         </dl>
     </div>
+    @if ($interviewSchedule->address)
+    <div class="modal-body">
+        <h6 class="mb-2">{{__('Interview Location')}}</h6>
+        <dl class="row mb-0 align-items-center">
+            <dd class="col-sm-9 text-sm">{{ ($interviewSchedule->applications) ? $interviewSchedule->address : '-' }}</dd>
+        </dl>
+    </div>
+@endif
+
     <div class="modal-body">
         <h6 class="mb-2">{{__('Candidate Status')}}</h6>
         @foreach($stages as $stage)

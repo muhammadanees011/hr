@@ -19,13 +19,15 @@ class InterviewScheduleController extends Controller
         $schedules   = LocalInterviewSchedule::where('created_by', \Auth::user()->creatorId())->get();
         $arrSchedule = [];
         $today_date = date('m');
-        $current_month_event = LocalInterviewSchedule::select('id', 'candidate','date','employee', 'time','comment')->whereNotNull(['date'])->whereMonth('date',$today_date)->get();
+        $current_month_event = LocalInterviewSchedule::select('id', 'candidate','date','employee', 'time','comment', 'destination', 'address')->whereNotNull(['date'])->whereMonth('date',$today_date)->get();
 
         foreach($schedules as $key => $schedule)
         {
             $arr['id']     = $schedule['id'];
             $arr['title']  = !empty($schedule->applications) ? !empty($schedule->applications->jobs) ? $schedule->applications->jobs->title : '' : '';
             $arr['start']  = $schedule['date'];
+            $arr['destination']  = $schedule['destination'];
+            $arr['address']  = $schedule['address'];
             $arr['url']    = route('interview-schedule.show', $schedule['id']);
             $arr['className'] = ' event-primary';
             $arrSchedule[] = $arr;
@@ -49,7 +51,13 @@ class InterviewScheduleController extends Controller
         $candidates = JobApplication::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
         $candidates->prepend('--', '');
 
-        return view('interviewSchedule.create', compact('employees', 'candidates','candidate'));
+        $destination = [
+            "Online",
+            "OnSite",
+        ];
+        
+
+        return view('interviewSchedule.create', compact('employees', 'candidates','candidate', 'destination'));
     }
 
     public function store(Request $request)
@@ -59,7 +67,7 @@ class InterviewScheduleController extends Controller
             $validator = \Validator::make(
                 $request->all(), [
                                    'candidate' => 'required',
-                                   'employee' => 'required',
+                                //    'employee' => 'required',
                                    'date' => 'required',
                                    'time' => 'required',
                                ]
@@ -79,6 +87,8 @@ class InterviewScheduleController extends Controller
             $schedule->date       = $request->date;
             $schedule->time       = $request->time;
             $schedule->comment    = $request->comment;
+            $schedule->destination    = $request->destination;
+            $schedule->address    = $request->address;
             $schedule->created_by = \Auth::user()->creatorId();
             $schedule->save();
 
@@ -148,6 +158,8 @@ class InterviewScheduleController extends Controller
             $interviewSchedule->date      = $request->date;
             $interviewSchedule->time      = $request->time;
             $interviewSchedule->comment   = $request->comment;
+            $schedule->destination    = $request->destination;
+            $schedule->address    = $request->address;
             $interviewSchedule->save();
 
             return redirect()->back()->with('success', __('Interview schedule successfully updated.'));
