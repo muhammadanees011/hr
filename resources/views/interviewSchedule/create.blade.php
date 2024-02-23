@@ -22,7 +22,7 @@
         </div>
         <div class="form-group col-md-6">
             {{ Form::label('employee', __('Interviewer'), ['class' => 'col-form-label']) }}
-            {{ Form::select('employee', $employees, null, ['class' => 'form-control select2', 'required' => 'required']) }}
+            {{ Form::select('employee', $employees, null, ['class' => 'form-control select2']) }}
         </div>
         <div class="form-group col-md-6">
             {{ Form::label('date', __('Interview Date'), ['class' => 'col-form-label']) }}
@@ -32,9 +32,17 @@
             {{ Form::label('time', __('Interview Time'), ['class' => 'col-form-label']) }}
             {{ Form::time('time', null, ['class' => 'form-control ', 'id' => 'currentTime']) }}
         </div>
+        <div class="form-group col-md-6">
+            {{ Form::label('destination', __('Destination'), ['class' => 'col-form-label']) }}
+            {{ Form::select('destination', $destination, null, ['class' => 'form-control select2', 'required' => 'required', 'id' => 'destination', 'onchange' => 'onDestinationChange()']) }}
+        </div>
         <div class="form-group ">
             {{ Form::label('comment', __('Comment'), ['class' => 'col-form-label']) }}
             {{ Form::textarea('comment', null, ['class' => 'form-control', 'rows' => '3']) }}
+        </div>
+        <div id="address-field" class="form-group" style="display: none;">
+            {{ Form::label('address', __('Address'), ['class' => 'col-form-label']) }}
+            {{ Form::textarea('address', null, ['class' => 'form-control', 'rows' => '4']) }}
         </div>
         @if (isset($setting['is_enabled']) && $setting['is_enabled'] == 'on')
             <div class="form-group col-md-6">
@@ -60,6 +68,31 @@
         $('select#candidate').val({{ $candidate }}).trigger('change');
     </script>
 @endif
+
+<script>
+    // Function to handle onchange event of the destination dropdown
+    function onDestinationChange() {
+        // Get the selected value of the destination dropdown
+        var selectedDestination = document.getElementById('destination').value; 
+        
+        // Get the address field
+        var addressField = document.getElementById('address-field');
+        
+        // Check if "On Site" is selected
+        if (selectedDestination === '1') { // Assuming '1' is the value for "On Site"
+            // Show the address field
+            addressField.style.display = 'block';
+        } else {
+            // Hide the address field
+            addressField.style.display = 'none';
+        }
+    }
+
+</script>
+
+
+
+
 
 <script>
     const getTwoDigits = (value) => value < 10 ? `0${value}` : value;
