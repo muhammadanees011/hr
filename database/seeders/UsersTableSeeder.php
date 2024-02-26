@@ -1856,7 +1856,31 @@ class UsersTableSeeder extends Seeder
                 "created_at" => date('Y-m-d H:i:s'),
                 "updated_at" => date('Y-m-d H:i:s'),
             ],
-
+            [
+                "name" => "Manage EclaimType",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Create EclaimType",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Edit EclaimType",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Delete EclaimType",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            
         ];
         Permission::insert($arrPermissions);
 
@@ -2170,6 +2194,10 @@ class UsersTableSeeder extends Seeder
             ["name" => "Create Zoom meeting"],
             ["name" => "Show Zoom meeting"],
             ["name" => "Delete Zoom meeting"],
+             ["name" => "Manage EclaimType"],
+            ["name" => "Create EclaimType"],
+            ["name" => "Edit EclaimType"],
+            ["name" => "Delete EclaimType"],
         ];
 
         $companyRole->givePermissionTo($companyPermissions);
