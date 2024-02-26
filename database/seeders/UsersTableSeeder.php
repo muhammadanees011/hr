@@ -1952,6 +1952,30 @@ class UsersTableSeeder extends Seeder
                 "created_at" => date('Y-m-d H:i:s'),
                 "updated_at" => date('Y-m-d H:i:s'),
             ],
+            [
+                "name" => "Manage Eclaim",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Create Eclaim",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Edit Eclaim",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Delete Eclaim",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
             
         ];
         Permission::insert($arrPermissions);
@@ -2279,9 +2303,14 @@ class UsersTableSeeder extends Seeder
             ["name" => "Edit Pension OptIn"],
             ["name" => "Delete Pension OptIn"],
              ["name" => "Manage EclaimType"],
+            ["name" => "Manage EclaimType"],
             ["name" => "Create EclaimType"],
             ["name" => "Edit EclaimType"],
-            ["name" => "Delete EclaimType"],
+            ["name" => "Delete Eclaim"],
+            ["name" => "Manage Eclaim"],
+            ["name" => "Create Eclaim"],
+            ["name" => "Edit Eclaim"],
+            ["name" => "Delete Eclaim"],
         ];
 
         $companyRole->givePermissionTo($companyPermissions);

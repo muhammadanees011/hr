@@ -333,6 +333,12 @@ $lang = Auth::user()->lang;
                             <a class="dash-link" href="{{ route('transferbalance.index') }}">{{ __('Transfer Balance') }}</a>
                         </li>
                         @endcan
+                        @can('Manage Eclaim')
+                            <li class="dash-item">
+                                <a class="dash-link"
+                                    href="{{ route('transferbalance.index') }}">{{ __('Transfer Balance') }}</a>
+                            </li>
+                        @endcan
                     </ul>
                 </li>
                 @endif
