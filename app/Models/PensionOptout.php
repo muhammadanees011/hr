@@ -14,8 +14,7 @@ class PensionOptout extends Model
         'date',
         'reasons',
     ];
-
-    // Define relationships if needed
+    
     public function employee()
     {
         return $this->belongsTo(Employee::class, 'employee_id');

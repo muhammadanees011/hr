@@ -293,7 +293,7 @@ class Employee extends Model
 
     public function pensionOptin()
     {
-        return $this->hasOne(PensionOptin::class, 'employee_id');
+        return $this->hasOne(PensionOptIn::class, 'employee_id');
     }
 
     public function pensionScheme()
