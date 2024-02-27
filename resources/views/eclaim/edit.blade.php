@@ -1,15 +1,23 @@
-{{ Form::model($document, ['route' => ['document.update', $document->id], 'method' => 'PUT']) }}
+{{ Form::model($eclaim, ['route' => ['eclaim.update', $eclaim->id], 'method' => 'put', 'enctype' => 'multipart/form-data']) }}
 <div class="modal-body">
-
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="form-group">
-                {{ Form::label('name', __('Name'), ['class' => 'form-label']) }}
+                {{ Form::label('type_id', __('Eclaim Type'), ['class' => 'form-label']) }}
                 <div class="form-icon-user">
-                    {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => __('Enter Document Name')]) }}
+                    {{ Form::select('type_id', $eClaimTypes, null, ['class' => 'form-control select2', 'required' => 'required', 'placeholder' => __('Select Eclaim Type')]) }}
                 </div>
-                @error('name')
-                    <span class="invalid-name" role="alert">
+            </div>
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="form-group">
+                {{ Form::label('amount', __('Amount'), ['class' => 'form-label']) }}
+                <div class="form-icon-user">
+                    {{ Form::number('amount', null, ['class' => 'form-control', 'required' => 'required', 'placeholder' => __('Enter Amount')]) }}
+                </div>
+                @error('amount')
+                    <span class="invalid-amount" role="alert">
                         <strong class="text-danger">{{ $message }}</strong>
                     </span>
                 @enderror
@@ -17,13 +25,30 @@
         </div>
 
         <div class="col-lg-12 col-md-12 col-sm-12">
+    <div class="form-group">
+        {{ Form::label('receipt', __('Receipt'), ['class' => 'col-form-label']) }}
+        <div class="choose-files">
+            <label for="receipt">
+                <div class="bg-primary receipt"> <i class="ti ti-upload px-1"></i>{{ __('Choose file here') }}</div>
+                {{ Form::file('receipt', ['class' => 'form-control file', 'onchange' => 'document.getElementById("blah").src = window.URL.createObjectURL(this.files[0])']) }}
+                @if($eclaim->receipt)
+                    <img id="blah" class="mt-3" width="100" src="{{ asset('uploads/eclaimreceipts/'.$eclaim->receipt) }}" />
+                @else
+                    <img id="blah" class="mt-3" width="100" src="{{ asset('placeholder-image.jpg') }}" />
+                @endif
+            </label>
+        </div>
+    </div>
+</div>
+
+
+        <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="form-group">
-                {{ Form::label('is_required', __('Required Field'), ['class' => 'form-label']) }}
-                <div class="form-icon-user">
-                    {{ Form::select('is_required', ['0'=>'Not Required' ,'1'=>'Is Required'], null, ['class' => 'form-control select2 ','placeholder' => __('Select Department')]) }}
-                </div>
+                {{ Form::label('description', __('Description'), ['class' => 'col-form-label']) }}
+                {{ Form::textarea('description', null, ['class' => 'form-control', 'rows' => '3']) }}
             </div>
         </div>
+
     </div>
 </div>
 <div class="modal-footer">
