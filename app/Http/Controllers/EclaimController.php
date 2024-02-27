@@ -167,4 +167,11 @@ class EclaimController extends Controller
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
+
+
+        public function showHistory(Eclaim $eclaim, $id)
+        {
+                $eclaim = Eclaim::find($id);
+                return view('eclaim.history', compact('eclaim'));
+        }
 }
