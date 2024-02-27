@@ -599,6 +599,15 @@
                 </li>
             @endcan
 
+            <!-- Eclaim Request-->
+            {{-- @can('Manage Claim') --}}
+                <li class="dash-item">
+                    <a href="{{ route('eclaim.index') }}" class="dash-link"><span
+                            class="dash-micon"><i class="ti ti-file"></i></span><span
+                            class="dash-mtext">{{ __('Manage Eclaim') }}</span></a>
+                </li>
+            {{-- @endcan --}}
+
             {{-- Email Template --}}
             @if (\Auth::user()->type == 'company')
                 <li

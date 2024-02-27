@@ -15,9 +15,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('type_id');
             $table->foreign('type_id')->references('id')->on('eclaim_types')->onDelete('cascade');
-            $table->text('reason')->nullable();
+            $table->text('description')->nullable();
             $table->string('receipt');
+            $table->float('amount', 15,2);
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->string('comment')->nullable();
+            $table->string('reimbursement_receipt')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
