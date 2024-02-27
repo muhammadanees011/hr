@@ -66,7 +66,7 @@ class EclaimController extends Controller
                     return redirect()->back()->with('error', __($path['msg']));
                 }
             }
-            $history = ['time' => now(), 'message' => 'Eclaim Requested by '. Auth::user()->name];
+            $history = ['time' => now(), 'message' => 'New Eclaim Requested Generated', 'username' => Auth::user()->name];
             $eClaimType               = new Eclaim();
             $eClaimType->type_id      = $request->type_id;
             $eClaimType->amount       = $request->amount;
