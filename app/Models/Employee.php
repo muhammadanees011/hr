@@ -49,7 +49,7 @@ class Employee extends Model
     {
         return $this->hasOne('App\Models\AccountList', 'id', 'account_type')->pluck('account_name')->first();
     }
- 
+
     public function get_net_salary()
     {
         //allowance
@@ -89,7 +89,6 @@ class Employee extends Model
             } else {
                 $total_loan = $loan->amount + $total_loan;
             }
-           
         }
 
         //Saturation Deduction
@@ -290,5 +289,22 @@ class Employee extends Model
         } else {
             return $employee->salary;
         }
+    }
+
+    public function pensionOptin()
+    {
+        return $this->hasOne(PensionOptin::class, 'employee_id');
+    }
+
+    public function pensionScheme()
+    {
+        return $this->hasOneThrough(
+            PensionScheme::class,
+            PensionOptin::class,
+            'employee_id',
+            'id',
+            'id',
+            'pension_scheme_id'
+        );
     }
 }
