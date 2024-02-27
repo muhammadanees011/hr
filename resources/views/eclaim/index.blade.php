@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('page-title')
-   {{ __('Manage Eclaim') }}
+   {{ __('Manage Eclaimss') }}
 @endsection
 
 @section('breadcrumb')
@@ -12,7 +12,7 @@
 @section('action-button')
    @can('Create Eclaim')
         <a href="#" data-url="{{ route('eclaim.create') }}" data-ajax-popup="true"
-            data-title="{{ __('Request A New Eclaim') }}" data-bs-toggle="tooltip" title="" class="btn btn-sm btn-primary"
+            data-title="{{ __('Request A New Eclaimss') }}" data-bs-toggle="tooltip" title="" class="btn btn-sm btn-primary"
             data-bs-original-title="{{ __('Create') }}">
             <i class="ti ti-plus"></i>
         </a>
@@ -74,6 +74,17 @@
                                                         data-ajax-popup="true" data-size="md" data-bs-toggle="tooltip" title=""
                                                         data-title="{{ __('Eclaim Receipt') }}"
                                                         data-bs-original-title="{{ __('View Receipt') }}">
+                                                        <i class="ti ti-eye text-white"></i>
+                                                    </a>
+                                                </div>
+                                            @endcan
+                                            @can('Manage Eclaim')
+                                                <div class="action-btn bg-info ms-2">
+                                                    <a href="#" class="mx-3 btn btn-sm bg-info  align-items-center"
+                                                        data-url="{{ URL::to('eclaim/showHistory/' . $eclaim->id ) }}"
+                                                        data-ajax-popup="true" data-size="md" data-bs-toggle="tooltip" title=""
+                                                        data-title="{{ __('Eclaim History') }}"
+                                                        data-bs-original-title="{{ __('View History') }}">
                                                         <i class="ti ti-eye text-white"></i>
                                                     </a>
                                                 </div>
