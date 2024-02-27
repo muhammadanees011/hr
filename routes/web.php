@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PensionSchemeController;
 use App\Models\Employee;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -80,6 +81,8 @@ use App\Http\Controllers\AllowanceOptionController;
 use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\NotificationTemplatesController;
 use App\Http\Controllers\PayslipTypeController;
+use App\Http\Controllers\PensionOptInController;
+use App\Http\Controllers\PensionOptoutController;
 use App\Http\Controllers\TemplateController;
 use Illuminate\Support\Facades\Artisan;
 
@@ -555,6 +558,41 @@ Route::group(['middleware' => ['verified']], function () {
         ]
     );
 
+    Route::resource('pension-opt-ins', PensionOptInController::class)->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+    Route::post('pension-opt-ins/employee', [PensionOptInController::class, 'getEmployee'])->name('pensionOptIn.emp')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+    Route::resource('pension-optout', PensionOptoutController::class)->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+    Route::post('pension-optout/employee', [PensionOptoutController::class, 'getEmployee'])->name('pensionOptout.emp')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+    Route::resource('pension-schemes', PensionSchemeController::class)->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
 
     Route::resource('setsalary', SetSalaryController::class)->middleware(
         [
@@ -867,7 +905,7 @@ Route::group(['middleware' => ['verified']], function () {
             Route::get('create-language', [LanguageController::class, 'createLanguage'])->name('create.language');
             Route::post('store-language', [LanguageController::class, 'storeLanguage'])->name('store.language');
             Route::delete('/lang/{id}', [LanguageController::class, 'destroyLang'])->name('lang.destroy');
-            Route::post('disable-language',[LanguageController::class,'disableLang'])->name('disablelanguage');
+            Route::post('disable-language', [LanguageController::class, 'disableLang'])->name('disablelanguage');
         }
     );
 
