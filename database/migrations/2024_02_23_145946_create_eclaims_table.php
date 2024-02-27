@@ -18,11 +18,12 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('receipt');
             $table->float('amount', 15,2);
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->enum('status', ['pending', 'approved by HR', 'approved by Finance', 'rejected'])->default('pending');
             $table->string('comment')->nullable();
             $table->string('reimbursement_receipt')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->json('history');
             $table->timestamps();
         });
     }

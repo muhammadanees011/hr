@@ -66,13 +66,14 @@ class EclaimController extends Controller
                     return redirect()->back()->with('error', __($path['msg']));
                 }
             }
-
+            $history = ['time' => now(), 'message' => 'Eclaim Requested by '. Auth::user()->name];
             $eClaimType               = new Eclaim();
             $eClaimType->type_id      = $request->type_id;
             $eClaimType->amount       = $request->amount;
             $eClaimType->description  = $request->description;
             $eClaimType->receipt      = !empty($request->receipt) ? $fileNameToStore : '';
             $eClaimType->created_by   = \Auth::user()->creatorId();
+            $eClaimType->history = json_encode($history);
             $eClaimType->save();
 
             return redirect()->route('eclaim.index')->with('success', __('Eclaim  successfully created.'));
