@@ -1856,6 +1856,55 @@ class UsersTableSeeder extends Seeder
                 "created_at" => date('Y-m-d H:i:s'),
                 "updated_at" => date('Y-m-d H:i:s'),
             ],
+            [
+                "name" => "Manage Retirement",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Create Retirement",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Edit Retirement",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Delete Retirement",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+
+            [
+                "name" => "Manage Exit Procedure",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Create Exit Procedure",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Edit Exit Procedure",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Delete Exit Procedure",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
 
         ];
         Permission::insert($arrPermissions);
@@ -2170,6 +2219,14 @@ class UsersTableSeeder extends Seeder
             ["name" => "Create Zoom meeting"],
             ["name" => "Show Zoom meeting"],
             ["name" => "Delete Zoom meeting"],
+            ["name" => "Manage Retirement"],
+            ["name" => "Create Retirement"],
+            ["name" => "Edit Retirement"],
+            ["name" => "Delete Retirement"],
+            ["name" => "Manage Exit Procedure"],
+            ["name" => "Create Exit Procedure"],
+            ["name" => "Edit Exit Procedure"],
+            ["name" => "Delete Exit Procedure"],
         ];
 
         $companyRole->givePermissionTo($companyPermissions);
@@ -2437,6 +2494,14 @@ class UsersTableSeeder extends Seeder
             ["name" => "Delete Contract Type"],
             ["name" => "Manage Zoom meeting"],
             ["name" => "Show Zoom meeting"],
+            ["name" => "Manage Retirement"],
+            ["name" => "Create Retirement"],
+            ["name" => "Edit Retirement"],
+            ["name" => "Delete Retirement"],
+            ["name" => "Manage Exit Procedure"],
+            ["name" => "Create Exit Procedure"],
+            ["name" => "Edit Exit Procedure"],
+            ["name" => "Delete Exit Procedure"],
         ];
 
         $hrRole->givePermissionTo($hrPermission);
@@ -2512,6 +2577,11 @@ class UsersTableSeeder extends Seeder
             ["name" => "Delete Attachment"],
             ["name" => "Manage Zoom meeting"],
             ["name" => "Show Zoom meeting"],
+            ["name" => "Manage Retirement"],
+            ["name" => "Create Retirement"],
+            ["name" => "Edit Retirement"],
+            ["name" => "Delete Retirement"],
+
         ];
 
         $employeeRole->givePermissionTo($employeePermission);

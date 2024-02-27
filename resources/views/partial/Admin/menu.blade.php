@@ -523,12 +523,12 @@
             <!-- recruitment-->
 
             <!--Exits-->
-            @if (Gate::check('Manage Job') ||
+            <!-- @if (Gate::check('Manage Job') ||
                     Gate::check('Manage Job Application') ||
                     Gate::check('Manage Job OnBoard') ||
                     Gate::check('Manage Custom Question') ||
                     Gate::check('Manage Interview Schedule') ||
-                    Gate::check('Manage Career'))
+                    Gate::check('Manage Career')) -->
                 <li
                     class="dash-item dash-hasmenu  {{ Request::segment(1) == 'job' || Request::segment(1) == 'job-application' ? 'dash-trigger active' : '' }} ">
                     <a href="#!" class="dash-link"><span class="dash-micon">
@@ -536,25 +536,25 @@
                             class="dash-mtext">{{ __('Exits') }}</span><span class="dash-arrow"><i
                                 data-feather="chevron-right"></i></span></a>
                     <ul class="dash-submenu">
-                        @can('Manage Job')
+                        @can('Manage Resignation')
                         <li class="dash-item">
                             <a class="dash-link" href="{{ route('resignation.index') }}">{{ __('Resignation') }}</a>
                         </li>
                         @endcan
-                        @can('Manage Job')
+                        @can('Manage Termination')
                         <li class="dash-item">
                             <a class="dash-link" href="{{ route('termination.index') }}">{{ __('Termination') }}</a>
                         </li>
                         @endcan
-                        @can('Manage Job Application')
-                            <li class="dash-item {{ request()->is('job-application*') ? 'active' : '' }}">
+                        @can('Manage Retirement')
+                            <li class="dash-item {{ request()->is('retirement*') ? 'active' : '' }}">
                                 <a class="dash-link"
-                                    href="{{ route('job-application.index') }}">{{ __('Retirements') }}</a>
+                                    href="{{ route('retirement.index') }}">{{ __('Retirement') }}</a>
                             </li>
                         @endcan
                     </ul>
                 </li>
-            @endif
+            <!-- @endif -->
 
             <!--contract-->
             @can('Manage Contract')

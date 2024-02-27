@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Mail\TerminationSend;
 use App\Models\Termination;
 use App\Models\TerminationType;
+use App\Models\ExitProcedure;
 use App\Models\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,8 +42,9 @@ class TerminationController extends Controller
         {
             $employees        = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $terminationtypes = TerminationType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $exitprocedures=ExitProcedure::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
 
-            return view('termination.create', compact('employees', 'terminationtypes'));
+            return view('termination.create', compact('employees', 'terminationtypes','exitprocedures'));
         }
         else
         {
@@ -61,6 +63,7 @@ class TerminationController extends Controller
                                    'termination_type' => 'required',
                                    'notice_date' => 'required',
                                    'termination_date' => 'required|after_or_equal:notice_date',
+                                   'exitprocedure_id' => 'required',
                                ]
             );
 
@@ -73,6 +76,7 @@ class TerminationController extends Controller
 
             $termination                   = new Termination();
             $termination->employee_id      = $request->employee_id;
+            $termination->exitprocedure_id = $request->exitprocedure_id;
             $termination->termination_type = $request->termination_type;
             $termination->notice_date      = $request->notice_date;
             $termination->termination_date = $request->termination_date;
@@ -115,10 +119,12 @@ class TerminationController extends Controller
         {
             $employees        = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $terminationtypes = TerminationType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $exitprocedures=ExitProcedure::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+
             if($termination->created_by == \Auth::user()->creatorId())
             {
 
-                return view('termination.edit', compact('termination', 'employees', 'terminationtypes'));
+                return view('termination.edit', compact('termination', 'employees', 'terminationtypes','exitprocedures'));
             }
             else
             {
@@ -143,6 +149,7 @@ class TerminationController extends Controller
                                        'termination_type' => 'required',
                                        'notice_date' => 'required',
                                        'termination_date' => 'required',
+                                       'exitprocedure_id' => 'required',
                                    ]
                 );
 
@@ -155,6 +162,7 @@ class TerminationController extends Controller
 
 
                 $termination->employee_id      = $request->employee_id;
+                $termination->exitprocedure_id = $request->exitprocedure_id;
                 $termination->termination_type = $request->termination_type;
                 $termination->notice_date      = $request->notice_date;
                 $termination->termination_date = $request->termination_date;

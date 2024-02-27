@@ -105,6 +105,22 @@
             </a>
         <?php endif; ?>
 
+        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Retirement')): ?>
+            <a href="<?php echo e(route('retirementtype.index')); ?>"
+                class="list-group-item list-group-item-action border-0 <?php echo e(request()->is('retirementtype*') ? 'active' : ''); ?>"><?php echo e(__('Retirement Type')); ?>
+
+                <div class="float-end"><i class="ti ti-chevron-right"></i></div>
+            </a>
+        <?php endif; ?>
+
+        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Exit Procedure')): ?>
+            <a href="<?php echo e(route('exitprocedure.index')); ?>"
+                class="list-group-item list-group-item-action border-0 <?php echo e(request()->is('exitprocedure*') ? 'active' : ''); ?>"><?php echo e(__('Exit Procedures')); ?>
+
+                <div class="float-end"><i class="ti ti-chevron-right"></i></div>
+            </a>
+        <?php endif; ?>
+
         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Job Category')): ?>
             <a href="<?php echo e(route('job-category.index')); ?>"
                 class="list-group-item list-group-item-action border-0 <?php echo e(request()->is('job-category*') ? 'active' : ''); ?>"><?php echo e(__('Job Category')); ?>

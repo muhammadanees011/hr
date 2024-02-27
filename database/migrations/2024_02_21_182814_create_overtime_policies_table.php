@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('overtime_policies', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->timestamps();
         });
     }

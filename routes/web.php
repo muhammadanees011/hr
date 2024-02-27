@@ -83,6 +83,9 @@ use App\Http\Controllers\PayslipTypeController;
 use App\Http\Controllers\BonusController;
 use App\Http\Controllers\TaxRuleController;
 use App\Http\Controllers\ProvidentFundsPolicyController;
+use App\Http\Controllers\RetirementTypeController;
+use App\Http\Controllers\RetirementController;
+use App\Http\Controllers\ExitProcedureController;
 use App\Http\Controllers\OverTimePolicyController;
 use App\Http\Controllers\TemplateController;
 use Illuminate\Support\Facades\Artisan;
@@ -440,6 +443,12 @@ Route::group(['middleware' => ['verified']], function () {
     Route::resource('providentfundspolicy', ProvidentFundsPolicyController::class)->middleware(['auth','XSS',]);
     Route::resource('overtimepolicy', OverTimePolicyController::class)->middleware(['auth','XSS',]);
 
+    //exits
+    Route::resource('retirementtype', RetirementTypeController::class)->middleware(['auth','XSS',]);
+    Route::resource('retirement', RetirementController::class)->middleware(['auth','XSS',]);
+    Route::get('retirement/description/{id}', [RetirementController::class,'description'])->name('retirement.description')->middleware(['auth','XSS',]);
+
+    Route::resource('exitprocedure', ExitProcedureController::class)->middleware(['auth','XSS',]);
 
     Route::post('event/getdepartment', [EventController::class, 'getdepartment'])->name('event.getdepartment')->middleware(
         [

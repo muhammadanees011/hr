@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('retirements', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('exitprocedure_id');
             $table->integer('employee_id');
             $table->date('retirement_date');
             $table->date('notice_date');

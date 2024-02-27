@@ -15,12 +15,13 @@ class CreateResignationsTable extends Migration
     {
         Schema::create('resignations', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('exitprocedure_id');
             $table->integer('employee_id');
             $table->date('notice_date');
             $table->date('resignation_date');
             $table->string('description');
-            $table->integer('created_by');
             $table->enum('status', ['accepted', 'pending', 'rejected'])->default('pending');
+            $table->integer('created_by');
             $table->timestamps();
         });
     }

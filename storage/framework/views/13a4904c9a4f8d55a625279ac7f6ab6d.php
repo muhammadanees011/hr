@@ -35,6 +35,7 @@
                                 <th><?php echo e(__('Resignation Date')); ?></th>
                                 <th><?php echo e(__('Last Working Day')); ?></th>
                                 <th><?php echo e(__('Reason')); ?></th>
+                                <th><?php echo e(__('Exit Stage')); ?></th>
                                 <?php if(Gate::check('Edit Resignation') || Gate::check('Delete Resignation')): ?>
                                     <th width="200px"><?php echo e(__('Action')); ?></th>
                                 <?php endif; ?>
@@ -53,6 +54,7 @@
                                     <td><?php echo e(\Auth::user()->dateFormat($resignation->notice_date)); ?></td>
                                     <td><?php echo e(\Auth::user()->dateFormat($resignation->resignation_date)); ?></td>
                                     <td><?php echo e($resignation->description); ?></td>
+                                    <td><?php echo e($resignation->exitProcedure ? $resignation->exitProcedure->name :'Waiting For Exit Interview'); ?></td>
                                     <td class="Action">
                                         <?php if(Gate::check('Edit Resignation') || Gate::check('Delete Resignation')): ?>
                                             <span>

@@ -36,6 +36,7 @@
                                 <th>{{ __('Resignation Date') }}</th>
                                 <th>{{ __('Last Working Day') }}</th>
                                 <th>{{ __('Reason') }}</th>
+                                <th>{{ __('Exit Stage') }}</th>
                                 @if (Gate::check('Edit Resignation') || Gate::check('Delete Resignation'))
                                     <th width="200px">{{ __('Action') }}</th>
                                 @endif
@@ -53,6 +54,7 @@
                                     <td>{{ \Auth::user()->dateFormat($resignation->notice_date) }}</td>
                                     <td>{{ \Auth::user()->dateFormat($resignation->resignation_date) }}</td>
                                     <td>{{ $resignation->description }}</td>
+                                    <td>{{$resignation->exitProcedure ? $resignation->exitProcedure->name :'Waiting For Exit Interview'}}</td>
                                     <td class="Action">
                                         @if (Gate::check('Edit Resignation') || Gate::check('Delete Resignation'))
                                             <span>

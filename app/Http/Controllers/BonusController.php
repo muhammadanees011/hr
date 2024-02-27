@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bonus;
-use App\Models\Utility;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class BonusController extends Controller
@@ -84,12 +82,8 @@ class BonusController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Bonus $bonus)
     {
-        return view('bonus.edit', compact('bonus'));
         if (\Auth::user()->can('Manage Pay Slip')) {
             // if ($award->created_by == \Auth::user()->creatorId()) {
                 return view('bonus.edit', compact('bonus'));
@@ -101,17 +95,11 @@ class BonusController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Bonus $bonus)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Bonus $bonus)
     {
         if (\Auth::user()->can('Manage Pay Slip')) {

@@ -519,12 +519,12 @@
             <!-- recruitment-->
 
             <!--Exits-->
-            <?php if(Gate::check('Manage Job') ||
+            <!-- <?php if(Gate::check('Manage Job') ||
                     Gate::check('Manage Job Application') ||
                     Gate::check('Manage Job OnBoard') ||
                     Gate::check('Manage Custom Question') ||
                     Gate::check('Manage Interview Schedule') ||
-                    Gate::check('Manage Career')): ?>
+                    Gate::check('Manage Career')): ?> -->
                 <li
                     class="dash-item dash-hasmenu  <?php echo e(Request::segment(1) == 'job' || Request::segment(1) == 'job-application' ? 'dash-trigger active' : ''); ?> ">
                     <a href="#!" class="dash-link"><span class="dash-micon">
@@ -532,25 +532,25 @@
                             class="dash-mtext"><?php echo e(__('Exits')); ?></span><span class="dash-arrow"><i
                                 data-feather="chevron-right"></i></span></a>
                     <ul class="dash-submenu">
-                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Job')): ?>
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Resignation')): ?>
                         <li class="dash-item">
                             <a class="dash-link" href="<?php echo e(route('resignation.index')); ?>"><?php echo e(__('Resignation')); ?></a>
                         </li>
                         <?php endif; ?>
-                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Job')): ?>
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Termination')): ?>
                         <li class="dash-item">
                             <a class="dash-link" href="<?php echo e(route('termination.index')); ?>"><?php echo e(__('Termination')); ?></a>
                         </li>
                         <?php endif; ?>
-                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Job Application')): ?>
-                            <li class="dash-item <?php echo e(request()->is('job-application*') ? 'active' : ''); ?>">
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Retirement')): ?>
+                            <li class="dash-item <?php echo e(request()->is('retirement*') ? 'active' : ''); ?>">
                                 <a class="dash-link"
-                                    href="<?php echo e(route('job-application.index')); ?>"><?php echo e(__('Retirements')); ?></a>
+                                    href="<?php echo e(route('retirement.index')); ?>"><?php echo e(__('Retirement')); ?></a>
                             </li>
                         <?php endif; ?>
                     </ul>
                 </li>
-            <?php endif; ?>
+            <!-- <?php endif; ?> -->
 
             <!--contract-->
             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Contract')): ?>

@@ -38,6 +38,12 @@
             <?php echo e(Form::text('resignation_date', null, ['class' => 'form-control d_week current_date','autocomplete'=>'off' , 'required' => 'required'])); ?>
 
         </div>
+        <div class="form-group  col-lg-6 col-md-6">
+            <?php echo e(Form::label('exitprocedure_id', __('Exit Stage'), ['class' => 'col-form-label'])); ?>
+
+            <?php echo e(Form::select('exitprocedure_id', $exitprocedures, null, ['class' => 'form-control select2', 'required' => 'required'])); ?>
+
+        </div>
         <div class="form-group col-lg-12">
             <?php echo e(Form::label('description', __('Reason'), ['class' => 'col-form-label'])); ?>
 
