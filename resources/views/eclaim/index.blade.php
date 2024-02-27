@@ -28,18 +28,42 @@
                     <table class="table" id="pc-dt-simple">
                         <thead>
                             <tr>
+                                @if(\Auth::user()->type !="employee")
+                                    <th>{{ __('Employee ID') }}</th>
+                                    <th>{{ __('Name') }}</th>
+                                @endif
                                 <th>{{ __('Eclaim Type') }}</th>
                                 <th>{{ __('Amount') }}</th>
                                 <th>{{ __('Description') }}</th>
+                                <th>{{ __('Status') }}</th>
+                                <th>{{ __('Requested Date') }}</th>
                                 <th width="200px">{{ __('Action') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($eclaims as $eclaim)
                                 <tr>
+                                    @if(\Auth::user()->type !="employee")
+                                        <td>
+                                            <a href="#" class="btn btn-outline-primary">{{ \Auth::user()->employeeIdFormat($eclaim->employee_id) }}</a>
+                                        </td>
+                                        <th>{{ $eclaim->employee->name }}</th>
+                                    @endif
                                     <td>{{ $eclaim->claimType->title }}</td>
                                     <td>{{env('CURRENCY_SYMBOL') ?? '£'}}{{ number_format($eclaim->amount, 2) }}</td>
                                     <td>{{ $eclaim->description }}</td>
+                                    <td>
+                                        @if($eclaim->status=="pending")
+                                            <button class="btn bg-warning btn-sm">{{ucfirst($eclaim->status)}}</button>
+                                        @elseif($eclaim->status=="approved by HR")
+                                            <button class="btn bg-info btn-sm">{{ucfirst($eclaim->status)}}</button>
+                                        @elseif($eclaim->status=="approved")
+                                            <button class="btn bg-success btn-sm">{{ucfirst($eclaim->status)}}</button>
+                                        @else
+                                            <button class="btn bg-danger btn-sm">{{ucfirst($eclaim->status)}}</button>
+                                        @endif
+                                    </td>
+                                    <td>{{\Auth::user()->dateFormat($eclaim->created_at)}}</td>
                                     <td class="Action">
                                         <span>
                                             @if (\Auth::user()->type == 'employee' && $eclaim->status=="pending")
@@ -77,6 +101,27 @@
                                                         <i class="ti ti-eye text-white"></i>
                                                     </a>
                                                 </div>
+
+                                                @if(\Auth::user()->type=="hr" || \Auth::user()->type=="company")
+                                                    <div class="action-btn bg-danger ms-2">
+                                                        <a href="#" class="mx-3 btn btn-sm bg-danger  align-items-center"
+                                                            data-url="{{ URL::to('eclaim/' . $eclaim->id . '/reject') }}"
+                                                            data-ajax-popup="true" data-size="md" data-bs-toggle="tooltip" title=""
+                                                            data-title="{{ __('Reject Eclaim') }}"
+                                                            data-bs-original-title="{{ __('Reject') }}">
+                                                            <i class="ti ti-trash-off text-white"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="action-btn bg-success ms-2">
+                                                        <a href="#" class="mx-3 btn btn-sm bg-success  align-items-center"
+                                                            data-url="{{ URL::to('eclaim/' . $eclaim->id . '/approve') }}"
+                                                            data-ajax-popup="true" data-size="md" data-bs-toggle="tooltip" title=""
+                                                            data-title="{{ __('Eclaim Approval') }}"
+                                                            data-bs-original-title="{{ __('Approve') }}">
+                                                            <i class="ti ti-check text-white"></i>
+                                                        </a>
+                                                    </div>
+                                                @endif
                                             @endcan
                                             @can('Manage Eclaim')
                                                 <div class="action-btn bg-info ms-2">

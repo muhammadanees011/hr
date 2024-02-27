@@ -411,6 +411,15 @@ $lang = Auth::user()->lang;
                         <li class="dash-item {{ Request::segment(1) == 'holiday' ? ' active' : '' }}">
                             <a class="dash-link" href="{{ route('holiday.index') }}">{{ __('Holidays') }}</a>
                         </li>
+
+                        <!-- Enable Eclaim For HR-->
+                        @if (\Auth::user()->type == 'hr')
+                            <li class="dash-item {{ Request::segment(1) == 'eclaim' ? ' active' : '' }}">
+                                <a href="{{ route('eclaim.index') }}" class="dash-link">
+                                    {{ __('Manage Eclaim') }}
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </li>
                 @endif
@@ -533,7 +542,7 @@ $lang = Auth::user()->lang;
                 @endcan
 
             <!-- Eclaim Request-->
-            @if(\Auth::user()->type==="employee")
+            @if (\Auth::user()->type == 'employee')
                 <li class="dash-item">
                     <a href="{{ route('eclaim.index') }}" class="dash-link">
                         <span class="dash-micon"><i class="ti ti-file"></i></span><span

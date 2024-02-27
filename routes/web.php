@@ -1444,6 +1444,13 @@ Route::group(['middleware' => ['verified']], function () {
     Route::post('grammar/response', [AiTemplateController::class, 'grammarProcess'])->name('grammar.response')->middleware(['auth', 'XSS']);
 
     Route::resource('eclaim_type', EclaimTypeController::class)->middleware(['auth', 'XSS']);
+
+    // Eclaim Routes
+    Route::get('eclaim/{id}/reject', [EclaimController::class, 'rejectForm'])->middleware(['auth',  'XSS']);
+    Route::post('eclaim/save-reject-form/{id}', [EclaimController::class, 'saveRejectionForm'])->middleware(['auth',  'XSS']);
+
+    Route::get('eclaim/{id}/approve', [EclaimController::class, 'renderApprovalForm'])->middleware(['auth',  'XSS']);
+    Route::post('eclaim/save-approval-form/{id}', [EclaimController::class, 'saveApprovalForm'])->middleware(['auth',  'XSS']);
     Route::resource('eclaim', EclaimController::class)->middleware(['auth',  'XSS']);
     Route::post('eclaim/{id}/edit', [EclaimController::class, 'edit']);
     Route::get('eclaim/showHistory/{id}', [EclaimController::class, 'showHistory']);
