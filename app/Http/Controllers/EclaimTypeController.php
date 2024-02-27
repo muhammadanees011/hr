@@ -17,8 +17,7 @@ class EclaimTypeController extends Controller
             $eclaimTypes = EclaimType::where('created_by', '=', \Auth::user()->creatorId())->get();
             return view('eclaimTypes.index', compact('eclaimTypes'));
         } else {
-            // return redirect()->back()->with('error', __('Permission denied.'));
-            die('no edit access');
+            return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 

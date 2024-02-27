@@ -532,10 +532,23 @@ $lang = Auth::user()->lang;
                 </li>
                 @endcan
 
-                {{-- Email Template --}}
-                @if (\Auth::user()->type == 'company')
+            <!-- Eclaim Request-->
+            @if(\Auth::user()->type==="employee")
+                <li class="dash-item">
+                    <a href="{{ route('eclaim.index') }}" class="dash-link">
+                        <span class="dash-micon"><i class="ti ti-file"></i></span><span
+                            class="dash-mtext">{{ __('Manage Eclaim') }}
+                        </span>
+                    </a>
+                </li>
+            @endif
+
+            {{-- Email Template --}}
+            @if (\Auth::user()->type == 'company')
                 <li class="dash-item {{ Request::route()->getName() == 'email_template.show' || Request::segment(1) == 'email_template_lang' || Request::route()->getName() == 'manageemail.lang' ? 'active' : '' }}">
-                    <a href="{{ route('manage.email.language', [$emailTemplate->id, \Auth::user()->lang]) }}" class="dash-link"><span class="dash-micon"><i class="ti ti-template"></i></span><span class="dash-mtext">{{ __('Email Templates') }}</span></a>
+                    <a href="{{ route('manage.email.language', [$emailTemplate->id, \Auth::user()->lang]) }}"
+                        class="dash-link"><span class="dash-micon"><i class="ti ti-template"></i></span><span
+                            class="dash-mtext">{{ __('Email Templates') }}</span></a>
                 </li>
                 @endif
                 <!--company policy-->

@@ -40,6 +40,7 @@ use App\Http\Controllers\DepositController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DucumentUploadController;
+use App\Http\Controllers\EclaimController;
 use App\Http\Controllers\EclaimTypeController;
 use App\Http\Controllers\EmailTemplateController;
 use App\Http\Controllers\EventController;
@@ -1443,7 +1444,7 @@ Route::group(['middleware' => ['verified']], function () {
     Route::post('grammar/response', [AiTemplateController::class, 'grammarProcess'])->name('grammar.response')->middleware(['auth', 'XSS']);
 
     Route::resource('eclaim_type', EclaimTypeController::class)->middleware(['auth', 'XSS']);
-    Route::get('eclaim', [EclaimController::class, 'index'])->middleware(['auth',  'XSS']);
+    Route::resource('eclaim', EclaimController::class)->middleware(['auth',  'XSS']);
 
     // cache
     Route::get('/config-cache', function () {
