@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Utility;
+use Database\Seeders\EclaimSeeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
 
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
             $this->call(UsersTableSeeder::class);
             $this->call(NotificationSeeder::class);
             $this->call(AiTemplateSeeder::class);
+            $this->call(EclaimSeeder::class);
         // }else {
         //     Utility::languagecreate();
         // }

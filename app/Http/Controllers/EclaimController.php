@@ -66,7 +66,7 @@ class EclaimController extends Controller
                     return redirect()->back()->with('error', __($path['msg']));
                 }
             }
-            $history = ['time' => now(), 'message' => 'New Eclaim Requested Generated', 'username' => Auth::user()->name];
+            $history = ['time' => now(), 'comment' => 'New Eclaim Requested Generated', 'username' => Auth::user()->name];
             $eClaimType               = new Eclaim();
             $eClaimType->type_id      = $request->type_id;
             $eClaimType->amount       = $request->amount;
@@ -90,8 +90,8 @@ class EclaimController extends Controller
     public function edit(Eclaim $eclaim)
     {
         if (\Auth::user()->can('Edit Eclaim')) {
-            if ($eclaimType->created_by == \Auth::user()->creatorId()) {
-                return view('eclaim.edit', compact('eclaimType'));
+            if ($eclaim->created_by == \Auth::user()->creatorId()) {
+                return view('eclaim.edit', compact('eclaim'));
             } else {
                 return response()->json(['error' => __('Permission denied.')], 401);
             }
