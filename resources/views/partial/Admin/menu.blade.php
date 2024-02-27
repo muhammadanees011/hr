@@ -412,6 +412,7 @@
                     Gate::check('Manage Warning') ||
                     Gate::check('Manage Termination') ||
                     Gate::check('Manage Announcement') ||
+                    Gate::check('Manage Holiday') ||
                     Gate::check('Manage Holiday'))
                 <li
                     class="dash-item dash-hasmenu {{ Request::segment(1) == 'holiday' ? 'dash-trigger active' : '' }}">
@@ -453,6 +454,15 @@
                         <li class="dash-item {{ Request::segment(1) == 'holiday' ? ' active' : '' }}">
                             <a class="dash-link" href="{{ route('holiday.index') }}">{{ __('Holidays') }}</a>
                         </li>
+
+                        <!-- Enable Eclaim For HR-->
+                        @if (\Auth::user()->type == 'hr')
+                            <li class="dash-item {{ Request::segment(1) == 'eclaim' ? ' active' : '' }}">
+                                <a href="{{ route('eclaim.index') }}" class="dash-link">
+                                    {{ __('Manage Eclaim') }}
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </li>
             @endif
@@ -600,13 +610,13 @@
             @endcan
 
             <!-- Eclaim Request-->
-            {{-- @can('Manage Claim') --}}
+            @if (\Auth::user()->type == 'employee')
                 <li class="dash-item">
                     <a href="{{ route('eclaim.index') }}" class="dash-link"><span
                             class="dash-micon"><i class="ti ti-file"></i></span><span
                             class="dash-mtext">{{ __('Manage Eclaim') }}</span></a>
                 </li>
-            {{-- @endcan --}}
+            @endif
 
             {{-- Email Template --}}
             @if (\Auth::user()->type == 'company')

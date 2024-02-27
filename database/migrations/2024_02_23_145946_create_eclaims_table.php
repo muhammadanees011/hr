@@ -21,6 +21,8 @@ return new class extends Migration
             $table->enum('status', ['pending', 'approved by HR', 'approved', 'rejected'])->default('pending');
             $table->string('comment')->nullable();
             $table->string('reimbursement_receipt')->nullable();
+            $table->unsignedBigInteger('employee_id');
+            $table->foreign('employee_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('created_by');
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->json('history');

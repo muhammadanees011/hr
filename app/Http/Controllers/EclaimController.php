@@ -11,7 +11,16 @@ class EclaimController extends Controller
     public function index()
     {
         if (\Auth::user()->can('Manage Eclaim')) {
-            $eclaims = Eclaim::with('claimType')->where('created_by', '=', \Auth::user()->creatorId())->get();
+            $query = Eclaim::with('claimType', 'employee');
+            if(\Auth::user()->type=="hr"){
+                $query = $query->where('status', 'pending');
+            }
+
+            if(\Auth::user()->type=="finance"){
+                $query = $query->where('status', 'approved by HR');
+            }
+
+            $eclaims = $query->where('created_by', '=', \Auth::user()->creatorId())->get();
             return view('eclaim.index', compact('eclaims'));
         } else {
             return redirect()->back()->with('error', __('Permission denied.'));
@@ -130,15 +139,15 @@ class EclaimController extends Controller
                     return redirect()->back()->with('error', __($path['msg']));
                 }
             }
-            $history = ['time' => now(), 'comment' => 'Eclaim Update Requested', 'username' => Auth::user()->name];
-
-            $eClaimType               = Eclaim::where('id', $eclaim_id)->first();
+            $history = [['time' => now(), 'message' => 'New Eclaim Requested Generated', 'comment' => '', 'username' => \Auth::user()->name]];
+            $eClaimType               = new Eclaim();
             $eClaimType->type_id      = $request->type_id;
             $eClaimType->amount       = $request->amount;
             $eClaimType->description  = $request->description;
             $eClaimType->receipt      = !empty($request->receipt) ? $fileNameToStore : '';
             $eClaimType->created_by   = \Auth::user()->creatorId();
-            // $eClaimType->history = json_encode($history);
+            $eClaimType->employee_id   = \Auth::user()->id;
+            $eClaimType->history = json_encode($history);
             $eClaimType->save();
 
             // Redirect to the appropriate route after updating
@@ -168,10 +177,95 @@ class EclaimController extends Controller
         }
     }
 
-
-        public function showHistory(Eclaim $eclaim, $id)
-        {
-                $eclaim = Eclaim::find($id);
-                return view('eclaim.history', compact('eclaim'));
+    public function showHistory(Eclaim $eclaim, $id)
+    {
+            $eclaim = Eclaim::find($id);
+            return view('eclaim.history', compact('eclaim'));
+    }
+    
+    public function rejectForm(Request $request, $id){
+        if (\Auth::user()->can('Manage Eclaim')) {
+            $eclaim = Eclaim::find($id);
+            $url = "eclaim/save-reject-form/".$eclaim->id;
+            return view('eclaim.reject', compact('url'));
+        } else {
+            return response()->json(['error' => __('Permission denied.')], 401);
         }
+    }
+
+
+    public function saveRejectionForm(Request $request, $id){
+        if (\Auth::user()->can('Manage Eclaim')) {
+            $validator = \Validator::make(
+                $request->all(),
+                [
+                    'comment' => 'required',
+                ]
+            );
+            if ($validator->fails()) {
+                $messages = $validator->getMessageBag();
+
+                return redirect()->back()->with('error', $messages->first());
+            }
+
+            $eclaim = Eclaim::find($id);
+            $history = json_decode($eclaim->history, true);
+            $history[] = [
+                'time' => now(),
+                'username' => \Auth::user()->name,
+                'message' => \Auth::user()->type=="hr" ? "Eclaim Rejected By HR Manager" : "Eclaim Rejected By Finance Manager",
+                'comment' => $request->comment
+            ];
+
+            $eclaim->history = json_encode($history);
+            $eclaim->status = "rejected";
+            $eclaim->save();
+            return redirect()->route('eclaim.index')->with('success', __('Eclaim status successfully updated.'));
+        } else {
+            return redirect()->back()->with('error', __('Permission denied.'));
+        }
+    }
+
+
+    public function renderApprovalForm(Request $request, $id){
+        if (\Auth::user()->can('Manage Eclaim')) {
+            $eclaim = Eclaim::find($id);
+            $url = "eclaim/save-approval-form/".$eclaim->id;
+            return view('eclaim.comment-form', compact('url'));
+        } else {
+            return response()->json(['error' => __('Permission denied.')], 401);
+        }
+    }
+
+    public function saveApprovalForm(Request $request, $id){
+        if (\Auth::user()->can('Manage Eclaim')) {
+            $validator = \Validator::make(
+                $request->all(),
+                [
+                    'comment' => 'required',
+                ]
+            );
+            if ($validator->fails()) {
+                $messages = $validator->getMessageBag();
+
+                return redirect()->back()->with('error', $messages->first());
+            }
+
+            $eclaim = Eclaim::find($id);
+            $history = json_decode($eclaim->history, true);
+            $history[] = [
+                'time' => now(),
+                'username' => \Auth::user()->name,
+                'message' => \Auth::user()->type=="hr" ? "Eclaim Approved By HR Manager" : "Eclaim Approved By Finance Manager",
+                'comment' => $request->comment
+            ];
+
+            $eclaim->history = json_encode($history);
+            $eclaim->status = \Auth::user()->type=="hr" ? "approved by HR" : "approved";
+            $eclaim->save();
+            return redirect()->route('eclaim.index')->with('success', __('Eclaim status successfully updated.'));
+        } else {
+            return redirect()->back()->with('error', __('Permission denied.'));
+        }
+    }
 }
