@@ -36,6 +36,7 @@
                                 <th>{{ __('Notice Date') }}</th>
                                 <th>{{ __('Termination Date') }}</th>
                                 <th>{{ __('Description') }}</th>
+                                <th>{{ __('Exit Stage') }}</th>
                                 @if (Gate::check('Edit Termination') || Gate::check('Delete Termination'))
                                     <th width="200px">{{ __('Action') }}</th>
                                 @endif
@@ -56,7 +57,8 @@
                             <td>{{ \Auth::user()->dateFormat($termination->termination_date) }}</td>
                              <td>
                                 <a href="#" class="action-item" data-url="{{ route('termination.description',$termination->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Desciption')}}" data-title="{{__('Desciption')}}"><i class="icon_desc fa fa-comment"></i></a>
-                                    </td>
+                            </td>
+                            <td>{{ $termination->exitProcedure ? $termination->exitProcedure->name :'Waiting For Exit Interview' }}</td>
                                 <td class="Action">
                                     @if (Gate::check('Edit Termination') || Gate::check('Delete Termination'))
                                         <span>

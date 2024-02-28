@@ -15,11 +15,13 @@ class CreateTerminationsTable extends Migration
     {
         Schema::create('terminations', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('exitprocedure_id');
             $table->integer('employee_id');
             $table->date('notice_date');
             $table->date('termination_date');
             $table->string('termination_type');
             $table->longtext('description');
+            $table->string('exit_stage')->nullable();
             $table->integer('created_by');
             $table->timestamps();
         });

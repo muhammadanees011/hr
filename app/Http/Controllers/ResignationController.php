@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Mail\ResignationSend;
 use App\Models\Resignation;
+use App\Models\ExitProcedure;
 use App\Models\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,8 +40,9 @@ class ResignationController extends Controller
         if(\Auth::user()->can('Create Resignation'))
         {
             $employees = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $exitprocedures=ExitProcedure::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
 
-            return view('resignation.create', compact('employees'));
+            return view('resignation.create', compact('employees','exitprocedures'));
         }
         else
         {
@@ -58,6 +60,7 @@ class ResignationController extends Controller
 
                                    'notice_date' => 'required',
                                    'resignation_date' => 'required|after_or_equal:notice_date',
+                                   'exitprocedure_id' => 'required',
                                ]
             );
 
@@ -79,6 +82,7 @@ class ResignationController extends Controller
             {
                 $resignation->employee_id = $request->employee_id;
             }
+            $resignation->exitprocedure_id = $request->exitprocedure_id;
             $resignation->notice_date      = $request->notice_date;
             $resignation->resignation_date = $request->resignation_date;
             $resignation->description      = $request->description ;
@@ -130,10 +134,12 @@ class ResignationController extends Controller
         if(\Auth::user()->can('Edit Resignation'))
         {
             $employees = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $exitprocedures=ExitProcedure::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+
             if($resignation->created_by == \Auth::user()->creatorId())
             {
 
-                return view('resignation.edit', compact('resignation', 'employees'));
+                return view('resignation.edit', compact('resignation', 'employees','exitprocedures'));
             }
             else
             {
@@ -157,6 +163,7 @@ class ResignationController extends Controller
 
                                        'notice_date' => 'required',
                                        'resignation_date' => 'required',
+                                       'exitprocedure_id' => 'required',
                                    ]
                 );
 
@@ -172,7 +179,7 @@ class ResignationController extends Controller
                     $resignation->employee_id = $request->employee_id;
                 }
 
-
+                $resignation->exitprocedure_id = $request->exitprocedure_id;
                 $resignation->notice_date      = $request->notice_date;
                 $resignation->resignation_date = $request->resignation_date;
                 $resignation->description      = $request->description;

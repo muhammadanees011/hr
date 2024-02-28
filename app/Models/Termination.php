@@ -24,4 +24,9 @@ class Termination extends Model
     {
         return $this->hasOne('App\Models\Employee', 'id', 'employee_id');
     }
+
+    public function exitProcedure()
+    {
+        return $this->hasOne('App\Models\ExitProcedure', 'id', 'exitprocedure_id');
+    }
 }
