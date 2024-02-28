@@ -30,3 +30,4 @@ return new class extends Migration
         Schema::dropIfExists('pension_opt_ins');
     }
 };
+

@@ -81,6 +81,13 @@ use App\Http\Controllers\AllowanceOptionController;
 use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\NotificationTemplatesController;
 use App\Http\Controllers\PayslipTypeController;
+use App\Http\Controllers\BonusController;
+use App\Http\Controllers\TaxRuleController;
+use App\Http\Controllers\ProvidentFundsPolicyController;
+use App\Http\Controllers\RetirementTypeController;
+use App\Http\Controllers\RetirementController;
+use App\Http\Controllers\ExitProcedureController;
+use App\Http\Controllers\OverTimePolicyController;
 use App\Http\Controllers\PensionOptInController;
 use App\Http\Controllers\PensionOptoutController;
 use App\Http\Controllers\TemplateController;
@@ -421,76 +428,30 @@ Route::group(['middleware' => ['verified']], function () {
         ]
     );
 
-
     //payslip
+    Route::resource('paysliptype', PayslipTypeController::class)->middleware(['auth','XSS',]);
+    Route::resource('allowance', AllowanceController::class)->middleware(['auth','XSS',]);
+    Route::resource('commission', CommissionController::class)->middleware(['auth','XSS',]);
+    Route::resource('allowanceoption', AllowanceOptionController::class)->middleware(['auth','XSS',]);
+    Route::resource('loanoption', LoanOptionController::class)->middleware(['auth','XSS',]);
+    Route::resource('deductionoption', DeductionOptionController::class)->middleware(['auth','XSS',]);
+    Route::resource('loan', LoanController::class)->middleware(['auth','XSS',]);
+    Route::resource('saturationdeduction', SaturationDeductionController::class)->middleware(['auth','XSS',]);
+    Route::resource('overtime', OvertimeController::class)->middleware(['auth','XSS',]);
 
-    Route::resource('paysliptype', PayslipTypeController::class)->middleware(
-        [
-            'auth',
-            'XSS',
-        ]
-    );
+    //payroll-setup
+    Route::resource('bonus', BonusController::class)->middleware(['auth','XSS',]);
+    Route::get('delete-bonus/{id}', [BonusController::class,'deleteBonus'])->name('deleteBonus')->middleware(['auth','XSS',]);
+    Route::resource('taxrules', TaxRuleController::class)->middleware(['auth','XSS',]);
+    Route::resource('providentfundspolicy', ProvidentFundsPolicyController::class)->middleware(['auth','XSS',]);
+    Route::resource('overtimepolicy', OverTimePolicyController::class)->middleware(['auth','XSS',]);
 
+    //exits
+    Route::resource('retirementtype', RetirementTypeController::class)->middleware(['auth','XSS',]);
+    Route::resource('retirement', RetirementController::class)->middleware(['auth','XSS',]);
+    Route::get('retirement/description/{id}', [RetirementController::class,'description'])->name('retirement.description')->middleware(['auth','XSS',]);
 
-    Route::resource('allowance', AllowanceController::class)->middleware(
-        [
-            'auth',
-            'XSS',
-        ]
-    );
-
-
-    Route::resource('commission', CommissionController::class)->middleware(
-        [
-            'auth',
-            'XSS',
-        ]
-    );
-
-    Route::resource('allowanceoption', AllowanceOptionController::class)->middleware(
-        [
-            'auth',
-            'XSS',
-        ]
-    );
-
-    Route::resource('loanoption', LoanOptionController::class)->middleware(
-        [
-            'auth',
-            'XSS',
-        ]
-    );
-
-    Route::resource('deductionoption', DeductionOptionController::class)->middleware(
-        [
-            'auth',
-            'XSS',
-        ]
-    );
-
-
-    Route::resource('loan', LoanController::class)->middleware(
-        [
-            'auth',
-            'XSS',
-        ]
-    );
-
-
-    Route::resource('saturationdeduction', SaturationDeductionController::class)->middleware(
-        [
-            'auth',
-            'XSS',
-        ]
-    );
-
-
-    Route::resource('overtime', OvertimeController::class)->middleware(
-        [
-            'auth',
-            'XSS',
-        ]
-    );
+    Route::resource('exitprocedure', ExitProcedureController::class)->middleware(['auth','XSS',]);
 
     Route::post('event/getdepartment', [EventController::class, 'getdepartment'])->name('event.getdepartment')->middleware(
         [
