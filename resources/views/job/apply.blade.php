@@ -1,18 +1,18 @@
 @php
-    $logo = \App\Models\Utility::get_file('uploads/logo/');
-    $setting = App\Models\Utility::colorset();
-    $color = !empty($setting['theme_color']) ? $setting['theme_color'] : 'theme-3';
-    $SITE_RTL = \App\Models\Utility::getValByName('SITE_RTL');
-    $company_logo_light = Utility::getValByName('company_logo_light');
-    $company_favicon = Utility::getValByName('company_favicon');
-    
-    $getseo = App\Models\Utility::getSeoSetting();
-    $metatitle = isset($getseo['meta_title']) ? $getseo['meta_title'] : '';
-    $metadesc = isset($getseo['meta_description']) ? $getseo['meta_description'] : '';
-    $meta_image = \App\Models\Utility::get_file('uploads/meta/');
-    $meta_logo = isset($getseo['meta_image']) ? $getseo['meta_image'] : '';
-    $enable_cookie = \App\Models\Utility::getCookieSetting('enable_cookie');
-    
+$logo = \App\Models\Utility::get_file('uploads/logo/');
+$setting = App\Models\Utility::colorset();
+$color = !empty($setting['theme_color']) ? $setting['theme_color'] : 'theme-3';
+$SITE_RTL = \App\Models\Utility::getValByName('SITE_RTL');
+$company_logo_light = Utility::getValByName('company_logo_light');
+$company_favicon = Utility::getValByName('company_favicon');
+
+$getseo = App\Models\Utility::getSeoSetting();
+$metatitle = isset($getseo['meta_title']) ? $getseo['meta_title'] : '';
+$metadesc = isset($getseo['meta_description']) ? $getseo['meta_description'] : '';
+$meta_image = \App\Models\Utility::get_file('uploads/meta/');
+$meta_logo = isset($getseo['meta_image']) ? $getseo['meta_image'] : '';
+$enable_cookie = \App\Models\Utility::getCookieSetting('enable_cookie');
+
 @endphp
 
 <!DOCTYPE html>
@@ -25,7 +25,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>
         {{ !empty($companySettings['title_text']) ? $companySettings['title_text']->value : config('app.name', 'HRMGO') }}
-        - {{ __('Career') }}</title>
+        - {{ __('Career') }}
+    </title>
 
     <!-- SEO META -->
     <meta name="title" content="{{ $metatitle }}">
@@ -36,32 +37,28 @@
     <meta property="og:url" content="{{ env('APP_URL') }}">
     <meta property="og:title" content="{{ $metatitle }}">
     <meta property="og:description" content="{{ $metadesc }}">
-    <meta property="og:image"
-        content="{{ isset($meta_logo) && !empty(asset('storage/uploads/meta/' . $meta_logo)) ? asset('storage/uploads/meta/' . $meta_logo) : 'hrmgo.png' }}">
+    <meta property="og:image" content="{{ isset($meta_logo) && !empty(asset('storage/uploads/meta/' . $meta_logo)) ? asset('storage/uploads/meta/' . $meta_logo) : 'hrmgo.png' }}">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{{ env('APP_URL') }}">
     <meta property="twitter:title" content="{{ $metatitle }}">
     <meta property="twitter:description" content="{{ $metadesc }}">
-    <meta property="twitter:image"
-        content="{{ isset($meta_logo) && !empty(asset('storage/uploads/meta/' . $meta_logo)) ? asset('storage/uploads/meta/' . $meta_logo) : 'hrmgo.png' }}">
+    <meta property="twitter:image" content="{{ isset($meta_logo) && !empty(asset('storage/uploads/meta/' . $meta_logo)) ? asset('storage/uploads/meta/' . $meta_logo) : 'hrmgo.png' }}">
 
 
-    <link rel="icon"
-        href="{{ $logo . '/' . (isset($company_favicon) && !empty($company_favicon) ? $company_favicon .'?'.time() : 'favicon.png' .'?'.time()) }}"
-        type="image/x-icon" />
+    <link rel="icon" href="{{ $logo . '/' . (isset($company_favicon) && !empty($company_favicon) ? $company_favicon .'?'.time() : 'favicon.png' .'?'.time()) }}" type="image/x-icon" />
     <link rel="stylesheet" href="{{ asset('assets/fonts/tabler-icons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/site.css') }}" id="stylesheet">
     @if (isset($setting['dark_mode']) && $setting['dark_mode'] == 'on')
-        <link rel="stylesheet" href="{{ asset('assets/css/style-dark.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/style-dark.css') }}">
     @else
-        <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"id="main-style-link">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" id="main-style-link">
     @endif
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
     @if (isset($setting['dark_mode']) && $setting['dark_mode'] == 'on')
-        <link rel="stylesheet" href="{{ asset('assets/css/custom-dark.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/custom-dark.css') }}">
     @endif
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -73,8 +70,7 @@
             <nav class="navbar">
                 <div class="container">
                     <a class="navbar-brand" href="#">
-                        <img src="{{ $logo . '/' . (isset($company_logo_light) && !empty($company_logo_light) ? $company_logo_light .'?'.time() : 'logo-light.png' .'?'.time()) }}"
-                            alt="logo" style="width: 90px">
+                        <img src="{{ $logo . '/' . (isset($company_logo_light) && !empty($company_logo_light) ? $company_logo_light .'?'.time() : 'logo-light.png' .'?'.time()) }}" alt="logo" style="width: 90px">
 
                     </a>
                 </div>
@@ -100,12 +96,13 @@
                             <h2 class="h1 mb-3"> {{ $job->title }}</h2>
                             <div class="d-flex flex-wrap justify-content-center gap-1 mb-4">
                                 @foreach (explode(',', $job->skill) as $skill)
-                                    <span class="badge rounded p-2 bg-primary">{{ $skill }}</span>
+                                <span class="badge rounded p-2 bg-primary">{{ $skill }}</span>
                                 @endforeach
                             </div>
                             @if (!empty($job->branches) ? $job->branches->name : '')
-                                <p> <i class="ti ti-map-pin ms-1"></i>
-                                    {{ !empty($job->branches) ? $job->branches->name : '' }}</p>
+                            <p> <i class="ti ti-map-pin ms-1"></i>
+                                {{ !empty($job->branches) ? $job->branches->name : '' }}
+                            </p>
                             @endif
 
                         </div>
@@ -134,90 +131,79 @@
                                 </div>
                                 <div class="col-md-6">
                                     @if (!empty($job->applicant) && in_array('dob', explode(',', $job->applicant)))
-                                        <div class="form-group">
-                                            {!! Form::label('dob', __('Date of Birth'), ['class' => 'form-label']) !!}
-                                            {!! Form::date('dob', old('dob'), ['class' => 'form-control datepicker w-100', 'required' => 'required']) !!}
-                                        </div>
+                                    <div class="form-group">
+                                        {!! Form::label('dob', __('Date of Birth'), ['class' => 'form-label']) !!}
+                                        {!! Form::date('dob', old('dob'), ['class' => 'form-control datepicker w-100', 'required' => 'required']) !!}
+                                    </div>
                                     @endif
                                 </div>
                                 @if (!empty($job->applicant) && in_array('gender', explode(',', $job->applicant)))
-                                    <div class="form-group col-md-6 ">
-                                        {!! Form::label('gender', __('Gender'), ['class' => 'form-label']) !!}
-                                        <div class="d-flex radio-check">
-                                            <div class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" id="g_male" value="Male" name="gender"
-                                                    class="custom-control-input">
-                                                <label class="custom-control-label"
-                                                    for="g_male">{{ __('Male') }}</label>
-                                            </div>
-                                            <div class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" id="g_female" value="Female" name="gender"
-                                                    class="custom-control-input">
-                                                <label class="custom-control-label"
-                                                    for="g_female">{{ __('Female') }}</label>
-                                            </div>
+                                <div class="form-group col-md-6 ">
+                                    {!! Form::label('gender', __('Gender'), ['class' => 'form-label']) !!}
+                                    <div class="d-flex radio-check">
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="g_male" value="Male" name="gender" class="custom-control-input">
+                                            <label class="custom-control-label" for="g_male">{{ __('Male') }}</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="g_female" value="Female" name="gender" class="custom-control-input">
+                                            <label class="custom-control-label" for="g_female">{{ __('Female') }}</label>
                                         </div>
                                     </div>
+                                </div>
                                 @endif
 
                                 @if (!empty($job->applicant) && in_array('country', explode(',', $job->applicant)))
-                                    <div class="form-group col-md-6 ">
-                                        {{ Form::label('country', __('Country'), ['class' => 'form-label']) }}
-                                        {{ Form::text('country', null, ['class' => 'form-control', 'required' => 'required']) }}
-                                    </div>
-                                    <div class="form-group col-md-6 country">
-                                        {{ Form::label('state', __('State'), ['class' => 'form-label']) }}
-                                        {{ Form::text('state', null, ['class' => 'form-control', 'required' => 'required']) }}
-                                    </div>
-                                    <div class="form-group col-md-6 country">
-                                        {{ Form::label('city', __('City'), ['class' => 'form-label']) }}
-                                        {{ Form::text('city', null, ['class' => 'form-control', 'required' => 'required']) }}
-                                    </div>
+                                <div class="form-group col-md-6 ">
+                                    {{ Form::label('country', __('Country'), ['class' => 'form-label']) }}
+                                    {{ Form::text('country', null, ['class' => 'form-control', 'required' => 'required']) }}
+                                </div>
+                                <div class="form-group col-md-6 country">
+                                    {{ Form::label('state', __('State'), ['class' => 'form-label']) }}
+                                    {{ Form::text('state', null, ['class' => 'form-control', 'required' => 'required']) }}
+                                </div>
+                                <div class="form-group col-md-6 country">
+                                    {{ Form::label('city', __('City'), ['class' => 'form-label']) }}
+                                    {{ Form::text('city', null, ['class' => 'form-control', 'required' => 'required']) }}
+                                </div>
                                 @endif
 
                                 @if (!empty($job->visibility) && in_array('profile', explode(',', $job->visibility)))
-                                    <div class="form-group col-md-6 ">
-                                        {{ Form::label('profile', __('Profile'), ['class' => 'col-form-label']) }}
-                                        <input type="file" class="form-control" name="profile" id="profile"
-                                            data-filename="profile_create"
-                                            onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
-                                        <img id="blah" src="" class="mt-3" width="25%" />
-                                        <p class="profile_create"></p>
-                                    </div>
+                                <div class="form-group col-md-6 ">
+                                    {{ Form::label('profile', __('Profile'), ['class' => 'col-form-label']) }}
+                                    <input type="file" class="form-control" name="profile" id="profile" data-filename="profile_create" onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
+                                    <img id="blah" src="" class="mt-3" width="25%" />
+                                    <p class="profile_create"></p>
+                                </div>
                                 @endif
 
                                 @if (!empty($job->visibility) && in_array('resume', explode(',', $job->visibility)))
-                                    <div class="form-group col-md-6 ">
-                                        {{ Form::label('resume', __('CV / Resume'), ['class' => 'col-form-label']) }}
-                                        <input type="file" class="form-control" name="resume" id="resume"
-                                            data-filename="resume_create"
-                                            onchange="document.getElementById('blah1').src = window.URL.createObjectURL(this.files[0])"
-                                            required>
-                                        <img id="blah1" class="mt-3" src="" width="25%" />
-                                        <p class="resume_create"></p>
+                                <div class="form-group col-md-6 ">
+                                    {{ Form::label('resume', __('CV / Resume'), ['class' => 'col-form-label']) }}
+                                    <input type="file" class="form-control" name="resume" id="resume" data-filename="resume_create" onchange="document.getElementById('blah1').src = window.URL.createObjectURL(this.files[0])" required>
+                                    <img id="blah1" class="mt-3" src="" width="25%" />
+                                    <p class="resume_create"></p>
 
-                                    </div>
+                                </div>
                                 @endif
 
                                 @if (!empty($job->visibility) && in_array('letter', explode(',', $job->visibility)))
-                                    <div class="form-group col-md-12 ">
-                                        {{ Form::label('cover_letter', __('Cover Letter'), ['class' => 'form-label']) }}
-                                        {{ Form::textarea('cover_letter', null, ['class' => 'form-control', 'rows' => '3']) }}
-                                    </div>
+                                <div class="form-group col-md-12 ">
+                                    {{ Form::label('cover_letter', __('Cover Letter'), ['class' => 'form-label']) }}
+                                    {{ Form::textarea('cover_letter', null, ['class' => 'form-control', 'rows' => '3', 'id'=> 'coverLetter']) }}
+                                    <span id="wordCount"></span>
+                                </div>
                                 @endif
 
                                 @foreach ($questions as $question)
-                                    <div class="form-group col-md-12  question question_{{ $question->id }}">
-                                        {{ Form::label($question->question, $question->question, ['class' => 'form-label']) }}
-                                        <input type="text" class="form-control"
-                                            name="question[{{ $question->question }}]"
-                                            {{ $question->is_required == 'yes' ? 'required' : '' }}>
-                                    </div>
+                                <div class="form-group col-md-12  question question_{{ $question->id }}">
+                                    {{ Form::label($question->question, $question->question, ['class' => 'form-label']) }}
+                                    <input type="text" class="form-control" name="question[{{ $question->question }}]" {{ $question->is_required == 'yes' ? 'required' : '' }}>
+                                </div>
                                 @endforeach
                                 <div class="col-12">
                                     <div class="text-center mt-4">
-                                        <button type="submit"
-                                            class="btn btn-primary">{{ __('Submit your application') }}</button>
+                                        <button type="submit" class="btn btn-primary">{{ __('Submit your application') }}</button>
                                     </div>
                                 </div>
 
@@ -233,8 +219,7 @@
         <div id="liveToast" class="toast text-white  fade" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body"> </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                    aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
         </div>
     </div>
@@ -250,23 +235,46 @@
     <script src="{{ asset('js/demo.js') }} "></script>
     <script src="{{ asset('js/custom.js') }}"></script>
 
+    <script>
+        $(document).ready(function() {
+            // Set the maximum word limit
+            var maxWords = 100;
+
+            // Add input event listener to the textarea
+            $('#coverLetter').on('input', function() {
+                var words = $(this).val().match(/\S+/g) || [];
+                var wordCount = words.length;
+
+                // Display word count
+                $('#wordCount').text('Word Count: ' + wordCount + '/100');
+
+                // Disable textarea if it exceeds the word limit
+                if (wordCount > maxWords) {
+                    var truncatedWords = words.slice(0, maxWords);
+                    $(this).val(truncatedWords.join(' '));
+                    // $('#wordCount').text('Word Count: ' + maxWords);
+                }
+            });
+        });
+    </script>
+
 
 
     @if ($message = Session::get('success'))
-        <script>
-            show_toastr('{{ 'success' }}', '{!! $message !!}');
-        </script>
+    <script>
+        show_toastr('{{ 'success' }}', '{!! $message !!}');
+    </script>
     @endif
     @if ($message = Session::get('error'))
-        <script>
-            show_toastr('{{ 'error' }}', '{!! $message !!}');
-        </script>
+    <script>
+        show_toastr('{{ 'error' }}', '{!! $message !!}');
+    </script>
     @endif
 
     @stack('custom-scripts')
-@if($enable_cookie['enable_cookie'] == 'on')
+    @if($enable_cookie['enable_cookie'] == 'on')
     @include('layouts.cookie_consent')
-@endif
+    @endif
 
 </body>
 

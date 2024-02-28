@@ -1,76 +1,78 @@
-<!-- @extends('layouts.admin')
+@extends('layouts.admin')
 
 @section('page-title')
-  {{ __("Manage Branch") }}
+    {{ __('Manage Bonus Option') }}
 @endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __("Home") }}</a></li>
-    <li class="breadcrumb-item">{{ __("Bonus") }}</li>
+    <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
+    <li class="breadcrumb-item">{{ __('Bonus Type') }}</li>
 @endsection
 
 @section('action-button')
-    @can('Create Branch')
-        <a href="#" data-url="{{ route('branch.create') }}" data-ajax-popup="true"
-            data-title="{{ __('Create New Branch') }}" data-bs-toggle="tooltip" title="" class="btn btn-sm btn-primary"
-            data-bs-original-title="{{ __('Create') }}">
+    @can('Create Allowance Option')
+        <a href="#" data-url="{{ route('bonus.create') }}" data-ajax-popup="true"
+            data-title="{{ __('Create New Bonus Type') }}" data-bs-toggle="tooltip" title=""
+            class="btn btn-sm btn-primary" data-bs-original-title="{{ __('Create') }}">
             <i class="ti ti-plus"></i>
         </a>
     @endcan
 @endsection
 
+
 @section('content')
         <div class="col-3">
-            @include('layouts.hrm_setup')
+            @include('layouts.payroll_setup')
         </div>
         <div class="col-9">
             <div class="card">
                 <div class="card-body table-border-style">
 
                     <div class="table-responsive">
-                        <table class="table datatable">
-                            <thead>
+                    <table class="table" id="pc-dt-simple">
+                        <thead>
                             <tr>
-                                <th>{{__('Branch')}}</th>
-                                <th width="200px">{{__('Action')}}</th>
+                                <th>{{ __('Bonus Type') }}</th>
+                                <th width="200px">{{ __('Action') }}</th>
                             </tr>
-                            </thead>
-                            <tbody >
-                            @foreach ($branches as $branch)
+                        </thead>
+                        <tbody>
+                            @foreach ($bonuses as $bonus)
                                 <tr>
-                                    <td>{{ $branch->name }}</td>
+                                    <td>{{ $bonus->name }}</td>
                                     <td class="Action">
                                         <span>
-                                            @can('Edit Branch')
+                                            @can('Edit Pay Slip')
                                                 <div class="action-btn bg-info ms-2">
                                                     <a href="#" class="mx-3 btn btn-sm  align-items-center"
-                                                        data-url="{{ URL::to('branch/' . $branch->id . '/edit') }}"
+                                                        data-url="{{ URL::to('bonus/' . $bonus->id . '/edit') }}"
                                                         data-ajax-popup="true" data-size="md" data-bs-toggle="tooltip" title=""
-                                                        data-title="{{ __('Edit Branch') }}"
+                                                        data-title="{{ __('Edit Bonus Type') }}"
                                                         data-bs-original-title="{{ __('Edit') }}">
                                                         <i class="ti ti-pencil text-white"></i>
                                                     </a>
                                                 </div>
                                             @endcan
 
-                                            @can('Delete Branch')
+                                            @can('Manage Pay Slip')
                                                 <div class="action-btn bg-danger ms-2">
-                                                    {!! Form::open(['method' => 'DELETE', 'route' => ['branch.destroy', $branch->id], 'id' => 'delete-form-' . $branch->id]) !!}
-                                                    <a href="#" class="mx-3 btn btn-sm  align-items-center bs-pass-para"
+                                                    <!-- {!! Form::open(['method' => 'DELETE', 'route' => ['bonus.destroy', $bonus->id], 'id' => 'delete-form-' . $bonus->id]) !!} -->
+                                        
+                                                    <a href="{{ route('deleteBonus', $bonus->id) }}" class="mx-3 btn btn-sm  align-items-center bs-pass-para"
                                                         data-bs-toggle="tooltip" title="" data-bs-original-title="Delete"
                                                         aria-label="Delete"><i
                                                             class="ti ti-trash text-white text-white"></i></a>
-                                                    </form>
+                                                    <!-- </form> -->
                                                 </div>
                                             @endcan
                                         </span>
                                     </td>
                                 </tr>
                             @endforeach
-                            </tbody>
-                        </table>
+                        </tbody>
+                    </table>
                     </div>
                 </div>
             </div>
         </div>
-@endsection -->
+@endsection

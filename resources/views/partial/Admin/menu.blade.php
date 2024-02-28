@@ -180,10 +180,10 @@ $lang = Auth::user()->lang;
                         </li>
                         <li class="dash-item">
                             <a class="dash-link">{{ __('Pensions') }}</a>
-                        </li>
-                        <li class="dash-item">
-                            <a class="dash-link">{{ __('Payroll Setup') }}</a>
                         </li> -->
+                        <li class="dash-item">
+                            <a class="dash-link"  href="{{ route('bonus.index') }}">{{ __('Payroll Setup') }}</a>
+                        </li>
                     </ul>
                 </li>
                 @endif
@@ -394,9 +394,10 @@ $lang = Auth::user()->lang;
                         <li class="dash-item">
                             <a class="dash-link" href="{{ route('transfer.index') }}">{{ __('Transfer') }}</a>
                         </li>
-                        <li class="dash-item">
-                            <a class="dash-link" href="{{ route('resignation.index') }}">{{ __('Resignation') }}</a>
-                        </li>
+                        <!-- <li class="dash-item">
+                            <a class="dash-link"
+                                href="{{ route('resignation.index') }}">{{ __('Resignation') }}</a>
+                        </li> -->
                         <li class="dash-item">
                             <a class="dash-link" href="{{ route('travel.index') }}">{{ __('Trip') }}</a>
                         </li>
@@ -409,9 +410,10 @@ $lang = Auth::user()->lang;
                         <li class="dash-item">
                             <a class="dash-link" href="{{ route('warning.index') }}">{{ __('Warning') }}</a>
                         </li>
-                        <li class="dash-item">
-                            <a class="dash-link" href="{{ route('termination.index') }}">{{ __('Termination') }}</a>
-                        </li>
+                        <!-- <li class="dash-item">
+                            <a class="dash-link"
+                                href="{{ route('termination.index') }}">{{ __('Termination') }}</a>
+                        </li> -->
                         <li class="dash-item">
                             <a class="dash-link" href="{{ route('announcement.index') }}">{{ __('Announcement') }}</a>
                         </li>
@@ -485,6 +487,50 @@ $lang = Auth::user()->lang;
                         @endcan
                     </ul>
                 </li>
+            @endif
+            <!-- recruitment-->
+
+            <!--Exits-->
+            <!-- @if (Gate::check('Manage Job') ||
+                    Gate::check('Manage Job Application') ||
+                    Gate::check('Manage Job OnBoard') ||
+                    Gate::check('Manage Custom Question') ||
+                    Gate::check('Manage Interview Schedule') ||
+                    Gate::check('Manage Career')) -->
+                <li
+                    class="dash-item dash-hasmenu  {{ Request::segment(1) == 'job' || Request::segment(1) == 'job-application' ? 'dash-trigger active' : '' }} ">
+                    <a href="#!" class="dash-link"><span class="dash-micon">
+                    <i class="ti ti-archive"></i></span><span
+                            class="dash-mtext">{{ __('Exits') }}</span><span class="dash-arrow"><i
+                                data-feather="chevron-right"></i></span></a>
+                    <ul class="dash-submenu">
+                        @can('Manage Resignation')
+                        <li class="dash-item">
+                            <a class="dash-link" href="{{ route('resignation.index') }}">{{ __('Resignation') }}</a>
+                        </li>
+                        @endcan
+                        @can('Manage Termination')
+                        <li class="dash-item">
+                            <a class="dash-link" href="{{ route('termination.index') }}">{{ __('Termination') }}</a>
+                        </li>
+                        @endcan
+                        @can('Manage Retirement')
+                            <li class="dash-item {{ request()->is('retirement*') ? 'active' : '' }}">
+                                <a class="dash-link"
+                                    href="{{ route('retirement.index') }}">{{ __('Retirement') }}</a>
+                            </li>
+                        @endcan
+                    </ul>
+                </li>
+            <!-- @endif -->
+
+            <!--contract-->
+            @can('Manage Contract')
+                <li
+                    class="dash-item {{ Request::route()->getName() == 'contract.index' || Request::route()->getName() == 'contract.show' ? 'active' : '' }}">
+                    <a href="{{ route('contract.index') }}" class="dash-link"><span class="dash-micon"><i
+                                class="ti ti-device-floppy"></i></span><span
+                            class="dash-mtext">{{ __('Contracts') }}</span></a>
                 @endif
                 <!-- recruitment-->
                 <!--contract-->

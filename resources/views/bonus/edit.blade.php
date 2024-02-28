@@ -1,5 +1,5 @@
-<!-- 
-{{ Form::model($branch, ['route' => ['branch.update', $branch->id], 'method' => 'PUT']) }}
+
+{{ Form::model($bonus, ['route' => ['bonus.update', $bonus->id], 'method' => 'PUT']) }}
 <div class="modal-body">
 
     <div class="row">
@@ -8,7 +8,7 @@
                 {{ Form::label('name', __('Name'), ['class' => 'form-label']) }}
                 <div class="form-icon-user">
                   
-                    {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => __('Enter Branch Name')]) }}
+                    {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => __('Enter Bonus Type')]) }}
                 </div>
                 @error('name')
                     <span class="invalid-name" role="alert">
@@ -23,4 +23,4 @@
     <input type="button" value="Cancel" class="btn btn-light" data-bs-dismiss="modal">
     <input type="submit" value="{{ __('Update') }}" class="btn btn-primary">
 </div>
-{{ Form::close() }} -->
+{{ Form::close() }}
