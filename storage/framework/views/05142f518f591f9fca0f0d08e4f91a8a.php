@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('page-title'); ?>
     <?php echo e(__('Manage Termination')); ?>
 
@@ -37,6 +35,7 @@
                                 <th><?php echo e(__('Notice Date')); ?></th>
                                 <th><?php echo e(__('Termination Date')); ?></th>
                                 <th><?php echo e(__('Description')); ?></th>
+                                <th><?php echo e(__('Exit Stage')); ?></th>
                                 <?php if(Gate::check('Edit Termination') || Gate::check('Delete Termination')): ?>
                                     <th width="200px"><?php echo e(__('Action')); ?></th>
                                 <?php endif; ?>
@@ -58,7 +57,8 @@
                             <td><?php echo e(\Auth::user()->dateFormat($termination->termination_date)); ?></td>
                              <td>
                                 <a href="#" class="action-item" data-url="<?php echo e(route('termination.description',$termination->id)); ?>" data-ajax-popup="true" data-bs-toggle="tooltip" title="<?php echo e(__('Desciption')); ?>" data-title="<?php echo e(__('Desciption')); ?>"><i class="icon_desc fa fa-comment"></i></a>
-                                    </td>
+                            </td>
+                            <td><?php echo e($termination->exitProcedure ? $termination->exitProcedure->name :'Waiting For Exit Interview'); ?></td>
                                 <td class="Action">
                                     <?php if(Gate::check('Edit Termination') || Gate::check('Delete Termination')): ?>
                                         <span>

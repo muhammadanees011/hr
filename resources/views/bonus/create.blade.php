@@ -1,4 +1,4 @@
-<!-- {{ Form::open(['url' => 'branch', 'method' => 'post']) }}
+{{ Form::open(['url' => 'bonus', 'method' => 'post']) }}
 <div class="modal-body">
 
     <div class="row">
@@ -6,7 +6,7 @@
             <div class="form-group">
                 {{ Form::label('name', __('Name'), ['class' => 'form-label']) }}
                 <div class="form-icon-user">
-                    {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => __('Enter Branch Name')]) }}
+                    {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => __('Enter Bonus Name')]) }}
                 </div>
                 @error('name')
                     <span class="invalid-name" role="alert">
@@ -21,4 +21,4 @@
     <input type="button" value="Cancel" class="btn btn-light" data-bs-dismiss="modal">
     <input type="submit" value="{{ __('Create') }}" class="btn btn-primary">
 </div>
-{{ Form::close() }} -->
+{{ Form::close() }}
