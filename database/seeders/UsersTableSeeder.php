@@ -1857,7 +1857,6 @@ class UsersTableSeeder extends Seeder
                 "updated_at" => date('Y-m-d H:i:s'),
             ],
             [
-<<<<<<< HEAD
                 "name" => "Manage Retirement",
                 "guard_name" => "web",
                 "created_at" => date('Y-m-d H:i:s'),
@@ -1905,7 +1904,6 @@ class UsersTableSeeder extends Seeder
                 "guard_name" => "web",
                 "created_at" => date('Y-m-d H:i:s'),
                 "updated_at" => date('Y-m-d H:i:s'),
-=======
                 "name" => "Manage Pension",
                 "guard_name" => "web",
                 "created_at" => now(),
@@ -1976,7 +1974,6 @@ class UsersTableSeeder extends Seeder
                 "guard_name" => "web",
                 "created_at" => now(),
                 "updated_at" => now(),
->>>>>>> master
             ],
 
         ];
@@ -2292,7 +2289,6 @@ class UsersTableSeeder extends Seeder
             ["name" => "Create Zoom meeting"],
             ["name" => "Show Zoom meeting"],
             ["name" => "Delete Zoom meeting"],
-<<<<<<< HEAD
             ["name" => "Manage Retirement"],
             ["name" => "Create Retirement"],
             ["name" => "Edit Retirement"],
@@ -2301,7 +2297,6 @@ class UsersTableSeeder extends Seeder
             ["name" => "Create Exit Procedure"],
             ["name" => "Edit Exit Procedure"],
             ["name" => "Delete Exit Procedure"],
-=======
             ["name" => "Manage Pension"],
             ["name" => "Create Scheme"],
             ["name" => "Edit Scheme"],
@@ -2314,7 +2309,6 @@ class UsersTableSeeder extends Seeder
             ["name" => "Create Pension OptIn"],
             ["name" => "Edit Pension OptIn"],
             ["name" => "Delete Pension OptIn"],
->>>>>>> master
         ];
 
         $companyRole->givePermissionTo($companyPermissions);
@@ -2582,7 +2576,6 @@ class UsersTableSeeder extends Seeder
             ["name" => "Delete Contract Type"],
             ["name" => "Manage Zoom meeting"],
             ["name" => "Show Zoom meeting"],
-<<<<<<< HEAD
             ["name" => "Manage Retirement"],
             ["name" => "Create Retirement"],
             ["name" => "Edit Retirement"],
@@ -2591,7 +2584,6 @@ class UsersTableSeeder extends Seeder
             ["name" => "Create Exit Procedure"],
             ["name" => "Edit Exit Procedure"],
             ["name" => "Delete Exit Procedure"],
-=======
             ["name" => "Manage Pension"],
             ["name" => "Create Scheme"],
             ["name" => "Edit Scheme"],
@@ -2604,7 +2596,6 @@ class UsersTableSeeder extends Seeder
             ["name" => "Create Pension OptIn"],
             ["name" => "Edit Pension OptIn"],
             ["name" => "Delete Pension OptIn"],
->>>>>>> master
         ];
 
         $hrRole->givePermissionTo($hrPermission);

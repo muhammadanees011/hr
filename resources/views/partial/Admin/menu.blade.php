@@ -381,16 +381,10 @@ $lang = Auth::user()->lang;
                         <li class="dash-item">
                             <a class="dash-link" href="{{ route('transfer.index') }}">{{ __('Transfer') }}</a>
                         </li>
-<<<<<<< HEAD
                         <!-- <li class="dash-item">
                             <a class="dash-link"
                                 href="{{ route('resignation.index') }}">{{ __('Resignation') }}</a>
                         </li> -->
-=======
-                        <li class="dash-item">
-                            <a class="dash-link" href="{{ route('resignation.index') }}">{{ __('Resignation') }}</a>
-                        </li>
->>>>>>> master
                         <li class="dash-item">
                             <a class="dash-link" href="{{ route('travel.index') }}">{{ __('Trip') }}</a>
                         </li>
@@ -403,16 +397,10 @@ $lang = Auth::user()->lang;
                         <li class="dash-item">
                             <a class="dash-link" href="{{ route('warning.index') }}">{{ __('Warning') }}</a>
                         </li>
-<<<<<<< HEAD
                         <!-- <li class="dash-item">
                             <a class="dash-link"
                                 href="{{ route('termination.index') }}">{{ __('Termination') }}</a>
                         </li> -->
-=======
-                        <li class="dash-item">
-                            <a class="dash-link" href="{{ route('termination.index') }}">{{ __('Termination') }}</a>
-                        </li>
->>>>>>> master
                         <li class="dash-item">
                             <a class="dash-link" href="{{ route('announcement.index') }}">{{ __('Announcement') }}</a>
                         </li>
@@ -481,7 +469,6 @@ $lang = Auth::user()->lang;
                         @endcan
                     </ul>
                 </li>
-<<<<<<< HEAD
             @endif
             <!-- recruitment-->
 
@@ -526,14 +513,12 @@ $lang = Auth::user()->lang;
                     <a href="{{ route('contract.index') }}" class="dash-link"><span class="dash-micon"><i
                                 class="ti ti-device-floppy"></i></span><span
                             class="dash-mtext">{{ __('Contracts') }}</span></a>
-=======
                 @endif
                 <!-- recruitment-->
                 <!--contract-->
                 @can('Manage Contract')
                 <li class="dash-item {{ Request::route()->getName() == 'contract.index' || Request::route()->getName() == 'contract.show' ? 'active' : '' }}">
                     <a href="{{ route('contract.index') }}" class="dash-link"><span class="dash-micon"><i class="ti ti-device-floppy"></i></span><span class="dash-mtext">{{ __('Contracts') }}</span></a>
->>>>>>> master
                 </li>
                 @endcan
 

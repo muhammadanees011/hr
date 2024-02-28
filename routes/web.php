@@ -81,7 +81,6 @@ use App\Http\Controllers\AllowanceOptionController;
 use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\NotificationTemplatesController;
 use App\Http\Controllers\PayslipTypeController;
-<<<<<<< HEAD
 use App\Http\Controllers\BonusController;
 use App\Http\Controllers\TaxRuleController;
 use App\Http\Controllers\ProvidentFundsPolicyController;
@@ -89,10 +88,8 @@ use App\Http\Controllers\RetirementTypeController;
 use App\Http\Controllers\RetirementController;
 use App\Http\Controllers\ExitProcedureController;
 use App\Http\Controllers\OverTimePolicyController;
-=======
 use App\Http\Controllers\PensionOptInController;
 use App\Http\Controllers\PensionOptoutController;
->>>>>>> master
 use App\Http\Controllers\TemplateController;
 use Illuminate\Support\Facades\Artisan;
 
