@@ -1416,6 +1416,7 @@ Route::group(['middleware' => ['verified']], function () {
     Route::resource('eclaim', EclaimController::class)->middleware(['auth',  'XSS']);
     Route::post('eclaim/{id}/edit', [EclaimController::class, 'edit']);
     Route::get('eclaim/showHistory/{id}', [EclaimController::class, 'showHistory']);
+    Route::get('eclaim/showReceipt/{id}', [EclaimController::class, 'showReceipt']);
 
     // cache
     Route::get('/config-cache', function () {

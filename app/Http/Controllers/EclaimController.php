@@ -56,10 +56,16 @@ class EclaimController extends Controller
         }
 
         if ($request->hasFile('receipt')) {
+            // $file = $request->file('receipt');
+            // $fileName = time() . '_' . $file->getClientOriginalName();
+            // $filePath = 'uploads/eclaimreceipts/' . $fileName;
+            // // $file->storeAs('public', $filePath);
+            // $file->store('toPath', ['disk' => 'public']);
+            
             $file = $request->file('receipt');
             $fileName = time() . '_' . $file->getClientOriginalName();
-            $filePath = 'public/uploads/eclaimreceipts/' . $fileName;
-            $file->storeAs('public', $filePath);
+            $path = public_path() . '/eclaimreceipts';
+            $file->move($path,$fileName);
         }
         
 
@@ -110,7 +116,6 @@ class EclaimController extends Controller
                 [
                     'type_id' => 'required',
                     'amount' => 'required',
-                    'receipt' => 'required',
                     'description' => 'required',
                 ]
             );
@@ -120,35 +125,27 @@ class EclaimController extends Controller
                 return redirect()->back()->with('error', $messages->first());
             }
 
-            if (!empty($request->receipt)) {
-
-                $filenameWithExt = $request->file('receipt')->getClientOriginalName();
-                $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                $extension       = $request->file('receipt')->getClientOriginalExtension();
-                $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-                $dir = 'uploads/eclaimreceipts/';
-                $image_path = $dir . $fileNameToStore;
-                if (\File::exists($image_path)) {
-                    \File::delete($image_path);
-                }
-                $url = '';
-                $path = \Utility::upload_file($request, 'receipt', $fileNameToStore, $dir, []);
-                if ($path['flag'] == 1) {
-                    $url = $path['url'];
-                } else {
-                    return redirect()->back()->with('error', __($path['msg']));
-                }
+            if ($request->hasFile('receipt')) {
+                    // $file = $request->file('receipt');
+                    // $fileName = time() . '_' . $file->getClientOriginalName();
+                    // $filePath = 'uploads/eclaimreceipts/' . $fileName;
+                    // // $file->storeAs('public', $filePath);
+                    // $file->store('toPath', ['disk' => 'public']);
+                    
+                    $file = $request->file('receipt');
+                    $fileName = time() . '_' . $file->getClientOriginalName();
+                    $path = public_path() . '/eclaimreceipts';
+                    $file->move($path,$fileName);
             }
             $history = [['time' => now(), 'message' => 'New Eclaim Requested Generated', 'comment' => '', 'username' => \Auth::user()->name]];
-            $eClaimType               = new Eclaim();
-            $eClaimType->type_id      = $request->type_id;
-            $eClaimType->amount       = $request->amount;
-            $eClaimType->description  = $request->description;
-            $eClaimType->receipt      = !empty($request->receipt) ? $fileNameToStore : '';
-            $eClaimType->created_by   = \Auth::user()->creatorId();
-            $eClaimType->employee_id   = \Auth::user()->id;
+            $eClaimType               = Eclaim::find($eclaim_id);
+            $eClaimType->type_id = $request->type_id;
+            $eClaimType->amount = $request->amount;
+            $eClaimType->description = $request->description;
+            $eClaimType->receipt = $fileName ?? $eClaimType->receipt; // Assigning the filename if it exists, otherwise empty string
+            $eClaimType->created_by = \Auth::user()->creatorId();
             $eClaimType->history = json_encode($history);
-            $eClaimType->save();
+            $eClaimType->update();
 
             // Redirect to the appropriate route after updating
             return redirect()->route('eclaim.index')->with('success', __('Eclaim successfully updated.'));
@@ -181,6 +178,11 @@ class EclaimController extends Controller
     {
             $eclaim = Eclaim::find($id);
             return view('eclaim.history', compact('eclaim'));
+    }
+    public function showReceipt(Eclaim $eclaim, $id)
+    {
+            $eclaim = Eclaim::find($id);
+            return view('eclaim.receipt', compact('eclaim'));
     }
     
     public function rejectForm(Request $request, $id){

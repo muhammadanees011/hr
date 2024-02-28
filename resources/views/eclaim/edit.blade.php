@@ -25,22 +25,21 @@
         </div>
 
         <div class="col-lg-12 col-md-12 col-sm-12">
-    <div class="form-group">
-        {{ Form::label('receipt', __('Receipt'), ['class' => 'col-form-label']) }}
-        <div class="choose-files">
-            <label for="receipt">
-                <div class="bg-primary receipt"> <i class="ti ti-upload px-1"></i>{{ __('Choose file here') }}</div>
-                {{ Form::file('receipt', ['class' => 'form-control file', 'onchange' => 'document.getElementById("blah").src = window.URL.createObjectURL(this.files[0])']) }}
-                @if($eclaim->receipt)
-                    <img id="blah" class="mt-3" width="100" src="{{ asset('uploads/eclaimreceipts/'.$eclaim->receipt) }}" />
-                @else
-                    <img id="blah" class="mt-3" width="100" src="{{ asset('placeholder-image.jpg') }}" />
-                @endif
-            </label>
+            <div class="form-group">
+                {{ Form::label('receipt', __('Receipt'), ['class' => 'col-form-label']) }}
+                <div class="choose-files">
+                    <label for="receipt">
+                        <div class="bg-primary receipt"> <i class="ti ti-upload px-1"></i>{{ __('Choose file here') }}</div>
+                        {{ Form::file('receipt', ['class' => 'form-control file', 'onchange' => 'document.getElementById("blah").src = window.URL.createObjectURL(this.files[0])']) }}
+                        @if($eclaim->receipt && !request()->hasFile('receipt'))
+                            <img id="blah" class="mt-3" width="100" src="{{ asset('eclaimreceipts/'.$eclaim->receipt) }}" />
+                        @else
+                            <img id="blah" class="mt-3" width="100" src="{{ asset('placeholder-image.jpg') }}" />
+                        @endif
+                    </label>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-
 
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="form-group">
