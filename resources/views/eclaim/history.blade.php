@@ -1,27 +1,30 @@
 <div class="modal-body">
-    <!-- Display Eclaim history -->
     <div>
-        @if(!empty($eclaim->history))
-            @php
-                $history = json_decode($eclaim->history, true);
-            @endphp
-        <h4>{{ $history['username'] ?? '' }}</h4>
-            <table class="table">
-                <thead>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>User Name</th>
+                    <th>Time</th>
+                    <th>Message</th>
+                    <th>Comment</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if(!empty($history))
+                    @foreach($history as $row)
+                        <tr>
+                            <td>{{$row['username']}}</td>
+                            <td>{{ !empty($row['time']) ? \Auth::user()->dateFormat($row['time']):'' }}</td>
+                            <td>{{ $row['message'] ?? '' }}</td>
+                            <td>{{ $row['comment'] ?? '' }}</td>
+                        </tr>
+                    @endforeach
+                @else
                     <tr>
-                        <th>Time</th>
-                        <th>Comment</th>
+                        <td colspan="4"><strong>No Record Found!</strong></td>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ $history['time'] ?? '' }}</td>
-                        <td>{{ $history['comment'] ?? '' }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        @else
-            <p>No history available</p>
-        @endif
+                @endif
+            </tbody>
+        </table>
     </div>
 </div>

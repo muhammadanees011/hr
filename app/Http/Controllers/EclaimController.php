@@ -16,11 +16,16 @@ class EclaimController extends Controller
                 $query = $query->where('status', 'pending');
             }
 
-            if(\Auth::user()->type=="finance"){
+            if(\Auth::user()->type=="finance" || \Auth::user()->type=="company"){
                 $query = $query->where('status', 'approved by HR');
             }
 
-            $eclaims = $query->where('created_by', '=', \Auth::user()->creatorId())->get();
+            if(\Auth::user()->type=="employee"){
+                $query = $query->where('employee_id', '=', \Auth::user()->id);
+            }else {
+                $query = $query->where('created_by', '=', \Auth::user()->creatorId());
+            }
+            $eclaims = $query->get();
             return view('eclaim.index', compact('eclaims'));
         } else {
             return redirect()->back()->with('error', __('Permission denied.'));
@@ -56,12 +61,6 @@ class EclaimController extends Controller
         }
 
         if ($request->hasFile('receipt')) {
-            // $file = $request->file('receipt');
-            // $fileName = time() . '_' . $file->getClientOriginalName();
-            // $filePath = 'uploads/eclaimreceipts/' . $fileName;
-            // // $file->storeAs('public', $filePath);
-            // $file->store('toPath', ['disk' => 'public']);
-            
             $file = $request->file('receipt');
             $fileName = time() . '_' . $file->getClientOriginalName();
             $path = public_path() . '/eclaimreceipts';
@@ -69,7 +68,7 @@ class EclaimController extends Controller
         }
         
 
-        $history = ['time' => now(), 'comment' => 'New Eclaim Requested Generated', 'username' => Auth::user()->name];
+        $history = [['time' => now(), 'message' => 'New Eclaim Requested Generated', 'username' => Auth::user()->name]];
         $eClaimType = new Eclaim();
         $eClaimType->type_id = $request->type_id;
         $eClaimType->amount = $request->amount;
@@ -77,6 +76,7 @@ class EclaimController extends Controller
         $eClaimType->receipt = $fileName ?? ''; // Assigning the filename if it exists, otherwise empty string
         $eClaimType->created_by = \Auth::user()->creatorId();
         $eClaimType->history = json_encode($history);
+        $eClaimType->employee_id =  \Auth::user()->id;
         $eClaimType->save();
 
         return redirect()->route('eclaim.index')->with('success', __('Eclaim successfully created.'));
@@ -94,13 +94,13 @@ class EclaimController extends Controller
     public function edit($id)
     {
         if (\Auth::user()->can('Edit Eclaim')) {
-            // if ($eclaim->created_by == \Auth::user()->creatorId()) {
+            if ($eclaim->created_by == \Auth::user()->id) {
                 $eclaim = Eclaim::where('id', $id)->first();
                 $eClaimTypes = EclaimType::get()->pluck('title', 'id');
                 return view('eclaim.edit', compact('eclaim', 'eClaimTypes'));
-            // } else {
-            //     return response()->json(['error' => __('Permission denied.')], 401);
-            // }
+            } else {
+                return response()->json(['error' => __('Permission denied.')], 401);
+            }
         } else {
             return response()->json(['error' => __('Permission denied.')], 401);
         }
@@ -109,7 +109,7 @@ class EclaimController extends Controller
     public function update(Request $request, Eclaim $eclaim)
 {
     if (\Auth::user()->can('Edit Eclaim')) {
-        if ($eclaim->created_by == \Auth::user()->creatorId()) {
+        if ($eclaim->created_by == \Auth::user()->id) {
             $eclaim_id =  $eclaim->id;
             $validator = \Validator::make(
                 $request->all(),
@@ -121,29 +121,22 @@ class EclaimController extends Controller
             );
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
-
                 return redirect()->back()->with('error', $messages->first());
             }
 
-            if ($request->hasFile('receipt')) {
-                    // $file = $request->file('receipt');
-                    // $fileName = time() . '_' . $file->getClientOriginalName();
-                    // $filePath = 'uploads/eclaimreceipts/' . $fileName;
-                    // // $file->storeAs('public', $filePath);
-                    // $file->store('toPath', ['disk' => 'public']);
-                    
+            if ($request->hasFile('receipt')) {  
                     $file = $request->file('receipt');
                     $fileName = time() . '_' . $file->getClientOriginalName();
                     $path = public_path() . '/eclaimreceipts';
                     $file->move($path,$fileName);
             }
+
             $history = [['time' => now(), 'message' => 'New Eclaim Requested Generated', 'comment' => '', 'username' => \Auth::user()->name]];
             $eClaimType               = Eclaim::find($eclaim_id);
             $eClaimType->type_id = $request->type_id;
             $eClaimType->amount = $request->amount;
             $eClaimType->description = $request->description;
-            $eClaimType->receipt = $fileName ?? $eClaimType->receipt; // Assigning the filename if it exists, otherwise empty string
-            $eClaimType->created_by = \Auth::user()->creatorId();
+            $eClaimType->receipt = $fileName ?? $eClaimType->receipt;
             $eClaimType->history = json_encode($history);
             $eClaimType->update();
 
@@ -161,14 +154,14 @@ class EclaimController extends Controller
     public function destroy(Eclaim $eclaim)
     {
         if (\Auth::user()->can('Delete Eclaim')) {
-            // if ($eclaimType->created_by == \Auth::user()->creatorId()) {
+            if ($eclaimType->created_by == \Auth::user()->id) {
                 $id =  $eclaim->id;
                 $eclaim = Eclaim::find($id);
                 $eclaim->delete();
                 return redirect()->route('eclaim.index')->with('success', __('EclaimType successfully deleted.'));
-            // } else {
-            //     return redirect()->back()->with('error', __('Permission denied.'));
-            // }
+            } else {
+                return redirect()->back()->with('error', __('Permission denied.'));
+            }
         } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
@@ -177,7 +170,8 @@ class EclaimController extends Controller
     public function showHistory(Eclaim $eclaim, $id)
     {
             $eclaim = Eclaim::find($id);
-            return view('eclaim.history', compact('eclaim'));
+            $history = !empty($eclaim['history']) ? json_decode($eclaim['history'], true) : [];
+            return view('eclaim.history', compact('history'));
     }
     public function showReceipt(Eclaim $eclaim, $id)
     {

@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\PensionSchemeController;
 use App\Models\Employee;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AwardController;
 use App\Http\Controllers\HomeController;

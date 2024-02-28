@@ -127,7 +127,7 @@
                                                 <div class="action-btn bg-info ms-2">
                                                     <a href="#" class="mx-3 btn btn-sm bg-info  align-items-center"
                                                         data-url="{{ URL::to('eclaim/showHistory/' . $eclaim->id ) }}"
-                                                        data-ajax-popup="true" data-size="md" data-bs-toggle="tooltip" title=""
+                                                        data-ajax-popup="true" data-size="lg" data-bs-toggle="tooltip" title=""
                                                         data-title="{{ __('Eclaim History') }}"
                                                         data-bs-original-title="{{ __('View History') }}">
                                                         <i class="ti ti-eye text-white"></i>

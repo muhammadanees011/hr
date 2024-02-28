@@ -335,16 +335,12 @@ $lang = Auth::user()->lang;
                         @endcan
                         @can('Manage Eclaim')
                             <li class="dash-item">
-                                <a class="dash-link"
-                                    href="{{ route('transferbalance.index') }}">{{ __('Transfer Balance') }}</a>
+                                <a href="{{ route('eclaim.index') }}" class="dash-link">
+                                    {{ __('Manage Eclaim') }}
+                                </a>
                             </li>
                         @endcan
-                        @can('Manage Eclaim')
-                            <li class="dash-item">
-                                <a class="dash-link"
-                                    href="{{ route('transferbalance.index') }}">{{ __('Transfer Balance') }}</a>
-                            </li>
-                        @endcan
+
                     </ul>
                 </li>
                 @endif
@@ -422,15 +418,11 @@ $lang = Auth::user()->lang;
                         <li class="dash-item {{ Request::segment(1) == 'holiday' ? ' active' : '' }}">
                             <a class="dash-link" href="{{ route('holiday.index') }}">{{ __('Holidays') }}</a>
                         </li>
-
-                        <!-- Enable Eclaim For HR-->
-                        @if (\Auth::user()->type == 'hr')
-                            <li class="dash-item {{ Request::segment(1) == 'eclaim' ? ' active' : '' }}">
-                                <a href="{{ route('eclaim.index') }}" class="dash-link">
-                                    {{ __('Manage Eclaim') }}
-                                </a>
-                            </li>
-                        @endif
+                        <li class="dash-item {{ Request::segment(1) == 'eclaim' ? ' active' : '' }}">
+                            <a href="{{ route('eclaim.index') }}" class="dash-link">
+                                {{ __('Manage Eclaim') }}
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 @endif
