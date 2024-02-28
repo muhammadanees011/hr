@@ -162,5 +162,12 @@
             </a>
         @endcan
 
+        @can('Manage EclaimType')
+            <a href="{{ route('eclaim_type.index') }}"
+                class="list-group-item list-group-item-action border-0 {{ request()->is('eclaim_type*') ? 'active' : '' }}">{{ __('Eclaim Type') }}
+                <div class="float-end"><i class="ti ti-chevron-right"></i></div>
+            </a>
+        @endcan
+
     </div>
 </div>

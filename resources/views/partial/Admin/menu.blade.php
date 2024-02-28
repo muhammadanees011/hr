@@ -333,6 +333,14 @@ $lang = Auth::user()->lang;
                             <a class="dash-link" href="{{ route('transferbalance.index') }}">{{ __('Transfer Balance') }}</a>
                         </li>
                         @endcan
+                        @can('Manage Eclaim')
+                            <li class="dash-item">
+                                <a href="{{ route('eclaim.index') }}" class="dash-link">
+                                    {{ __('Manage Eclaim') }}
+                                </a>
+                            </li>
+                        @endcan
+
                     </ul>
                 </li>
                 @endif
@@ -361,19 +369,24 @@ $lang = Auth::user()->lang;
                 <!-- tranning-->
 
 
-                <!-- HR-->
-                @if (Gate::check('Manage Awards') ||
-                Gate::check('Manage Transfer') ||
-                Gate::check('Manage Resignation') ||
-                Gate::check('Manage Travels') ||
-                Gate::check('Manage Promotion') ||
-                Gate::check('Manage Complaint') ||
-                Gate::check('Manage Warning') ||
-                Gate::check('Manage Termination') ||
-                Gate::check('Manage Announcement') ||
-                Gate::check('Manage Holiday'))
-                <li class="dash-item dash-hasmenu {{ Request::segment(1) == 'holiday' ? 'dash-trigger active' : '' }}">
-                    <a href="#!" class="dash-link"><span class="dash-micon"><i class="ti ti-user-plus"></i></span><span class="dash-mtext">{{ __('HR Admin Setup') }}</span><span class="dash-arrow"><i data-feather="chevron-right"></i></span></a>
+            <!-- HR-->
+            @if (Gate::check('Manage Awards') ||
+                    Gate::check('Manage Transfer') ||
+                    Gate::check('Manage Resignation') ||
+                    Gate::check('Manage Travels') ||
+                    Gate::check('Manage Promotion') ||
+                    Gate::check('Manage Complaint') ||
+                    Gate::check('Manage Warning') ||
+                    Gate::check('Manage Termination') ||
+                    Gate::check('Manage Announcement') ||
+                    Gate::check('Manage Holiday') ||
+                    Gate::check('Manage Holiday'))
+                <li
+                    class="dash-item dash-hasmenu {{ Request::segment(1) == 'holiday' ? 'dash-trigger active' : '' }}">
+                    <a href="#!" class="dash-link"><span class="dash-micon"><i
+                                class="ti ti-user-plus"></i></span><span
+                            class="dash-mtext">{{ __('HR Admin Setup') }}</span><span class="dash-arrow"><i
+                                data-feather="chevron-right"></i></span></a>
                     <ul class="dash-submenu">
                         <li class="dash-item {{ Request::segment(1) == 'award' ? 'active' : '' }}">
                             <a class="dash-link" href="{{ route('award.index') }}">{{ __('Award') }}</a>
@@ -406,6 +419,11 @@ $lang = Auth::user()->lang;
                         </li>
                         <li class="dash-item {{ Request::segment(1) == 'holiday' ? ' active' : '' }}">
                             <a class="dash-link" href="{{ route('holiday.index') }}">{{ __('Holidays') }}</a>
+                        </li>
+                        <li class="dash-item {{ Request::segment(1) == 'eclaim' ? ' active' : '' }}">
+                            <a href="{{ route('eclaim.index') }}" class="dash-link">
+                                {{ __('Manage Eclaim') }}
+                            </a>
                         </li>
                     </ul>
                 </li>
@@ -572,10 +590,32 @@ $lang = Auth::user()->lang;
                 </li>
                 @endcan
 
-                {{-- Email Template --}}
-                @if (\Auth::user()->type == 'company')
+            <!-- Eclaim Request-->
+            @if (\Auth::user()->type == 'employee')
+                <li class="dash-item">
+                    <a href="{{ route('eclaim.index') }}" class="dash-link">
+                        <span class="dash-micon"><i class="ti ti-file"></i></span><span
+                            class="dash-mtext">{{ __('Manage Eclaim') }}
+                        </span>
+                    </a>
+                </li>
+            @endif
+
+            <!-- Eclaim Request-->
+            @if (\Auth::user()->type == 'employee')
+                <li class="dash-item">
+                    <a href="{{ route('eclaim.index') }}" class="dash-link"><span
+                            class="dash-micon"><i class="ti ti-file"></i></span><span
+                            class="dash-mtext">{{ __('Manage Eclaim') }}</span></a>
+                </li>
+            @endif
+
+            {{-- Email Template --}}
+            @if (\Auth::user()->type == 'company')
                 <li class="dash-item {{ Request::route()->getName() == 'email_template.show' || Request::segment(1) == 'email_template_lang' || Request::route()->getName() == 'manageemail.lang' ? 'active' : '' }}">
-                    <a href="{{ route('manage.email.language', [$emailTemplate->id, \Auth::user()->lang]) }}" class="dash-link"><span class="dash-micon"><i class="ti ti-template"></i></span><span class="dash-mtext">{{ __('Email Templates') }}</span></a>
+                    <a href="{{ route('manage.email.language', [$emailTemplate->id, \Auth::user()->lang]) }}"
+                        class="dash-link"><span class="dash-micon"><i class="ti ti-template"></i></span><span
+                            class="dash-mtext">{{ __('Email Templates') }}</span></a>
                 </li>
                 @endif
                 <!--company policy-->
