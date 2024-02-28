@@ -12,6 +12,8 @@ class InterviewSchedule extends Model
         'date',
         'time',
         'comment',
+        'destination',
+        'address',
         'employee_response',
         'created_by',
     ];

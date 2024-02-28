@@ -1,5 +1,22 @@
 <?php
 
+use App\Http\Controllers\PensionSchemeController;
+use App\Models\Employee;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AwardController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\MeetingController;
+use App\Http\Controllers\IncomeTypeController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ExpenseTypeController;
+use App\Http\Controllers\AttendanceEmployeeController;
+use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\AccountListController;
 use App\Http\Controllers\AiTemplateController;
 use App\Http\Controllers\AllowanceController;
@@ -7,8 +24,6 @@ use App\Http\Controllers\AllowanceOptionController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AppraisalController;
 use App\Http\Controllers\AssetController;
-use App\Http\Controllers\AttendanceEmployeeController;
-use App\Http\Controllers\AwardController;
 use App\Http\Controllers\AwardTypeController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CommissionController;
@@ -28,15 +43,10 @@ use App\Http\Controllers\DucumentUploadController;
 use App\Http\Controllers\EclaimController;
 use App\Http\Controllers\EclaimTypeController;
 use App\Http\Controllers\EmailTemplateController;
-use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EventController;
-use App\Http\Controllers\ExpenseController;
-use App\Http\Controllers\ExpenseTypeController;
 use App\Http\Controllers\GoalTrackingController;
 use App\Http\Controllers\GoalTypeController;
 use App\Http\Controllers\HolidayController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\IncomeTypeController;
 use App\Http\Controllers\IndicatorController;
 use App\Http\Controllers\InterviewScheduleController;
 use App\Http\Controllers\JobApplicationController;
@@ -45,11 +55,8 @@ use App\Http\Controllers\JobController;
 use App\Http\Controllers\JobStageController;
 use App\Http\Controllers\LandingPageSectionController;
 use App\Http\Controllers\LanguageController;
-use App\Http\Controllers\LeaveController;
-use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\LoanOptionController;
-use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\NotificationTemplatesController;
 use App\Http\Controllers\OtherPaymentController;
 use App\Http\Controllers\OvertimeController;
@@ -61,12 +68,9 @@ use App\Http\Controllers\PayslipTypeController;
 use App\Http\Controllers\PerformanceTypeController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PromotionController;
-use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ResignationController;
-use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SaturationDeductionController;
 use App\Http\Controllers\SetSalaryController;
-use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\TerminationController;
 use App\Http\Controllers\TerminationTypeController;
@@ -78,10 +82,10 @@ use App\Http\Controllers\TrainingTypeController;
 use App\Http\Controllers\TransferBalanceController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\TravelController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\WarningController;
 use App\Http\Controllers\ZoomMeetingController;
-use App\Models\Employee;
+use App\Http\Controllers\PensionOptInController;
+use App\Http\Controllers\PensionOptoutController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -557,6 +561,41 @@ Route::group(['middleware' => ['verified']], function () {
         ]
     );
 
+    Route::resource('pension-opt-ins', PensionOptInController::class)->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+    Route::post('pension-opt-ins/employee', [PensionOptInController::class, 'getEmployee'])->name('pensionOptIn.emp')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+    Route::resource('pension-optout', PensionOptoutController::class)->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+    Route::post('pension-optout/employee', [PensionOptoutController::class, 'getEmployee'])->name('pensionOptout.emp')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+    Route::resource('pension-schemes', PensionSchemeController::class)->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
 
     Route::resource('setsalary', SetSalaryController::class)->middleware(
         [
@@ -869,7 +908,7 @@ Route::group(['middleware' => ['verified']], function () {
             Route::get('create-language', [LanguageController::class, 'createLanguage'])->name('create.language');
             Route::post('store-language', [LanguageController::class, 'storeLanguage'])->name('store.language');
             Route::delete('/lang/{id}', [LanguageController::class, 'destroyLang'])->name('lang.destroy');
-            Route::post('disable-language',[LanguageController::class,'disableLang'])->name('disablelanguage');
+            Route::post('disable-language', [LanguageController::class, 'disableLang'])->name('disablelanguage');
         }
     );
 
