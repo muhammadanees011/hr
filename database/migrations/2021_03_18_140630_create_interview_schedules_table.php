@@ -22,6 +22,8 @@ class CreateInterviewSchedulesTable extends Migration
             $table->time('time');
             $table->text('comment')->nullable();
             $table->string('employee_response')->nullable();
+            $table->string('destination')->nullable();
+            $table->longText('address')->nullable();
             $table->integer('created_by');
             $table->timestamps();
         }

@@ -1856,6 +1856,78 @@ class UsersTableSeeder extends Seeder
                 "created_at" => date('Y-m-d H:i:s'),
                 "updated_at" => date('Y-m-d H:i:s'),
             ],
+            [
+                "name" => "Manage Pension",
+                "guard_name" => "web",
+                "created_at" => now(),
+                "updated_at" => now(),
+            ],
+            [
+                "name" => "Create Scheme",
+                "guard_name" => "web",
+                "created_at" => now(),
+                "updated_at" => now(),
+            ],
+            [
+                "name" => "Edit Scheme",
+                "guard_name" => "web",
+                "created_at" => now(),
+                "updated_at" => now(),
+            ],
+            [
+                "name" => "Delete Scheme",
+                "guard_name" => "web",
+                "created_at" => now(),
+                "updated_at" => now(),
+            ],
+            [
+                "name" => "Create Pension Optout",
+                "guard_name" => "web",
+                "created_at" => now(),
+                "updated_at" => now(),
+            ],
+            [
+                "name" => "Manage Pension Optout",
+                "guard_name" => "web",
+                "created_at" => now(),
+                "updated_at" => now(),
+            ],
+            [
+                "name" => "Edit Pension Optout",
+                "guard_name" => "web",
+                "created_at" => now(),
+                "updated_at" => now(),
+            ],
+            [
+                "name" => "Delete Pension Optout",
+                "guard_name" => "web",
+                "created_at" => now(),
+                "updated_at" => now(),
+            ],
+            [
+                "name" => "Manage Pension OptIn",
+                "guard_name" => "web",
+                "created_at" => now(),
+                "updated_at" => now(),
+            ],
+            [
+                "name" => "Create Pension OptIn",
+                "guard_name" => "web",
+                "created_at" => now(),
+                "updated_at" => now(),
+            ],
+            [
+                "name" => "Edit Pension OptIn",
+                "guard_name" => "web",
+                "created_at" => now(),
+                "updated_at" => now(),
+            ],
+            [
+                "name" => "Delete Pension OptIn",
+                "guard_name" => "web",
+                "created_at" => now(),
+                "updated_at" => now(),
+            ],
 
         ];
         Permission::insert($arrPermissions);
@@ -2170,6 +2242,18 @@ class UsersTableSeeder extends Seeder
             ["name" => "Create Zoom meeting"],
             ["name" => "Show Zoom meeting"],
             ["name" => "Delete Zoom meeting"],
+            ["name" => "Manage Pension"],
+            ["name" => "Create Scheme"],
+            ["name" => "Edit Scheme"],
+            ["name" => "Delete Scheme"],
+            ["name" => "Create Pension Optout"],
+            ["name" => "Manage Pension Optout"],
+            ["name" => "Edit Pension Optout"],
+            ["name" => "Delete Pension Optout"],
+            ["name" => "Manage Pension OptIn"],
+            ["name" => "Create Pension OptIn"],
+            ["name" => "Edit Pension OptIn"],
+            ["name" => "Delete Pension OptIn"],
         ];
 
         $companyRole->givePermissionTo($companyPermissions);
@@ -2437,6 +2521,18 @@ class UsersTableSeeder extends Seeder
             ["name" => "Delete Contract Type"],
             ["name" => "Manage Zoom meeting"],
             ["name" => "Show Zoom meeting"],
+            ["name" => "Manage Pension"],
+            ["name" => "Create Scheme"],
+            ["name" => "Edit Scheme"],
+            ["name" => "Delete Scheme"],
+            ["name" => "Create Pension Optout"],
+            ["name" => "Manage Pension Optout"],
+            ["name" => "Edit Pension Optout"],
+            ["name" => "Delete Pension Optout"],
+            ["name" => "Manage Pension OptIn"],
+            ["name" => "Create Pension OptIn"],
+            ["name" => "Edit Pension OptIn"],
+            ["name" => "Delete Pension OptIn"],
         ];
 
         $hrRole->givePermissionTo($hrPermission);
