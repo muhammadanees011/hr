@@ -2402,11 +2402,13 @@ class UsersTableSeeder extends Seeder
         // HR
         $hrRole       = Role::create(
             [
+
                 'name' => 'hr',
                 'created_by' => $company->id,
             ]
         );
         $hrPermission = [
+
             ["name" => "Manage Language"],
             ["name" => "Manage User"],
             ["name" => "Create User"],
@@ -2893,18 +2895,6 @@ class UsersTableSeeder extends Seeder
             ["name" => "Delete Attachment"],
             ["name" => "Manage Zoom meeting"],
             ["name" => "Show Zoom meeting"],
-            ["name" => "can see phone"],
-            ["name" => "can see dob"],
-            ["name" => "can see gender"],
-            ["name" => "can see address"],
-            ["name" => "can see city"],
-            ["name" => "can see state"],
-            ["name" => "can see country"],
-            ["name" => "can see zip code"],
-            ["name" => "can see applied for"],
-            ["name" => "can see applied at"],
-            ["name" => "can see Resume"],
-            ["name" => "can see Cover Letter"],
         ];
 
         $employeeRole->givePermissionTo($employeePermission);
