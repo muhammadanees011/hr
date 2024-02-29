@@ -4,19 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Eclaim;
 use App\Models\EclaimType;
-use Illuminate\Http\Request;
+use App\Notifications\EclaimNotification;
 use Auth;
+use Illuminate\Http\Request;
 class EclaimController extends Controller
 {
     public function index()
     {
         if (\Auth::user()->can('Manage Eclaim')) {
             $query = Eclaim::with('claimType', 'employee');
-            if(\Auth::user()->type=="hr"){
-                $query = $query->where('status', 'pending');
-            }
 
-            if(\Auth::user()->type=="finance" || \Auth::user()->type=="company"){
+            if(\Auth::user()->type=="hr" && \Auth::user()->can('Approve Eclaim')){
+                $query = $query->where('status', 'pending');
+            } else if(\Auth::user()->type != "employee" && \Auth::user()->can('Approve Eclaim')){
                 $query = $query->where('status', 'approved by HR');
             }
 
@@ -183,7 +183,7 @@ class EclaimController extends Controller
         if (\Auth::user()->can('Manage Eclaim')) {
             $eclaim = Eclaim::find($id);
             $url = "eclaim/save-reject-form/".$eclaim->id;
-            return view('eclaim.reject', compact('url'));
+            return view('eclaim.comment-form', compact('url'));
         } else {
             return response()->json(['error' => __('Permission denied.')], 401);
         }
@@ -216,6 +216,10 @@ class EclaimController extends Controller
             $eclaim->history = json_encode($history);
             $eclaim->status = "rejected";
             $eclaim->save();
+
+            \Notification::route('mail', $eclaim->employee->email)
+            ->notify(new EclaimNotification(['subject' => "Claim Request Rejection Notification", "message"=> "Your Claim Request got rejected. Please see below comment for detail information", "comment" => $request->comment]));
+
             return redirect()->route('eclaim.index')->with('success', __('Eclaim status successfully updated.'));
         } else {
             return redirect()->back()->with('error', __('Permission denied.'));
@@ -247,18 +251,25 @@ class EclaimController extends Controller
                 return redirect()->back()->with('error', $messages->first());
             }
 
-            $eclaim = Eclaim::find($id);
+            $eclaim = Eclaim::with('employee')->find($id);
             $history = json_decode($eclaim->history, true);
+            $message = \Auth::user()->type=="hr" ? "Eclaim Approved By HR Manager" : "Eclaim Approved By Finance Manager";
             $history[] = [
                 'time' => now(),
                 'username' => \Auth::user()->name,
-                'message' => \Auth::user()->type=="hr" ? "Eclaim Approved By HR Manager" : "Eclaim Approved By Finance Manager",
+                'message' => $message,
                 'comment' => $request->comment
             ];
 
             $eclaim->history = json_encode($history);
             $eclaim->status = \Auth::user()->type=="hr" ? "approved by HR" : "approved";
             $eclaim->save();
+
+            if(\Auth::user()->type !="hr"){
+                \Notification::route('mail', $eclaim->employee->email)
+                ->notify(new EclaimNotification(['subject' => "Claim Request Approval Notification", "message"=> "Your Claim Request got approved by the Finance Manager.", "comment" => $request->comment]));
+            }
+
             return redirect()->route('eclaim.index')->with('success', __('Eclaim status successfully updated.'));
         } else {
             return redirect()->back()->with('error', __('Permission denied.'));

@@ -333,13 +333,6 @@ $lang = Auth::user()->lang;
                             <a class="dash-link" href="{{ route('transferbalance.index') }}">{{ __('Transfer Balance') }}</a>
                         </li>
                         @endcan
-                        @can('Manage Eclaim')
-                            <li class="dash-item">
-                                <a href="{{ route('eclaim.index') }}" class="dash-link">
-                                    {{ __('Manage Eclaim') }}
-                                </a>
-                            </li>
-                        @endcan
 
                     </ul>
                 </li>
@@ -419,11 +412,6 @@ $lang = Auth::user()->lang;
                         </li>
                         <li class="dash-item {{ Request::segment(1) == 'holiday' ? ' active' : '' }}">
                             <a class="dash-link" href="{{ route('holiday.index') }}">{{ __('Holidays') }}</a>
-                        </li>
-                        <li class="dash-item {{ Request::segment(1) == 'eclaim' ? ' active' : '' }}">
-                            <a href="{{ route('eclaim.index') }}" class="dash-link">
-                                {{ __('Manage Eclaim') }}
-                            </a>
                         </li>
                     </ul>
                 </li>
@@ -590,8 +578,8 @@ $lang = Auth::user()->lang;
                 </li>
                 @endcan
 
-            <!-- Eclaim Request-->
-            @if (\Auth::user()->type == 'employee')
+            <!-- Eclaim-->
+            @can('Manage Eclaim')
                 <li class="dash-item">
                     <a href="{{ route('eclaim.index') }}" class="dash-link">
                         <span class="dash-micon"><i class="ti ti-file"></i></span><span
@@ -599,16 +587,7 @@ $lang = Auth::user()->lang;
                         </span>
                     </a>
                 </li>
-            @endif
-
-            <!-- Eclaim Request-->
-            @if (\Auth::user()->type == 'employee')
-                <li class="dash-item">
-                    <a href="{{ route('eclaim.index') }}" class="dash-link"><span
-                            class="dash-micon"><i class="ti ti-file"></i></span><span
-                            class="dash-mtext">{{ __('Manage Eclaim') }}</span></a>
-                </li>
-            @endif
+            @endcan
 
             {{-- Email Template --}}
             @if (\Auth::user()->type == 'company')

@@ -2026,6 +2026,12 @@ class UsersTableSeeder extends Seeder
                 "created_at" => date('Y-m-d H:i:s'),
                 "updated_at" => date('Y-m-d H:i:s'),
             ],
+            [
+                "name" => "Approve Eclaim",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
             
         ];
         Permission::insert($arrPermissions);
@@ -2369,6 +2375,7 @@ class UsersTableSeeder extends Seeder
             ["name" => "Create Eclaim"],
             ["name" => "Edit Eclaim"],
             ["name" => "Delete Eclaim"],
+            ["name" => "Approve Eclaim"],
         ];
 
         $companyRole->givePermissionTo($companyPermissions);
@@ -2656,6 +2663,11 @@ class UsersTableSeeder extends Seeder
             ["name" => "Create Pension OptIn"],
             ["name" => "Edit Pension OptIn"],
             ["name" => "Delete Pension OptIn"],
+            ["name" => "Manage Eclaim"],
+            ["name" => "Create Eclaim"],
+            ["name" => "Edit Eclaim"],
+            ["name" => "Delete Eclaim"],
+            ["name" => "Approve Eclaim"],
         ];
 
         $hrRole->givePermissionTo($hrPermission);

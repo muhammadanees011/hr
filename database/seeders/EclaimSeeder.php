@@ -37,16 +37,18 @@ class EclaimSeeder extends Seeder
             'created_by' => 1
         ];
 
-        Designation::create($designations);
+        Designation::create($designation);
 
         $eClaimTypes = [
             [
                 'title' => 'Mileage',
-                'description' => 'Monthly Mileage'
+                'description' => 'Monthly Mileage',
+                'created_by' => 1
             ],
             [
                 'title' => 'Travel Allowance',
-                'description' => 'Allowance for traveling'
+                'description' => 'Allowance for traveling',
+                'created_by' => 1
             ],
         ];
 
