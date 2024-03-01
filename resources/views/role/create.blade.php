@@ -133,10 +133,11 @@
 
                                                 @foreach($anonymisePermissions as $permission)
                                                     <div class="col-md-3 custom-control custom-checkbox">
-                                                        {{ Form::checkbox('permissions[]', array_search($permission, $permissions), false, ['class' => 'form-check-input isscheck isscheck_' . str_replace(' ', '', $module), 'id' => 'permission' . array_search($permission, $permissions)]) }}
+                                                        {{ Form::checkbox('permissions[]', array_search($permission, $permissions), false, ['class' => 'form-check-input isscheck isscheck_' . str_replace([' ', '(' , ')'], ['_', '_', '_'], $module) . ' anonymiseCheckbox', 'id' => 'permission' . array_search($permission, $permissions)]) }}
                                                         {{ Form::label('permission' . array_search($permission, $permissions), $permission, ['class' => 'form-label font-weight-500']) }}<br>
                                                     </div>
                                                 @endforeach
+
                                             </div>
                                         @else
                                             <div class="row ">
@@ -245,6 +246,9 @@
             });
             $(".ischeck").click(function() {
                 var ischeck = $(this).data('id');
+                if(ischeck === "AnonymiseApplication(CanView)"){
+                    ischeck = "Anonymise_Application__Can_View_"
+                }
                 $('.isscheck_' + ischeck).prop('checked', this.checked);
             });
         });
