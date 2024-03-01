@@ -204,58 +204,58 @@
             </div>
             <div class="card-header">
                  <dl class="row">
-                 @can('Applicant Phone')
+                 @can('Phone')
                     <dt class="col-sm-3"><span class="h6 text-sm mb-0">{{ __('Phone') }}</span></dt>
                     <dd class="col-sm-8"><span class="text-sm">{{ $jobApplication->phone }}</span></dd>
                 @endcan
                 
-                    @can('Applicant DOB')
-                    @if (!empty($jobApplication->dob) && \Auth::user()->can('Applicant DOB'))
+                    @can('DOB')
+                    @if (!empty($jobApplication->dob) && \Auth::user()->can('DOB'))
                         <dt class="col-sm-3"><span class="h6 text-sm mb-0">{{ __('DOB') }}</span></dt>
                         <dd class="col-sm-8"><span
                                 class="text-sm">{{ \Auth::user()->dateFormat($jobApplication->dob) }}</span></dd>
                     @endif
                     @endcan
 
-                    @can('Applicant Gender')
-                    @if (!empty($jobApplication->gender)&& \Auth::user()->can('Applicant Gender'))
+                    @can('Gender')
+                    @if (!empty($jobApplication->gender)&& \Auth::user()->can('Gender'))
                         <dt class="col-sm-3"><span class="h6 text-sm mb-0">{{ __('Gender') }}</span></dt>
                         <dd class="col-sm-8"><span class="text-sm">{{ $jobApplication->gender }}</span></dd>
                     @endif
                     @endcan
 
-                    @can('Applicant Address')
-                    @if (!empty($jobApplication->address) && \Auth::user()->can('Applicant Address'))
+                    @can('Address')
+                    @if (!empty($jobApplication->address) && \Auth::user()->can('Address'))
                         <dt class="col-sm-3"><span class="h6 text-sm mb-0">{{ __('Address') }}</span></dt>
                         <dd class="col-sm-8"><span class="text-sm">{{ $jobApplication->address }}</span>
                         </dd>
                     @endif
                     @endcan
 
-                    @can('Applicant City')
-                    @if (!empty($jobApplication->city)&& \Auth::user()->can('Applicant City'))
+                    @can('City')
+                    @if (!empty($jobApplication->city)&& \Auth::user()->can('City'))
                         <dt class="col-sm-3"><span class="h6 text-sm mb-0">{{ __('City') }}</span></dt>
                         <dd class="col-sm-8"><span class="text-sm">{{ $jobApplication->city }}</span></dd>
                     @endif
                     @endcan
 
-                    @can('Applicant State')
-                    @if (!empty($jobApplication->state)&& \Auth::user()->can('Applicant State'))
+                    @can('State')
+                    @if (!empty($jobApplication->state)&& \Auth::user()->can('State'))
                         <dt class="col-sm-3"><span class="h6 text-sm mb-0">{{ __('State') }}</span></dt>
                         <dd class="col-sm-8"><span class="text-sm">{{ $jobApplication->state }}</span></dd>
                     @endif
                     @endcan
 
-                    @can('Applicant Country')
-                    @if (!empty($jobApplication->country) && \Auth::user()->can('Applicant Country'))
+                    @can('Country')
+                    @if (!empty($jobApplication->country) && \Auth::user()->can('Country'))
                         <dt class="col-sm-3"><span class="h6 text-sm mb-0">{{ __('Country') }}</span></dt>
                         <dd class="col-sm-8"><span class="text-sm">{{ $jobApplication->country }}</span>
                         </dd>
                     @endif
                     @endcan
 
-                    @can('Applicant ZipCode')
-                    @if (!empty($jobApplication->zip_code)&& \Auth::user()->can('Applicant ZipCode'))
+                    @can('ZipCode')
+                    @if (!empty($jobApplication->zip_code)&& \Auth::user()->can('ZipCode'))
                         <dt class="col-sm-3"><span class="h6 text-sm mb-0">{{ __('Zip Code') }}</span></dt>
                         <dd class="col-sm-8"><span class="text-sm">{{ $jobApplication->zip_code }}</span>
                         </dd>
@@ -263,21 +263,21 @@
                     @endcan
 
 
-                    @can('Applicant Applied for')
+                    @can('Applied for')
                     <dt class="col-sm-3"><span class="h6 text-sm mb-0">{{ __('Applied For') }}</span></dt>
                     <dd class="col-sm-8"><span
                             class="text-sm">{{ !empty($jobApplication->jobs) ? $jobApplication->jobs->title : '-' }}</span>
                     </dd>
                     @endcan
 
-                    @can('Applicant Applied at')
+                    @can('Applied at')
                     <dt class="col-sm-3"><span class="h6 text-sm mb-0">{{ __('Applied at') }}</span></dt>
                     <dd class="col-sm-8"><span
                             class="text-sm">{{ \Auth::user()->dateFormat($jobApplication->created_at) }}</span>
                     </dd>
                     @endcan
 
-                    @can('Applicant Resume')
+                    @can('Resume')
                     <dt class="col-sm-3"><span class="h6 text-sm mb-0">{{ __('CV / Resume') }}</span></dt>
                     <dd class="col-sm-8">
                         @php
@@ -302,7 +302,7 @@
                     @endcan
 
 
-                    @can('Applicant Cover Letter')
+                    @can('Cover Letter')
                    <dt class="col-sm-3"><span class="h6 text-sm mb-0">{{ __('Cover Letter') }}:</span></dt>
                     <dd class="col-sm-9"><span class="text-sm">{{ $jobApplication->cover_letter }}</span>
                     </dd>
@@ -310,7 +310,7 @@
 
                     </dl>
 
-                    @can('Applicant Rating')
+                    @can('Rating')
                     <div class='rating-stars text-right'>
                         <ul id='stars'>
                             <li class='star {{(in_array($jobApplication->rating,[1,2,3,4,5])==true)?'selected':''}}' data-bs-toggle="tooltip"   data-bs-original-title="Poor" data-value='1'>
