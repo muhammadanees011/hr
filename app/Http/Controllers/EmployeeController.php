@@ -9,6 +9,7 @@ use App\Models\Document;
 use App\Models\Employee;
 use App\Models\EmployeeDocument;
 use App\Mail\UserCreate;
+use App\Models\EmployeePersonalFile;
 use App\Models\User;
 use App\Models\Utility;
 use File;
@@ -807,5 +808,72 @@ class EmployeeController extends Controller
         $designations = Designation::where('department_id', $request->department_id)->get()->pluck('name', 'id')->toArray();
 
         return response()->json($designations);
+    }
+
+    public function showPersonalFile($id)
+    {
+        try {
+            $id = \Illuminate\Support\Facades\Crypt::decrypt($id);
+        } catch (\RuntimeException $e) {
+            return redirect()->back()->with('error', __('Personal file not avaliable'));
+        }
+        $employee = Employee::where('id', $id)->with(['branch', 'department', 'designation'])->first();
+
+        if ($employee->created_by == \Auth::user()->creatorId()) {
+            $personalFiles = EmployeePersonalFile::where('employee_id', $employee->id)->get();
+            return view('employee.personalFile', compact('personalFiles', 'employee'));
+        } else {
+            return redirect()->back()->with('error', __('Permission Denied.'));
+        }
+    }
+
+    public function storePersonalFile(Request $request)
+    {
+        if (\Auth::user()->can('Store Personal File')) {
+
+            $validator = \Validator::make(
+                $request->all(),
+                [
+                    'employee_id' => 'required',
+                    'name' => 'required',
+                    'file' => 'required',
+                ]
+            );
+            if ($validator->fails()) {
+                $messages = $validator->getMessageBag();
+
+                return redirect()->back()->with('error', $messages->first());
+            }
+
+            $personalFile        = new EmployeePersonalFile();
+            $personalFile->employee_id = $request->employee_id;
+            $personalFile->name = $request->name;
+            if (!empty($request->file)) {
+                $image_size = $request->file('file')->getSize();
+
+                $filenameWithExt = $request->file('file')->getClientOriginalName();
+                $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                $extension       = $request->file('file')->getClientOriginalExtension();
+                $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+                $dir = 'uploads/personalFile/';
+                $image_path = $dir . $fileNameToStore;
+
+                $url = '';
+                $path = Utility::upload_file($request, 'file', $fileNameToStore, $dir, []);
+                $personalFile->file    = !empty($request->file) ? $fileNameToStore : '';
+                if ($path['flag'] == 1) {
+                    $url = $path['url'];
+                } else {
+                    return redirect()->back()->with('error', __($path['msg']));
+                }
+            }
+
+            $personalFile->created_by     = \Auth::user()->creatorId();
+            $personalFile->save();
+
+            return redirect()->route('employee.personalFile', encrypt($request->employee_id))->with('success', __('Document successfully uplaoded.'));
+        } else {
+            return redirect()->back()->with('error', __('Permission denied.'));
+        }
     }
 }

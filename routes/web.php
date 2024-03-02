@@ -280,6 +280,10 @@ Route::group(['middleware' => ['verified']], function () {
         ]
     );
 
+    Route::get('personalFile/{id}', [EmployeeController::class, 'showPersonalFile'])->name('employee.personalFile')->middleware(['auth', 'XSS']);
+    Route::post('personalFile/store', [EmployeeController::class, 'storePersonalFile'])->name('employee.storePersonalFile')->middleware(['auth', 'XSS']);
+
+
     Route::resource('employee', EmployeeController::class)->middleware(
         [
             'auth',
@@ -1309,7 +1313,7 @@ Route::group(['middleware' => ['verified']], function () {
     Route::resource('contract_type', ContractTypeController::class)->middleware(['auth', 'XSS']);
     Route::resource('contract', ContractController::class)->middleware(['auth', 'XSS']);
     Route::post('/contract_status_edit/{id}', [ContractController::class, 'contract_status_edit'])->name('contract.status')->middleware(['auth', 'XSS']);
-    Route::post('/contract/{id}/file', [ContractController::class, 'fileUpload'])->name('contracts.file.upload')->middleware(['auth', 'XSS']);
+    Route::post('/contract/{id}/file', [ContcractController::class, 'fileUpload'])->name('contracts.file.upload')->middleware(['auth', 'XSS']);
     Route::get('/contract/{id}/file/{fid}',  [ContractController::class, 'fileDownload'])->name('contracts.file.download')->middleware(['auth', 'XSS']);
     Route::get('/contract/{id}/file/delete/{fid}', [ContractController::class, 'fileDelete'])->name('contracts.file.delete')->middleware(['auth', 'XSS']);
     Route::post('/contract/{id}/notestore', [ContractController::class, 'noteStore'])->name('contracts.note.store')->middleware(['auth']);

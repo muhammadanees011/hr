@@ -1904,7 +1904,7 @@ class UsersTableSeeder extends Seeder
                 "guard_name" => "web",
                 "created_at" => date('Y-m-d H:i:s'),
                 "updated_at" => date('Y-m-d H:i:s'),
-         
+
             ],
             [
                 "name" => "Manage Pension",
@@ -1974,6 +1974,18 @@ class UsersTableSeeder extends Seeder
             ],
             [
                 "name" => "Delete Pension OptIn",
+                "guard_name" => "web",
+                "created_at" => now(),
+                "updated_at" => now(),
+            ],
+            [
+                "name" => "Show Personal File",
+                "guard_name" => "web",
+                "created_at" => now(),
+                "updated_at" => now(),
+            ],
+            [
+                "name" => "Store Personal File",
                 "guard_name" => "web",
                 "created_at" => now(),
                 "updated_at" => now(),
@@ -2312,6 +2324,8 @@ class UsersTableSeeder extends Seeder
             ["name" => "Create Pension OptIn"],
             ["name" => "Edit Pension OptIn"],
             ["name" => "Delete Pension OptIn"],
+            ["name" => "Show Personal File"],
+            ["name" => "Store Personal File"]
         ];
 
         $companyRole->givePermissionTo($companyPermissions);
@@ -2599,6 +2613,8 @@ class UsersTableSeeder extends Seeder
             ["name" => "Create Pension OptIn"],
             ["name" => "Edit Pension OptIn"],
             ["name" => "Delete Pension OptIn"],
+            ["name" => "Show Personal File"],
+            ["name" => "Store Personal File"],
         ];
 
         $hrRole->givePermissionTo($hrPermission);
