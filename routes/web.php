@@ -92,6 +92,9 @@ use App\Http\Controllers\ExitProcedureController;
 use App\Http\Controllers\OverTimePolicyController;
 use App\Http\Controllers\PensionOptInController;
 use App\Http\Controllers\PensionOptoutController;
+use App\Http\Controllers\HealthAssessmentController;
+use App\Http\Controllers\GPNoteController;
+use App\Http\Controllers\SelfCertificationController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -458,6 +461,12 @@ Route::group(['middleware' => ['verified']], function () {
     Route::get('retirement/description/{id}', [RetirementController::class,'description'])->name('retirement.description')->middleware(['auth','XSS',]);
 
     Route::resource('exitprocedure', ExitProcedureController::class)->middleware(['auth','XSS',]);
+    
+    //health and fitness
+    Route::resource('healthassessment', HealthAssessmentController::class)->middleware(['auth','XSS',]);
+    Route::resource('gpnote', GPNoteController::class)->middleware(['auth','XSS',]);
+    Route::resource('selfcertification', SelfCertificationController::class)->middleware(['auth','XSS',]);
+
 
     Route::post('event/getdepartment', [EventController::class, 'getdepartment'])->name('event.getdepartment')->middleware(
         [

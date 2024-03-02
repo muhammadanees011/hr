@@ -23,7 +23,9 @@ $lang = Auth::user()->lang;
         @endif
 
         <div class="navbar-wrapper">
-            <div class="m-header main-logo">
+            <div class="m-header main-logo" 
+            style="background-color:#010A21 !important;    border-top-right-radius: 0.5rem;
+            border-bottom-right-radius: 0.2rem;">
 
                 <a href="{{ route('home') }}" class="b-brand">
                     <!-- ========   change your logo hear   ============ -->
@@ -32,7 +34,7 @@ $lang = Auth::user()->lang;
                     <!-- <p style="font-weight:bold;">
                 {{ $logos}}
             </p> -->
-                    <img src="{{asset( '/assets/images/HRMPRO-logos_transparent.png' )}}" alt="{{ env('APP_NAME') }}" class="logo" style="height:175px;width:100%;" />
+                    <img src="{{asset( '/assets/images/eduhr.png' )}}" alt="{{ env('APP_NAME') }}" class="logo" style="height:7rem !important; width:7rem !important;" />
                     <!-- <img src="{{asset( '/assets/uploads/logo/logo-dark.png' )}}" alt="{{ env('APP_NAME') }}" class="logo logo-lg" style="height: 40px;" /> -->
                     <!-- <img src="{{asset('assets/images/theme-3.svg')}}" alt="{{ env('APP_NAME') }}" class="logo logo-lg" style="height: 40px;" /> -->
                 </a>
@@ -512,24 +514,43 @@ $lang = Auth::user()->lang;
                 </li>
             <!-- @endif -->
 
+            <!-- Health And Fitness -->
+            <li
+                    class="dash-item dash-hasmenu  {{ Request::segment(1) == 'job' || Request::segment(1) == 'job-application' ? 'dash-trigger active' : '' }} ">
+                    <a href="#!" class="dash-link"><span class="dash-micon">
+                    <i class="ti ti-shield"></i></span><span
+                            class="dash-mtext">{{ __('Health And Fitness') }}</span><span class="dash-arrow"><i
+                                data-feather="chevron-right"></i></span></a>
+                    <ul class="dash-submenu">
+                        @can('Manage Resignation')
+                        <li class="dash-item {{ request()->is('healthassessment*') ? 'active' : '' }}">
+                            <a class="dash-link" href="{{ route('healthassessment.index') }}">{{ __('Health Assessments') }}</a>
+                        </li>
+                        @endcan
+                        @can('Manage Termination')
+                        <li class="dash-item {{ request()->is('gpnote*') ? 'active' : '' }}">
+                            <a class="dash-link" href="{{ route('gpnote.index') }}">{{ __('GP Notes') }}</a>
+                        </li>
+                        @endcan
+                        @can('Manage Retirement')
+                            <li class="dash-item {{ request()->is('selfcertification*') ? 'active' : '' }}">
+                                <a class="dash-link"
+                                    href="{{ route('selfcertification.index') }}">{{ __('Self Certifications') }}</a>
+                            </li>
+                        @endcan
+                    </ul>
+                </li>
+
             <!--contract-->
             @can('Manage Contract')
                 <li
                     class="dash-item {{ Request::route()->getName() == 'contract.index' || Request::route()->getName() == 'contract.show' ? 'active' : '' }}">
                     <a href="{{ route('contract.index') }}" class="dash-link"><span class="dash-micon"><i
                                 class="ti ti-device-floppy"></i></span><span
-                            class="dash-mtext">{{ __('Contracts') }}</span></a>
-                @endif
-                <!-- recruitment-->
-                <!--contract-->
-                @can('Manage Contract')
-                <li class="dash-item {{ Request::route()->getName() == 'contract.index' || Request::route()->getName() == 'contract.show' ? 'active' : '' }}">
-                    <a href="{{ route('contract.index') }}" class="dash-link"><span class="dash-micon"><i class="ti ti-device-floppy"></i></span><span class="dash-mtext">{{ __('Contracts') }}</span></a>
-                </li>
+                            class="dash-mtext">{{ __('Contracts') }}</span></a>                
                 @endcan
 
-                {{-- @endcan --}}
-
+                <!-- {{-- @endcan --}} -->
 
                 <!-- ticket-->
                 @can('Manage Ticket')

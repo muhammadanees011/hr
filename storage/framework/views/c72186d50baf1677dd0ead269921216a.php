@@ -22,7 +22,9 @@ $lang = Auth::user()->lang;
         <?php endif; ?>
 
         <div class="navbar-wrapper">
-            <div class="m-header main-logo">
+            <div class="m-header main-logo" 
+            style="background-color:#010A21 !important;    border-top-right-radius: 0.5rem;
+            border-bottom-right-radius: 0.2rem;">
 
                 <a href="<?php echo e(route('home')); ?>" class="b-brand">
                     <!-- ========   change your logo hear   ============ -->
@@ -32,7 +34,7 @@ $lang = Auth::user()->lang;
                 <?php echo e($logos); ?>
 
             </p> -->
-                    <img src="<?php echo e(asset( '/assets/images/HRMPRO-logos_transparent.png' )); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo" style="height:175px;width:100%;" />
+                    <img src="<?php echo e(asset( '/assets/images/eduhr.png' )); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo" style="height:7rem !important; width:7rem !important;" />
                     <!-- <img src="<?php echo e(asset( '/assets/uploads/logo/logo-dark.png' )); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo logo-lg" style="height: 40px;" /> -->
                     <!-- <img src="<?php echo e(asset('assets/images/theme-3.svg')); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo logo-lg" style="height: 40px;" /> -->
                 </a>
@@ -502,24 +504,43 @@ $lang = Auth::user()->lang;
                 </li>
             <!-- <?php endif; ?> -->
 
+            <!-- Health And Fitness -->
+            <li
+                    class="dash-item dash-hasmenu  <?php echo e(Request::segment(1) == 'job' || Request::segment(1) == 'job-application' ? 'dash-trigger active' : ''); ?> ">
+                    <a href="#!" class="dash-link"><span class="dash-micon">
+                    <i class="ti ti-shield"></i></span><span
+                            class="dash-mtext"><?php echo e(__('Health And Fitness')); ?></span><span class="dash-arrow"><i
+                                data-feather="chevron-right"></i></span></a>
+                    <ul class="dash-submenu">
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Resignation')): ?>
+                        <li class="dash-item <?php echo e(request()->is('healthassessment*') ? 'active' : ''); ?>">
+                            <a class="dash-link" href="<?php echo e(route('healthassessment.index')); ?>"><?php echo e(__('Health Assessments')); ?></a>
+                        </li>
+                        <?php endif; ?>
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Termination')): ?>
+                        <li class="dash-item <?php echo e(request()->is('gpnote*') ? 'active' : ''); ?>">
+                            <a class="dash-link" href="<?php echo e(route('gpnote.index')); ?>"><?php echo e(__('GP Notes')); ?></a>
+                        </li>
+                        <?php endif; ?>
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Retirement')): ?>
+                            <li class="dash-item <?php echo e(request()->is('selfcertification*') ? 'active' : ''); ?>">
+                                <a class="dash-link"
+                                    href="<?php echo e(route('selfcertification.index')); ?>"><?php echo e(__('Self Certifications')); ?></a>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </li>
+
             <!--contract-->
             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Contract')): ?>
                 <li
                     class="dash-item <?php echo e(Request::route()->getName() == 'contract.index' || Request::route()->getName() == 'contract.show' ? 'active' : ''); ?>">
                     <a href="<?php echo e(route('contract.index')); ?>" class="dash-link"><span class="dash-micon"><i
                                 class="ti ti-device-floppy"></i></span><span
-                            class="dash-mtext"><?php echo e(__('Contracts')); ?></span></a>
-                <?php endif; ?>
-                <!-- recruitment-->
-                <!--contract-->
-                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Contract')): ?>
-                <li class="dash-item <?php echo e(Request::route()->getName() == 'contract.index' || Request::route()->getName() == 'contract.show' ? 'active' : ''); ?>">
-                    <a href="<?php echo e(route('contract.index')); ?>" class="dash-link"><span class="dash-micon"><i class="ti ti-device-floppy"></i></span><span class="dash-mtext"><?php echo e(__('Contracts')); ?></span></a>
-                </li>
+                            class="dash-mtext"><?php echo e(__('Contracts')); ?></span></a>                
                 <?php endif; ?>
 
-                
-
+                <!--  -->
 
                 <!-- ticket-->
                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Ticket')): ?>
