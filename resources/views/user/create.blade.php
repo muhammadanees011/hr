@@ -21,9 +21,10 @@
         </div> --}}
         @if (\Auth::user()->type != 'super admin')
             <div class="form-group">
-                {{ Form::label('role', __('User Role'), ['class' => 'form-label']) }}
+                {{ Form::label('roles', __('User Role'), ['class' => 'form-label']) }}
                 <div class="form-icon-user">
-                    {!! Form::select('role', $roles, null, ['class' => 'form-control select2 ', 'required' => 'required']) !!}
+                    {{-- {!! Form::select('role', $roles, null, ['class' => 'form-control select2 ', 'required' => 'required']) !!} --}}
+                    {{ Form::select('roles[]', $roles, null, ['class' => 'form-control select2', 'id' => 'choices-multiple', 'multiple' => '', 'required' => 'required']) }}
                 </div>
                 @error('role')
                     <span class="invalid-role" role="alert">

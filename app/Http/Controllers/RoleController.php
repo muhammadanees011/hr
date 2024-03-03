@@ -198,4 +198,13 @@ class RoleController extends Controller
 
 
     }
+
+    public function changeRole($role){
+        $user = \Auth::user();
+        $role = $user->roles->where('id', $role)->first();
+        $roleName = $role->name;
+        $user->type = $roleName;
+        $user->save();
+        return redirect()->to('/')->with('success', __('Role change successfully.'));
+    }
 }

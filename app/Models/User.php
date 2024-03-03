@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Models\Role;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -2674,5 +2675,9 @@ class User extends Authenticatable implements MustVerifyEmail
             );
         }
     }
-    
+
+    public function can($permission, $arguments=[]){
+        $role = Role::findByName($this->type);
+        return $role->hasPermissionTo($permission);
+    }
 }

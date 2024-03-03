@@ -71,6 +71,18 @@ class LeaveController extends Controller
                 return redirect()->back()->with('error', $messages->first());
             }
 
+            // CHECK IF USER TRYING TO ADD LEAVE WITH DIFFERENT ROLE
+            if(\Auth::user()->type != "employee"){
+                $isAlreadyBooked = LocalLeave::where([
+                    'employee_id' => $request->employee_id,
+                    'start_date' => $request->start_date,
+                    'end_date' => $request->end_date,
+                    'manager_id' => \Auth::user()->id
+                ])->where('type', '!=',\Auth::user()->type)->count();
+                if($isAlreadyBooked > 0){
+                    return redirect()->back()->with('error', __("You can't booked leave from different Role."));
+                }
+            }
 
             // $employee = Employee::where('employee_id', '=', \Auth::user()->creatorId())->first();
             $leave_type = LeaveType::find($request->leave_type_id);
@@ -120,6 +132,9 @@ class LeaveController extends Controller
                 $leave->remark           = $request->remark;
                 $leave->status           = 'Pending';
                 $leave->created_by       = \Auth::user()->creatorId();
+                $leave->manager_id       = \Auth::user()->type != 'employee' ? \Auth::user()->id: null;
+                $leave->type             = \Auth::user()->type;
+;
 
                 $leave->save();
 
