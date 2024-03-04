@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Leave extends Model
 {
@@ -27,5 +28,15 @@ class Leave extends Model
     public function employees()
     {
         return $this->hasOne('App\Models\Employee', 'id', 'employee_id');
+    }
+
+    protected static function booted(){
+        static::addGlobalScope(function(Builder $builder){
+            if(\Auth::user()->type=="manager" && !empty(\Auth::user()->assigned_departments)){
+                $assignedDepartments = Department::get()->pluck('id');
+                $employees = Employee::whereIn('department_id', $assignedDepartments)->get()->pluck('id');
+                $builder->whereIn('employee_id', $employees);
+            }
+        });
     }
 }

@@ -110,6 +110,8 @@
                                 'Report',
                                 'Performance Type',
                                 'Zoom meeting',
+                                'EclaimType',
+                                'Eclaim'
                             ];
                             if (Auth::user()->type == 'super admin') {
                                 $modules[] = 'Language';

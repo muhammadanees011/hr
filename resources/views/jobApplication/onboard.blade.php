@@ -87,7 +87,6 @@
                                                 class="fas fa-trash"></i></a>
                                         {!! Form::open(['method' => 'DELETE', 'route' => ['job.on.board.delete', $job->id], 'id' => 'delete-form-' . $job->id]) !!}
                                         {!! Form::close() !!} --}}
-
                                             @if ($job->status == 'confirm' && $job->convert_to_employee == 0)
                                                 <div class="action-btn bg-dark ms-2">
                                                     <a href="{{ route('job.on.board.convert', $job->id) }}"

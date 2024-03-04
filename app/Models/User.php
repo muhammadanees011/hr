@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Models\Role;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -33,6 +34,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'is_login_enable',
         'created_by',
         'email_verified_at',
+        'assigned_departments'
     ];
 
     /**
@@ -52,6 +54,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'assigned_departments' => 'array'
     ];
 
     public static function defaultEmail()
@@ -2672,5 +2675,9 @@ class User extends Authenticatable implements MustVerifyEmail
             );
         }
     }
-    
+
+    public function can($permission, $arguments=[]){
+        $role = Role::findByName($this->type);
+        return $role->hasPermissionTo($permission);
+    }
 }
