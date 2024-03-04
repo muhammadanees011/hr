@@ -12,12 +12,14 @@ use App\Models\Branch;
 use App\Models\Department;
 use App\Models\Deposit;
 use App\Models\Employee;
+use App\Models\Eclaim;
 use App\Models\Expense;
 use App\Models\Leave;
 use App\Models\LeaveType;
 use App\Models\PaySlip;
 use App\Models\TimeSheet;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ReportController extends Controller
 {
@@ -830,5 +832,20 @@ class ReportController extends Controller
         }
 
         return response()->json($employees);
+    }
+    public function p11report()
+    {
+        // if (!$request->department_id){
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+         $currentMonthRecords = Eclaim::whereMonth('created_at', $currentMonth)
+                                 ->whereYear('created_at', $currentYear)
+                                 ->where('status', 'approved')
+                                 ->get();
+
+        return view('report.p11report', compact('currentMonthRecords'));
+        // } else {
+        //     return redirect()->back()->with('error', __('Permission denied.'));
+        // }
     }
 }

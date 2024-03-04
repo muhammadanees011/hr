@@ -275,6 +275,25 @@
                     </div>
                 </div>
             </div>
+            <div class="col-lg-3 col-md-6" id="p11-report-section">
+                <div class="card">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <div class="theme-avtar bg-secondary">
+                                    <i class="ti ti-report-money"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <h5 class="mb-0">{{ __('P11 Report') }}</h5>
+                                    <p class="text-muted text-sm mb-0">{{ \Auth::user()->priceFormat($expenseCount) }}
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
         <div class="col-md-12">
@@ -295,6 +314,16 @@
             if (month < 10) month = "0" + month;
             var today = now.getFullYear() + '-' + month;
             $('.current_date').val(today);
+        });
+    </script>
+
+<script>
+        $(document).ready(function() {
+            $('#p11-report-section').on('click', function() {
+                console.log("clicked");
+                // Redirect to the desired page
+                window.location.href = '{{ route("p11-report") }}'; // Replace 'p11-report' with your actual route name
+            });
         });
     </script>
 @endpush
