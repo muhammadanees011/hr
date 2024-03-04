@@ -109,7 +109,8 @@ $chatgpt = Utility::getValByName('enable_chatgpt');
                             <option value="">Select Contract Type</option>
                             <option value="Permanent">Permanent</option>
                             <option value="Part-time">Part-time</option>
-                            <option value="Internship">Internship</option>
+                            <option value="Apprenticeship">Apprenticeship</option>
+                            <option value="Zero Hours">Zero Hours</option>
                         </select>
                     </div>
                     <div class="form-group col-md-6">
