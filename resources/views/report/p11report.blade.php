@@ -102,7 +102,7 @@
                                             <td>{{ !empty($records->employee) ? $records->employee->id : '' }}</td>
                                             <td>{{ !empty($records->employee) ? $records->employee->name : '' }}</td>
                                         @endif
-                                        <td>{{ $records->amount }}</td>
+                                        <td>{{env('CURRENCY_SYMBOL') ?? '£'}}{{ $records->amount }}</td>
                                         <td>{{ \Auth::user()->dateFormat($records->created_at) }}</td>
                                 
                                         <td class="Action">
