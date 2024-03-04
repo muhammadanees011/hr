@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('page-title')
-   {{ __('Manage Eclaimss') }}
+   {{ __('Manage Eclaims') }}
 @endsection
 
 @section('breadcrumb')
