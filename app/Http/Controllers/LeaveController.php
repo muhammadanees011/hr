@@ -421,4 +421,23 @@ class LeaveController extends Controller
 
         return $arrayJson;
     }
+
+    public function teamTimeOff()
+    {
+        if (\Auth::user()->can('Manage Leave')) {
+            if (\Auth::user()->type == 'employee') {
+                $user     = \Auth::user();
+                $employee = Employee::where('user_id', '=', $user->id)->first();
+                $department_id=$employee->department_id;
+                $leaves = LocalLeave::whereHas('employees', function ($query) use ($department_id) {
+                    $query->where('department_id', $department_id);
+                })->get();
+            } else {
+                $leaves = LocalLeave::where('created_by', '=', \Auth::user()->creatorId())->with(['employees', 'leaveType'])->get();
+            }
+            return view('leave.team', compact('leaves'));
+        } else {
+            return redirect()->back()->with('error', __('Permission denied.'));
+        }
+    }
 }

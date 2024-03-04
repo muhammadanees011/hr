@@ -95,6 +95,8 @@ use App\Http\Controllers\PensionOptoutController;
 use App\Http\Controllers\HealthAssessmentController;
 use App\Http\Controllers\GPNoteController;
 use App\Http\Controllers\SelfCertificationController;
+use App\Http\Controllers\LeaveSummaryController;
+use App\Http\Controllers\CarryOverController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -467,6 +469,19 @@ Route::group(['middleware' => ['verified']], function () {
     Route::resource('gpnote', GPNoteController::class)->middleware(['auth','XSS',]);
     Route::resource('selfcertification', SelfCertificationController::class)->middleware(['auth','XSS',]);
 
+    //manage leaves
+    // Route::resource('leavesummary', LeaveSummaryController::class)->middleware(['auth','XSS',]);
+    Route::get('leavesummary/create/{id}', [LeaveSummaryController::class,'create'])->name('leavesummary.create')->middleware(['auth','XSS',]);
+    Route::post('leavesummary/{id}', [LeaveSummaryController::class,'store'])->name('leavesummary.store')->middleware(['auth','XSS',]);
+
+    Route::get('/employees/leavesummary', [LeaveSummaryController::class,'employees'])->name('leavesummary.employees')->middleware(['auth','XSS',]);
+    Route::get('/employees/leavesummary/{id}', [LeaveSummaryController::class,'employeeLeaveSummary'])->name('leavesummary.employee')->middleware(['auth','XSS',]);
+    Route::get('/delete/leavesummary/{id}/{employee_id}', [LeaveSummaryController::class,'destroy'])->name('leavesummary.destroy')->middleware(['auth','XSS',]);
+
+    Route::resource('carryover', CarryOverController::class)->middleware(['auth','XSS',]);
+    Route::get('carryover/{id}/action', [CarryOverController::class,'action'])->name('carryover.action')->middleware(['auth','XSS',]);
+    Route::post('carryover/changeaction', [CarryOverController::class,'changeaction'])->name('carryover.changeaction')->middleware(['auth','XSS',]);
+    Route::get('leave/team', [LeaveController::class, 'teamTimeOff'])->name('leave.team')->middleware(['auth','XSS',]);
 
     Route::post('event/getdepartment', [EventController::class, 'getdepartment'])->name('event.getdepartment')->middleware(
         [

@@ -24,8 +24,7 @@ $lang = Auth::user()->lang;
 
         <div class="navbar-wrapper">
             <div class="m-header main-logo" 
-            style="background-color:#010A21 !important;    border-top-right-radius: 0.5rem;
-            border-bottom-right-radius: 0.2rem;">
+            style="">
 
                 <a href="{{ route('home') }}" class="b-brand">
                     <!-- ========   change your logo hear   ============ -->
@@ -34,7 +33,8 @@ $lang = Auth::user()->lang;
                     <!-- <p style="font-weight:bold;">
                 {{ $logos}}
             </p> -->
-                    <img src="{{asset( '/assets/images/eduhr.png' )}}" alt="{{ env('APP_NAME') }}" class="logo" style="height:7rem !important; width:7rem !important;" />
+                    <img src="{{asset( '/assets/images/HRMPRO-logos_transparent.png' )}}" alt="{{ env('APP_NAME') }}" class="logo" style="height:7rem !important; width:7rem !important;" />
+                    <!-- <img src="{{asset( '/assets/images/eduhr.png' )}}" alt="{{ env('APP_NAME') }}" class="logo" style="height:7rem !important; width:7rem !important;" /> -->
                     <!-- <img src="{{asset( '/assets/uploads/logo/logo-dark.png' )}}" alt="{{ env('APP_NAME') }}" class="logo logo-lg" style="height: 40px;" /> -->
                     <!-- <img src="{{asset('assets/images/theme-3.svg')}}" alt="{{ env('APP_NAME') }}" class="logo logo-lg" style="height: 40px;" /> -->
                 </a>
@@ -234,11 +234,6 @@ $lang = Auth::user()->lang;
                             <a class="dash-link" href="{{ route('timesheet.index') }}">{{ __('Timesheet') }}</a>
                         </li>
                         @endcan
-                        @can('Manage Leave')
-                        <li class="dash-item {{ Request::segment(2) == 'leave' ? ' active' : '' }}">
-                            <a class="dash-link" href="{{ route('leave.index') }}">{{ __('Manage Leave') }}</a>
-                        </li>
-                        @endcan
                         @can('Manage Attendance')
                         <li class="dash-item dash-hasmenu">
                             <a href="#!" class="dash-link"><span class="dash-mtext">{{ __('Attendance') }}</span><span class="dash-arrow"><i data-feather="chevron-right"></i></span></a>
@@ -258,6 +253,49 @@ $lang = Auth::user()->lang;
                 </li>
                 @endif
                 <!--timesheet-->
+
+                <!-- Manage Leaves-->
+                @if (Gate::check('Manage Leave') || Gate::check('Manage Leave'))
+                <li class="dash-item dash-hasmenu">
+                    <a href="#!" class="dash-link"><span class="dash-micon"><i class="ti ti-calendar"></i></span><span class="dash-mtext">{{ __('Manage Leave') }}</span><span class="dash-arrow"><i data-feather="chevron-right"></i></span></a>
+                    <ul class="dash-submenu">
+
+                        @can('Manage Leave')
+                        <li class="dash-item {{ Request::segment(2) == 'leave' ? ' active' : '' }}">
+                            <a class="dash-link" href="{{ route('leave.index') }}">{{ __('Leave Request') }}</a>
+                        </li>
+                        @endcan
+
+                        @can('Manage Leave')
+                        <li class="dash-item {{ Request::segment(2) == 'leave' ? ' active' : '' }}">
+                            <a class="dash-link" href="{{ route('carryover.index') }}">{{ __('CarryOver Request') }}</a>
+                        </li>
+                        @endcan
+
+                        @can('Manage Leave')
+                        @if (\Auth::user()->type == 'employee')
+                        <li class="dash-item {{ Request::segment(1) == 'leavesummary' || Request::is('employees/leavesummary*') ? 'active' : '' }}">
+                            <a class="dash-link" href="{{ route('leavesummary.employee',Auth::user()->employee->id) }}">{{ __('Leave Summary') }}</a>
+                        </li>
+                        @else
+                        <li class="dash-item {{ Request::segment(1) == 'leavesummary' || Request::is('employees/leavesummary*') ? 'active' : '' }}">
+                            <a class="dash-link" href="{{ route('leavesummary.employees') }}">{{ __('Leave Summary') }}</a>
+                        </li>
+                        @endif
+                        @endcan
+
+                        <li class="dash-item {{ Request::segment(1) == 'teamleave' ? ' active' : '' }}">
+                            <a class="dash-link" href="{{ route('leave.team') }}">{{ __('Team Time Off') }}</a>
+                        </li>
+
+                        <li class="dash-item {{ Request::segment(1) == 'holiday' ? ' active' : '' }}">
+                            <a class="dash-link" href="{{ route('holiday.index') }}">{{ __('Holidays') }}</a>
+                        </li>
+
+                    </ul>
+                </li>
+                @endif
+                <!--performance-->
 
                 <!-- performance-->
                 @if (Gate::check('Manage Indicator') || Gate::check('Manage Appraisal') || Gate::check('Manage Goal Tracking'))
@@ -412,9 +450,9 @@ $lang = Auth::user()->lang;
                         <li class="dash-item">
                             <a class="dash-link" href="{{ route('announcement.index') }}">{{ __('Announcement') }}</a>
                         </li>
-                        <li class="dash-item {{ Request::segment(1) == 'holiday' ? ' active' : '' }}">
+                        <!-- <li class="dash-item {{ Request::segment(1) == 'holiday' ? ' active' : '' }}">
                             <a class="dash-link" href="{{ route('holiday.index') }}">{{ __('Holidays') }}</a>
-                        </li>
+                        </li> -->
                     </ul>
                 </li>
                 @endif
@@ -529,13 +567,13 @@ $lang = Auth::user()->lang;
                         @endcan
                         @can('Manage Termination')
                         <li class="dash-item {{ request()->is('gpnote*') ? 'active' : '' }}">
-                            <a class="dash-link" href="{{ route('gpnote.index') }}">{{ __('GP Notes') }}</a>
+                            <a class="dash-link" href="{{ route('healthassessment.index') }}">{{ __('GP Notes') }}</a>
                         </li>
                         @endcan
                         @can('Manage Retirement')
                             <li class="dash-item {{ request()->is('selfcertification*') ? 'active' : '' }}">
                                 <a class="dash-link"
-                                    href="{{ route('selfcertification.index') }}">{{ __('Self Certifications') }}</a>
+                                    href="{{ route('healthassessment.index') }}">{{ __('Self Certifications') }}</a>
                             </li>
                         @endcan
                     </ul>
