@@ -2,28 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UserCreate;
 use App\Models\Branch;
+use App\Models\Contract;
+use App\Models\ContractType;
 use App\Models\CustomQuestion;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Document;
 use App\Models\Employee;
 use App\Models\EmployeeDocument;
+use App\Models\GenerateOfferLetter;
 use App\Models\InterviewSchedule;
 use App\Models\Job;
 use App\Models\JobApplication;
 use App\Models\JobApplicationNote;
 use App\Models\JobOnBoard;
 use App\Models\JobStage;
-use App\Mail\UserCreate;
+use App\Models\PayslipType;
 use App\Models\User;
 use App\Models\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use App\Models\GenerateOfferLetter;
-use App\Models\PayslipType;
 
 class JobApplicationController extends Controller
 {
@@ -497,13 +499,17 @@ class JobApplicationController extends Controller
         $designations     = Designation::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
         $employees        = User::where('created_by', \Auth::user()->creatorId())->get();
         $employeesId      = \Auth::user()->employeeIdFormat($this->employeeNumber());
+            
+        $employee       = User::where('type', '=', 'employee')->get()->pluck('name', 'id');
+        $contractType = ContractType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
 
-        return view('jobApplication.convert', compact('jobOnBoard', 'employees', 'employeesId', 'departments', 'designations', 'documents', 'branches', 'company_settings'));
+        return view('jobApplication.convert', compact('employee','contractType','jobOnBoard', 'employees', 'employeesId', 'departments', 'designations', 'documents', 'branches', 'company_settings'));
 
     }
 
     public function jobBoardConvertData(Request $request, $id)
     {
+        // dd($request->all());
         $validator = \Validator::make(
             $request->all(), [
                                'name' => 'required',
@@ -516,6 +522,12 @@ class JobApplicationController extends Controller
                                'department_id' => 'required',
                                'designation_id' => 'required',
                                'document.*' => 'mimes:jpeg,png,jpg,gif,svg,pdf,doc,zip|max:20480',
+
+                                'subject' => 'required',
+                                'value' => 'required',
+                                'type_id' => 'required',
+                                'start_date' => 'required',
+                                'end_date' => 'required',
                            ]
         );
         if($validator->fails())
@@ -632,6 +644,48 @@ class JobApplicationController extends Controller
             {
                 $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
             }
+
+            // Create Employee Contract
+            $date = explode(' to ', $request->date);
+
+            $contract              = new Contract();
+            $contract->employee_name = $user->id;
+            $contract->subject     = $request->subject;
+            $contract->value       = $request->value;
+            $contract->type        = $request->type_id;
+            $contract->start_date  = $request->start_date;
+            $contract->end_date    = $request->end_date;
+            $contract->description = $request->description;
+            $contract->created_by  = \Auth::user()->creatorId();
+
+            $contract->save();
+
+            $settings  = Utility::settings(\Auth::user()->creatorId());
+
+            if (isset($settings['contract_notification']) && $settings['contract_notification'] == 1) {
+                // $msg = 'New Invoice ' . Auth::user()->contractNumberFormat($this->contractNumber()) . '  created by  ' . \Auth::user()->name . '.';
+
+                $uArr = [
+                    'contract_number' => \Auth::user()->contractNumberFormat($this->contractNumber()),
+                    'user_name' => \Auth::user()->name,
+                ];
+                Utility::send_slack_msg('contract_notification', $uArr);
+            }
+            if (isset($settings['telegram_contract_notification']) && $settings['telegram_contract_notification'] == 1) {
+                // $resp = 'New  Invoice ' . Auth::user()->contractNumberFormat($this->contractNumber()) . '  created by  ' . \Auth::user()->name . '.';
+
+                $uArr = [
+                    'contract_number' => \Auth::user()->contractNumberFormat($this->contractNumber()),
+                    'user_name' => \Auth::user()->name,
+                ];
+
+                Utility::send_telegram_msg('contract_notification', $uArr);
+            }
+
+
+
+
+
 
             return redirect()->back()->with('success', __('Application successfully converted to employee.') . (isset($smtp_error) ? $smtp_error : ''));
 

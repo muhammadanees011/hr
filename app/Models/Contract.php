@@ -73,6 +73,32 @@ class Contract extends Model
 
         return \Auth::user()->priceFormat($total);
     }
+
+    public static function getTotalSummaryBy($contract_type)
+    {
+        $contracts = self::where('type',$contract_type)->get();
+        $total = 0;
+
+        foreach($contracts as $contract)
+        {
+            $total += $contract->value;
+        }
+
+        return \Auth::user()->priceFormat($total);
+    }
+
+    public static function getEmloyeeTotalSummaryBy($contract_type)
+    {
+        $contracts = self::where('type',$contract_type)->where('employee_name',\Auth::user()->creatorId())->get();
+        $total = 0;
+
+        foreach($contracts as $contract)
+        {
+            $total += $contract->value;
+        }
+
+        return \Auth::user()->priceFormat($total);
+    }
     public static function status()
     {
 
