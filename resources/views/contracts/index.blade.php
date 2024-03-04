@@ -24,13 +24,15 @@
 @section('content')
     <div class='col-xl-12'>
         <div class="row">
+            
+        @foreach($contract_type as $typ)
             <div class="col-xl-3">
                 <div class="card comp-card">
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h6 class="m-b-20">{{ __('Total Contracts') }}</h6>
-                                <h3 class="text-primary">{{ $cnt_contract['total'] }}</h3>
+                                <h6 class="m-b-20">{{ __($typ['name']) }}</h6>
+                                <h3 class="text-primary">{{ $typ['total_amount'] }}</h3>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-handshake bg-success text-white"></i>
@@ -39,8 +41,9 @@
                     </div>
                 </div>
             </div>
+            @endforeach
 
-            <div class="col-xl-3">
+            <!-- <div class="col-xl-3">
                 <div class="card comp-card">
                     <div class="card-body">
                         <div class="row align-items-center">
@@ -86,7 +89,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="col-xl-12">
                 <div class="card table-card">

@@ -10,4 +10,9 @@ class ContractType extends Model
         'name',
         'created_by',
     ];
+
+    public function getContracts()
+    {
+        return $this->hasMany('App\Models\Contract', 'type', 'id');
+    }
 }
