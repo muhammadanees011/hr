@@ -80,7 +80,7 @@ class LeaveController extends Controller
                     'manager_id' => \Auth::user()->id
                 ])->where('type', '!=',\Auth::user()->type)->count();
                 if($isAlreadyBooked > 0){
-                    return redirect()->back()->with('error', __("You can't booked leave from different Role."));
+                    return redirect()->back()->with('error', __("You can not booked leave from different Role."));
                 }
             }
 
