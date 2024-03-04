@@ -55,6 +55,21 @@ class EmployeeController extends Controller
         }
     }
 
+    public function showEmployeeProbation()
+    {
+        if (\Auth::user()->can('Manage Employee')) {
+            if (Auth::user()->type == 'employee') {
+                $employees = Employee::where('user_id', '=', Auth::user()->id)->get();
+            } else {
+                $employees = Employee::where('created_by', \Auth::user()->creatorId())->with(['branch', 'department', 'designation'])->get();
+            }
+
+            return view('employee.indexProbation', compact('employees'));
+        } else {
+            return redirect()->back()->with('error', __('Permission denied.'));
+        }
+    }
+
     public function create()
     {
         if (\Auth::user()->can('Create Employee')) {
@@ -421,6 +436,36 @@ class EmployeeController extends Controller
             $designations->prepend('All', '0');
 
             return view('employee.profile', compact('employees', 'departments', 'designations', 'brances'));
+        } else {
+            return redirect()->back()->with('error', __('Permission denied.'));
+        }
+    }
+
+    public function meetTeam(Request $request)
+    {
+        if (\Auth::user()->can('Manage Employee Profile')) {
+            $employees = Employee::where('created_by', \Auth::user()->creatorId())->with(['designation', 'user']);
+            if (!empty($request->branch)) {
+                $employees->where('branch_id', $request->branch);
+            }
+            if (!empty($request->department)) {
+                $employees->where('department_id', $request->department);
+            }
+            if (!empty($request->designation)) {
+                $employees->where('designation_id', $request->designation);
+            }
+            $employees = $employees->get();
+
+            $brances = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $brances->prepend('All', '0');
+
+            $departments = Department::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $departments->prepend('All', '0');
+
+            $designations = Designation::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $designations->prepend('All', '0');
+
+            return view('employee.meetTeam', compact('employees', 'departments', 'designations', 'brances'));
         } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }

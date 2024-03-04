@@ -57,7 +57,10 @@
                 <div class="card-header border-0 pb-0">
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="mb-0">
-                            <div class="badge p-2 px-3 rounded bg-primary"><?php echo e(ucfirst($user->type)); ?></div>
+                            <?php $__currentLoopData = $user->roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <div class="badge p-2 px-3 rounded bg-primary"><?php echo e(ucfirst($role->name)); ?></div>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            
                         </h6>
                     </div>
                     <div class="card-header-right">
@@ -201,6 +204,16 @@
                     name: 'login_enable'
                 }));
             }, 2000);
+        });
+
+        $(document).on('change', '#role', function(){
+            const value = $('#role option:selected').text();
+            if(value.includes('manager')){
+                $('.dep_div').removeClass('d-none');
+            }else{
+                $('.dep_div').addClass('d-none');
+                $('.manager-department').val('').trigger('change');
+            }
         });
     </script>
 <?php $__env->stopPush(); ?>

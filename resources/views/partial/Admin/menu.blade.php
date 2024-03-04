@@ -154,9 +154,13 @@ $lang = Auth::user()->lang;
                 <li class="dash-item {{ Request::segment(1) == 'employee' ? 'active' : '' }}">
                     <a href="{{ route('employee.index') }}" class="dash-link"><span class="dash-micon"><i class="ti ti-user"></i></span><span class="dash-mtext">{{ __('Employee') }}</span></a>
                 </li>
+                <li class="dash-item {{ Request::segment(1) == 'employee-probation' ? 'active' : '' }}">
+                    <a href="{{ route('employee.probation.index') }}" class="dash-link"><span class="dash-micon"><i class="ti ti-user"></i></span><span class="dash-mtext">{{ __('Probation') }}</span></a>
+                </li>
                 @endif
                 @endif
                 <!-- employee-->
+
 
                 <!-- payroll-->
                 @if (Gate::check('Manage Set Salary') || Gate::check('Manage Pay Slip'))
@@ -182,7 +186,7 @@ $lang = Auth::user()->lang;
                             <a class="dash-link">{{ __('Pensions') }}</a>
                         </li> -->
                         <li class="dash-item">
-                            <a class="dash-link"  href="{{ route('bonus.index') }}">{{ __('Payroll Setup') }}</a>
+                            <a class="dash-link" href="{{ route('bonus.index') }}">{{ __('Payroll Setup') }}</a>
                         </li>
                     </ul>
                 </li>
@@ -362,24 +366,20 @@ $lang = Auth::user()->lang;
                 <!-- tranning-->
 
 
-            <!-- HR-->
-            @if (Gate::check('Manage Awards') ||
-                    Gate::check('Manage Transfer') ||
-                    Gate::check('Manage Resignation') ||
-                    Gate::check('Manage Travels') ||
-                    Gate::check('Manage Promotion') ||
-                    Gate::check('Manage Complaint') ||
-                    Gate::check('Manage Warning') ||
-                    Gate::check('Manage Termination') ||
-                    Gate::check('Manage Announcement') ||
-                    Gate::check('Manage Holiday') ||
-                    Gate::check('Manage Holiday'))
-                <li
-                    class="dash-item dash-hasmenu {{ Request::segment(1) == 'holiday' ? 'dash-trigger active' : '' }}">
-                    <a href="#!" class="dash-link"><span class="dash-micon"><i
-                                class="ti ti-user-plus"></i></span><span
-                            class="dash-mtext">{{ __('HR Admin Setup') }}</span><span class="dash-arrow"><i
-                                data-feather="chevron-right"></i></span></a>
+                <!-- HR-->
+                @if (Gate::check('Manage Awards') ||
+                Gate::check('Manage Transfer') ||
+                Gate::check('Manage Resignation') ||
+                Gate::check('Manage Travels') ||
+                Gate::check('Manage Promotion') ||
+                Gate::check('Manage Complaint') ||
+                Gate::check('Manage Warning') ||
+                Gate::check('Manage Termination') ||
+                Gate::check('Manage Announcement') ||
+                Gate::check('Manage Holiday') ||
+                Gate::check('Manage Holiday'))
+                <li class="dash-item dash-hasmenu {{ Request::segment(1) == 'holiday' ? 'dash-trigger active' : '' }}">
+                    <a href="#!" class="dash-link"><span class="dash-micon"><i class="ti ti-user-plus"></i></span><span class="dash-mtext">{{ __('HR Admin Setup') }}</span><span class="dash-arrow"><i data-feather="chevron-right"></i></span></a>
                     <ul class="dash-submenu">
                         <li class="dash-item {{ Request::segment(1) == 'award' ? 'active' : '' }}">
                             <a class="dash-link" href="{{ route('award.index') }}">{{ __('Award') }}</a>
@@ -475,22 +475,19 @@ $lang = Auth::user()->lang;
                         @endcan
                     </ul>
                 </li>
-            @endif
-            <!-- recruitment-->
+                @endif
+                <!-- recruitment-->
 
-            <!--Exits-->
-            <!-- @if (Gate::check('Manage Job') ||
+                <!--Exits-->
+                <!-- @if (Gate::check('Manage Job') ||
                     Gate::check('Manage Job Application') ||
                     Gate::check('Manage Job OnBoard') ||
                     Gate::check('Manage Custom Question') ||
                     Gate::check('Manage Interview Schedule') ||
                     Gate::check('Manage Career')) -->
-                <li
-                    class="dash-item dash-hasmenu  {{ Request::segment(1) == 'job' || Request::segment(1) == 'job-application' ? 'dash-trigger active' : '' }} ">
+                <li class="dash-item dash-hasmenu  {{ Request::segment(1) == 'job' || Request::segment(1) == 'job-application' ? 'dash-trigger active' : '' }} ">
                     <a href="#!" class="dash-link"><span class="dash-micon">
-                    <i class="ti ti-archive"></i></span><span
-                            class="dash-mtext">{{ __('Exits') }}</span><span class="dash-arrow"><i
-                                data-feather="chevron-right"></i></span></a>
+                            <i class="ti ti-archive"></i></span><span class="dash-mtext">{{ __('Exits') }}</span><span class="dash-arrow"><i data-feather="chevron-right"></i></span></a>
                     <ul class="dash-submenu">
                         @can('Manage Resignation')
                         <li class="dash-item">
@@ -503,26 +500,22 @@ $lang = Auth::user()->lang;
                         </li>
                         @endcan
                         @can('Manage Retirement')
-                            <li class="dash-item {{ request()->is('retirement*') ? 'active' : '' }}">
-                                <a class="dash-link"
-                                    href="{{ route('retirement.index') }}">{{ __('Retirement') }}</a>
-                            </li>
+                        <li class="dash-item {{ request()->is('retirement*') ? 'active' : '' }}">
+                            <a class="dash-link" href="{{ route('retirement.index') }}">{{ __('Retirement') }}</a>
+                        </li>
                         @endcan
                     </ul>
                 </li>
-            <!-- @endif -->
+                <!-- @endif -->
 
-            <!--contract-->
-            @can('Manage Contract')
-                <li
-                    class="dash-item {{ Request::route()->getName() == 'contract.index' || Request::route()->getName() == 'contract.show' ? 'active' : '' }}">
-                    <a href="{{ route('contract.index') }}" class="dash-link"><span class="dash-micon"><i
-                                class="ti ti-device-floppy"></i></span><span
-                            class="dash-mtext">{{ __('Contracts') }}</span></a>
-                @endif
-                <!-- recruitment-->
                 <!--contract-->
                 @can('Manage Contract')
+                <li class="dash-item {{ Request::route()->getName() == 'contract.index' || Request::route()->getName() == 'contract.show' ? 'active' : '' }}">
+                    <a href="{{ route('contract.index') }}" class="dash-link"><span class="dash-micon"><i class="ti ti-device-floppy"></i></span><span class="dash-mtext">{{ __('Contracts') }}</span></a>
+                    @endif
+                    <!-- recruitment-->
+                    <!--contract-->
+                    @can('Manage Contract')
                 <li class="dash-item {{ Request::route()->getName() == 'contract.index' || Request::route()->getName() == 'contract.show' ? 'active' : '' }}">
                     <a href="{{ route('contract.index') }}" class="dash-link"><span class="dash-micon"><i class="ti ti-device-floppy"></i></span><span class="dash-mtext">{{ __('Contracts') }}</span></a>
                 </li>
@@ -578,32 +571,31 @@ $lang = Auth::user()->lang;
                 </li>
                 @endcan
 
-            <!-- Eclaim-->
-            @can('Manage Eclaim')
+                <!-- Eclaim-->
+                @can('Manage Eclaim')
                 <li class="dash-item">
                     <a href="{{ route('eclaim.index') }}" class="dash-link">
-                        <span class="dash-micon"><i class="ti ti-file"></i></span><span
-                            class="dash-mtext">{{ __('Manage Eclaim') }}
+                        <span class="dash-micon"><i class="ti ti-file"></i></span><span class="dash-mtext">{{ __('Manage Eclaim') }}
                         </span>
                     </a>
                 </li>
-            @endcan
+                @endcan
 
-            {{-- Email Template --}}
-            @if (\Auth::user()->type == 'company')
+                {{-- Email Template --}}
+                @if (\Auth::user()->type == 'company')
                 <li class="dash-item {{ Request::route()->getName() == 'email_template.show' || Request::segment(1) == 'email_template_lang' || Request::route()->getName() == 'manageemail.lang' ? 'active' : '' }}">
-                    <a href="{{ route('manage.email.language', [$emailTemplate->id, \Auth::user()->lang]) }}"
-                        class="dash-link"><span class="dash-micon"><i class="ti ti-template"></i></span><span
-                            class="dash-mtext">{{ __('Email Templates') }}</span></a>
+                    <a href="{{ route('manage.email.language', [$emailTemplate->id, \Auth::user()->lang]) }}" class="dash-link"><span class="dash-micon"><i class="ti ti-template"></i></span><span class="dash-mtext">{{ __('Email Templates') }}</span></a>
                 </li>
                 @endif
                 <!--company policy-->
 
-
+                <li class="dash-item">
+                    <a href="{{ route('company-policy.index') }}" class="dash-link"><span class="dash-micon"><i class="ti ti-pray"></i></span><span class="dash-mtext">{{ __('Policy & Procedures') }}</span></a>
+                </li>
 
                 @if (Gate::check('Manage Company Policy'))
-                <li class="dash-item">
-                    <a href="{{ route('company-policy.index') }}" class="dash-link"><span class="dash-micon"><i class="ti ti-pray"></i></span><span class="dash-mtext">{{ __('Company Policy') }}</span></a>
+                <li class="dash-item {{ Request::segment(1) == 'meet-team' ? 'active' : '' }}">
+                    <a href="{{ route('employee.meetTeam') }}" class="dash-link"><span class="dash-micon"><i class="ti ti-users"></i></span><span class="dash-mtext">{{ __('Meet Team') }}</span></a>
                 </li>
                 @endcan
                 <!--chats-->

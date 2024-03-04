@@ -185,6 +185,14 @@
             </a>
         <?php endif; ?>
 
+        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage EclaimType')): ?>
+            <a href="<?php echo e(route('eclaim_type.index')); ?>"
+                class="list-group-item list-group-item-action border-0 <?php echo e(request()->is('eclaim_type*') ? 'active' : ''); ?>"><?php echo e(__('Eclaim Type')); ?>
+
+                <div class="float-end"><i class="ti ti-chevron-right"></i></div>
+            </a>
+        <?php endif; ?>
+
     </div>
 </div>
 <?php /**PATH C:\wamp64\www\hrmgo\resources\views/layouts/hrm_setup.blade.php ENDPATH**/ ?>

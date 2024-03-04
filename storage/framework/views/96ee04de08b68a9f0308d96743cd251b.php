@@ -47,7 +47,8 @@ $chatgpt = Utility::getValByName('enable_chatgpt');
                 var emp_select = `<select class="form-control department_id" name="department" placeholder="Select Department"></select>`;
                 $('.department_div').html(emp_select);
 
-                $('.department_id').append('<option value=""> <?php echo e(__('Select Department')); ?> </option>');
+                $('.department_id').append('<option value=""> <?php echo e(__('
+                    Select Department ')); ?> </option>');
                 $.each(data, function(key, value) {
                     $('.department_id').append('<option value="' + key + '">' + value + '</option>');
                 });
@@ -250,8 +251,6 @@ $chatgpt = Utility::getValByName('enable_chatgpt');
         <div class="card card-fluid job-card">
             <div class="card-body ">
                 <div class="row">
-
-
                     <div class="form-group col-md-12">
                         <?php echo Form::label('requirement', __('Job Requirement'), ['class' => 'col-form-label']); ?>
 
@@ -267,7 +266,16 @@ $chatgpt = Utility::getValByName('enable_chatgpt');
             </div>
         </div>
     </div>
-    <div class="col-md-12 text-end">
+    <div class="col-md-12 text-end row">
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+                <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li><a href="#">HTML</a></li>
+                <li><a href="#">CSS</a></li>
+                <li><a href="#">JavaScript</a></li>
+            </ul>
+        </div>
         <div class="form-group">
             <input type="submit" value="<?php echo e(__('Create')); ?>" class="btn btn-primary">
         </div>
