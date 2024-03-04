@@ -55,7 +55,10 @@
                 <div class="card-header border-0 pb-0">
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="mb-0">
-                            <div class="badge p-2 px-3 rounded bg-primary">{{ ucfirst($user->type) }}</div>
+                            @foreach($user->roles as $role)
+                                <div class="badge p-2 px-3 rounded bg-primary">{{ ucfirst($role->name) }}</div>
+                            @endforeach
+                            {{-- <div class="badge p-2 px-3 rounded bg-primary">{{ ucfirst($user->type) }}</div> --}}
                         </h6>
                     </div>
                     <div class="card-header-right">
@@ -196,6 +199,16 @@
                     name: 'login_enable'
                 }));
             }, 2000);
+        });
+
+        $(document).on('change', '#role', function(){
+            const value = $('#role option:selected').text();
+            if(value.includes('manager')){
+                $('.dep_div').removeClass('d-none');
+            }else{
+                $('.dep_div').addClass('d-none');
+                $('.manager-department').val('').trigger('change');
+            }
         });
     </script>
 @endpush

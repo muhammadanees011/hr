@@ -21,9 +21,10 @@
         </div> --}}
         @if (\Auth::user()->type != 'super admin')
             <div class="form-group">
-                {{ Form::label('role', __('User Role'), ['class' => 'form-label']) }}
+                {{ Form::label('roles', __('User Role'), ['class' => 'form-label']) }}
                 <div class="form-icon-user">
-                    {!! Form::select('role', $roles, null, ['class' => 'form-control select2 ', 'required' => 'required']) !!}
+                    {{-- {!! Form::select('role', $roles, null, ['class' => 'form-control select2 ', 'required' => 'required']) !!} --}}
+                    {{ Form::select('roles[]', $roles, null, ['class' => 'form-control select2', 'id' => 'choices-multiple', 'multiple' => '', 'required' => 'required']) }}
                 </div>
                 @error('role')
                     <span class="invalid-role" role="alert">
@@ -46,6 +47,17 @@
                 {{ Form::password('password', ['class' => 'form-control', 'placeholder' => __('Enter Password'), 'minlength' => '6']) }}
                 @error('password')
                     <small class="invalid-password" role="alert">
+                        <strong class="text-danger">{{ $message }}</strong>
+                    </small>
+                @enderror
+            </div>
+        </div>
+        <div class="col-md-12 dep_div d-none">
+            <div class="form-group">
+                {{ Form::label('assigned_departments', __('Manager of Department'), ['class' => 'form-label']) }}
+                {{ Form::select('assigned_departments[]', $departments, null, ['class' => 'form-control select2 manager-department', 'id' => 'choices-multiple', 'multiple' => '', 'required' => 'required']) }}
+                @error('assigned_departments')
+                    <small class="invalid-assigned_departments" role="alert">
                         <strong class="text-danger">{{ $message }}</strong>
                     </small>
                 @enderror

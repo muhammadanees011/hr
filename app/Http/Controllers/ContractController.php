@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
 use App\Models\Contract;
-use App\Models\ContractType;
 use App\Models\ContractAttechment;
 use App\Models\ContractComment;
 use App\Models\ContractNote;
-use App\Models\ActivityLog;
-use App\Models\Utility;
+use App\Models\ContractType;
+use App\Models\Department;
+use App\Models\Employee;
 use App\Models\User;
+use App\Models\Utility;
 use Illuminate\Http\Request;
 
 class ContractController extends Controller
@@ -98,24 +100,6 @@ class ContractController extends Controller
             }
         } else {
             return redirect()->back()->with('error', __('Permission Denied.'));
-        }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        if (\Auth::user()->can('Create Contract')) {
-            $employee       = User::where('type', '=', 'employee')->get()->pluck('name', 'id');
-
-            $contractType = ContractType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-
-            return view('contracts.create', compact('contractType', 'employee'));
-        } else {
-            return response()->json(['error' => __('Permission Denied.')], 401);
         }
     }
 
