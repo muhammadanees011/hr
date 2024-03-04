@@ -201,8 +201,8 @@
             }, 2000);
         });
 
-        $(document).on('change', '#role', function(){
-            const value = $('#role option:selected').text();
+        $(document).on('change', '.user-role', function(){
+            const value = $('.user-role option:selected').text();
             if(value.includes('manager')){
                 $('.dep_div').removeClass('d-none');
             }else{

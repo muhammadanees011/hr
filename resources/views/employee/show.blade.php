@@ -262,6 +262,258 @@
                     </div>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+
+                    <div class="card">
+                        <div class="card-body employee-detail-body fulls-card">
+                            <h5>{{ __('Employment History') }}</h5>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('Company Name') }} : </strong>
+                                        <span>HeroShield Firefighters</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info text-sm font-style">
+                                        <strong class="font-bold">{{ __('Designation/Role') }} :</strong>
+                                        <span>Deputy Fire Chief</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('From') }} :</strong>
+                                        <span>{{ \Auth::user()->dateFormat($employee->dob) }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('To') }} :</strong>
+                                        <span>{{ \Auth::user()->dateFormat($employee->dob) }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('Company Name') }} : </strong>
+                                        <span>HeroShield Firefighters</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info text-sm font-style">
+                                        <strong class="font-bold">{{ __('Designation/Role') }} :</strong>
+                                        <span>Deputy Fire Chief</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('From') }} :</strong>
+                                        <span>{{ \Auth::user()->dateFormat($employee->dob) }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('To') }} :</strong>
+                                        <span>{{ \Auth::user()->dateFormat($employee->dob) }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('Company Name') }} : </strong>
+                                        <span>FireFortress Teams</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info text-sm font-style">
+                                        <strong class="font-bold">{{ __('Designation/Role') }} :</strong>
+                                        <span>Fire Chief</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('From') }} :</strong>
+                                        <span>{{ \Auth::user()->dateFormat($employee->dob) }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('To') }} :</strong>
+                                        <span>{{ \Auth::user()->dateFormat($employee->dob) }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('Company Name') }} : </strong>
+                                        <span>Lifesaver FlameForce</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info text-sm font-style">
+                                        <strong class="font-bold">{{ __('Designation/Role') }} :</strong>
+                                        <span>Lieutenant</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('From') }} :</strong>
+                                        <span>{{ \Auth::user()->dateFormat($employee->dob) }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('To') }} :</strong>
+                                        <span>{{ \Auth::user()->dateFormat($employee->dob) }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('Company Name') }} : </strong>
+                                        <span>FirePulse Emergency Solutions</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info text-sm font-style">
+                                        <strong class="font-bold">{{ __('Designation/Role') }} :</strong>
+                                        <span>Firefighter</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('From') }} :</strong>
+                                        <span>{{ \Auth::user()->dateFormat($employee->dob) }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('To') }} :</strong>
+                                        <span>{{ \Auth::user()->dateFormat($employee->dob) }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+
+                    <div class="card " style="height:auto">
+                        <div class="card-body employee-detail-body fulls-card">
+                            <h5>{{ __('Achievements') }}</h5>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('Award') }} :</strong>
+                                        <span>{{ !empty($employee->designation) ? $employee->designation->name : '' }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('Year') }} :</strong>
+                                        <span>{{ \Auth::user()->dateFormat($employee->company_doj) }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('Award') }} :</strong>
+                                        <span>{{ !empty($employee->designation) ? $employee->designation->name : '' }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('Year') }} :</strong>
+                                        <span>{{ \Auth::user()->dateFormat($employee->company_doj) }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('Award') }} :</strong>
+                                        <span>{{ !empty($employee->designation) ? $employee->designation->name : '' }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('Year') }} :</strong>
+                                        <span>{{ \Auth::user()->dateFormat($employee->company_doj) }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('Award') }} :</strong>
+                                        <span>{{ !empty($employee->designation) ? $employee->designation->name : '' }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('Year') }} :</strong>
+                                        <span>{{ \Auth::user()->dateFormat($employee->company_doj) }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('Award') }} :</strong>
+                                        <span>{{ !empty($employee->designation) ? $employee->designation->name : '' }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('Year') }} :</strong>
+                                        <span>{{ \Auth::user()->dateFormat($employee->company_doj) }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('Award') }} :</strong>
+                                        <span>{{ !empty($employee->designation) ? $employee->designation->name : '' }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="info text-sm">
+                                        <strong class="font-bold">{{ __('Year') }} :</strong>
+                                        <span>{{ \Auth::user()->dateFormat($employee->company_doj) }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 @endsection
