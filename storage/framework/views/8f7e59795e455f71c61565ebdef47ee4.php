@@ -150,9 +150,13 @@ $lang = Auth::user()->lang;
                 <li class="dash-item <?php echo e(Request::segment(1) == 'employee' ? 'active' : ''); ?>">
                     <a href="<?php echo e(route('employee.index')); ?>" class="dash-link"><span class="dash-micon"><i class="ti ti-user"></i></span><span class="dash-mtext"><?php echo e(__('Employee')); ?></span></a>
                 </li>
+                <li class="dash-item <?php echo e(Request::segment(1) == 'employee-probation' ? 'active' : ''); ?>">
+                    <a href="<?php echo e(route('employee.probation.index')); ?>" class="dash-link"><span class="dash-micon"><i class="ti ti-user"></i></span><span class="dash-mtext"><?php echo e(__('Probation')); ?></span></a>
+                </li>
                 <?php endif; ?>
                 <?php endif; ?>
                 <!-- employee-->
+
 
                 <!-- payroll-->
                 <?php if(Gate::check('Manage Set Salary') || Gate::check('Manage Pay Slip')): ?>
@@ -178,7 +182,7 @@ $lang = Auth::user()->lang;
                             <a class="dash-link"><?php echo e(__('Pensions')); ?></a>
                         </li> -->
                         <li class="dash-item">
-                            <a class="dash-link"  href="<?php echo e(route('bonus.index')); ?>"><?php echo e(__('Payroll Setup')); ?></a>
+                            <a class="dash-link" href="<?php echo e(route('bonus.index')); ?>"><?php echo e(__('Payroll Setup')); ?></a>
                         </li>
                     </ul>
                 </li>
@@ -329,6 +333,7 @@ $lang = Auth::user()->lang;
                             <a class="dash-link" href="<?php echo e(route('transferbalance.index')); ?>"><?php echo e(__('Transfer Balance')); ?></a>
                         </li>
                         <?php endif; ?>
+
                     </ul>
                 </li>
                 <?php endif; ?>
@@ -367,6 +372,7 @@ $lang = Auth::user()->lang;
                 Gate::check('Manage Warning') ||
                 Gate::check('Manage Termination') ||
                 Gate::check('Manage Announcement') ||
+                Gate::check('Manage Holiday') ||
                 Gate::check('Manage Holiday')): ?>
                 <li class="dash-item dash-hasmenu <?php echo e(Request::segment(1) == 'holiday' ? 'dash-trigger active' : ''); ?>">
                     <a href="#!" class="dash-link"><span class="dash-micon"><i class="ti ti-user-plus"></i></span><span class="dash-mtext"><?php echo e(__('HR Admin Setup')); ?></span><span class="dash-arrow"><i data-feather="chevron-right"></i></span></a>
@@ -465,22 +471,19 @@ $lang = Auth::user()->lang;
                         <?php endif; ?>
                     </ul>
                 </li>
-            <?php endif; ?>
-            <!-- recruitment-->
+                <?php endif; ?>
+                <!-- recruitment-->
 
-            <!--Exits-->
-            <!-- <?php if(Gate::check('Manage Job') ||
+                <!--Exits-->
+                <!-- <?php if(Gate::check('Manage Job') ||
                     Gate::check('Manage Job Application') ||
                     Gate::check('Manage Job OnBoard') ||
                     Gate::check('Manage Custom Question') ||
                     Gate::check('Manage Interview Schedule') ||
                     Gate::check('Manage Career')): ?> -->
-                <li
-                    class="dash-item dash-hasmenu  <?php echo e(Request::segment(1) == 'job' || Request::segment(1) == 'job-application' ? 'dash-trigger active' : ''); ?> ">
+                <li class="dash-item dash-hasmenu  <?php echo e(Request::segment(1) == 'job' || Request::segment(1) == 'job-application' ? 'dash-trigger active' : ''); ?> ">
                     <a href="#!" class="dash-link"><span class="dash-micon">
-                    <i class="ti ti-archive"></i></span><span
-                            class="dash-mtext"><?php echo e(__('Exits')); ?></span><span class="dash-arrow"><i
-                                data-feather="chevron-right"></i></span></a>
+                            <i class="ti ti-archive"></i></span><span class="dash-mtext"><?php echo e(__('Exits')); ?></span><span class="dash-arrow"><i data-feather="chevron-right"></i></span></a>
                     <ul class="dash-submenu">
                         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Resignation')): ?>
                         <li class="dash-item">
@@ -493,26 +496,22 @@ $lang = Auth::user()->lang;
                         </li>
                         <?php endif; ?>
                         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Retirement')): ?>
-                            <li class="dash-item <?php echo e(request()->is('retirement*') ? 'active' : ''); ?>">
-                                <a class="dash-link"
-                                    href="<?php echo e(route('retirement.index')); ?>"><?php echo e(__('Retirement')); ?></a>
-                            </li>
+                        <li class="dash-item <?php echo e(request()->is('retirement*') ? 'active' : ''); ?>">
+                            <a class="dash-link" href="<?php echo e(route('retirement.index')); ?>"><?php echo e(__('Retirement')); ?></a>
+                        </li>
                         <?php endif; ?>
                     </ul>
                 </li>
-            <!-- <?php endif; ?> -->
+                <!-- <?php endif; ?> -->
 
-            <!--contract-->
-            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Contract')): ?>
-                <li
-                    class="dash-item <?php echo e(Request::route()->getName() == 'contract.index' || Request::route()->getName() == 'contract.show' ? 'active' : ''); ?>">
-                    <a href="<?php echo e(route('contract.index')); ?>" class="dash-link"><span class="dash-micon"><i
-                                class="ti ti-device-floppy"></i></span><span
-                            class="dash-mtext"><?php echo e(__('Contracts')); ?></span></a>
-                <?php endif; ?>
-                <!-- recruitment-->
                 <!--contract-->
                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Contract')): ?>
+                <li class="dash-item <?php echo e(Request::route()->getName() == 'contract.index' || Request::route()->getName() == 'contract.show' ? 'active' : ''); ?>">
+                    <a href="<?php echo e(route('contract.index')); ?>" class="dash-link"><span class="dash-micon"><i class="ti ti-device-floppy"></i></span><span class="dash-mtext"><?php echo e(__('Contracts')); ?></span></a>
+                    <?php endif; ?>
+                    <!-- recruitment-->
+                    <!--contract-->
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Contract')): ?>
                 <li class="dash-item <?php echo e(Request::route()->getName() == 'contract.index' || Request::route()->getName() == 'contract.show' ? 'active' : ''); ?>">
                     <a href="<?php echo e(route('contract.index')); ?>" class="dash-link"><span class="dash-micon"><i class="ti ti-device-floppy"></i></span><span class="dash-mtext"><?php echo e(__('Contracts')); ?></span></a>
                 </li>
@@ -568,6 +567,17 @@ $lang = Auth::user()->lang;
                 </li>
                 <?php endif; ?>
 
+                <!-- Eclaim-->
+                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Eclaim')): ?>
+                <li class="dash-item">
+                    <a href="<?php echo e(route('eclaim.index')); ?>" class="dash-link">
+                        <span class="dash-micon"><i class="ti ti-file"></i></span><span class="dash-mtext"><?php echo e(__('Manage Eclaim')); ?>
+
+                        </span>
+                    </a>
+                </li>
+                <?php endif; ?>
+
                 
                 <?php if(\Auth::user()->type == 'company'): ?>
                 <li class="dash-item <?php echo e(Request::route()->getName() == 'email_template.show' || Request::segment(1) == 'email_template_lang' || Request::route()->getName() == 'manageemail.lang' ? 'active' : ''); ?>">
@@ -576,11 +586,13 @@ $lang = Auth::user()->lang;
                 <?php endif; ?>
                 <!--company policy-->
 
-
+                <li class="dash-item">
+                    <a href="<?php echo e(route('company-policy.index')); ?>" class="dash-link"><span class="dash-micon"><i class="ti ti-pray"></i></span><span class="dash-mtext"><?php echo e(__('Policy & Procedures')); ?></span></a>
+                </li>
 
                 <?php if(Gate::check('Manage Company Policy')): ?>
-                <li class="dash-item">
-                    <a href="<?php echo e(route('company-policy.index')); ?>" class="dash-link"><span class="dash-micon"><i class="ti ti-pray"></i></span><span class="dash-mtext"><?php echo e(__('Company Policy')); ?></span></a>
+                <li class="dash-item <?php echo e(Request::segment(1) == 'meet-team' ? 'active' : ''); ?>">
+                    <a href="<?php echo e(route('employee.meetTeam')); ?>" class="dash-link"><span class="dash-micon"><i class="ti ti-users"></i></span><span class="dash-mtext"><?php echo e(__('Meet Team')); ?></span></a>
                 </li>
                 <?php endif; ?>
                 <!--chats-->

@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
 @section('page-title')
-   {{ __('Manage Company Policy') }}
+   {{ __('Manage Policy & Procedures') }}
 @endsection
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
-    <li class="breadcrumb-item">{{ __('Company Policy') }}</li>
+    <li class="breadcrumb-item">{{ __('Policy & Procedures') }}</li>
 @endsection
 
 @section('action-button')

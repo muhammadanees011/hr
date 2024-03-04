@@ -264,6 +264,12 @@ Route::group(['middleware' => ['verified']], function () {
             'XSS',
         ]
     );
+    Route::get('meet-team', [EmployeeController::class, 'MeetTeam'])->name('employee.meetTeam')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
     Route::get('show-employee-profile/{id}', [EmployeeController::class, 'profileShow'])->name('show.employee.profile')->middleware(
         [
             'auth',
@@ -287,6 +293,7 @@ Route::group(['middleware' => ['verified']], function () {
         ]
     );
 
+    Route::get('employee-probation', [EmployeeController::class, 'showEmployeeProbation'])->name('employee.probation.index')->middleware(['auth', 'XSS']);
     Route::get('personalFile/{id}', [EmployeeController::class, 'showPersonalFile'])->name('employee.personalFile')->middleware(['auth', 'XSS']);
     Route::post('personalFile/store', [EmployeeController::class, 'storePersonalFile'])->name('employee.storePersonalFile')->middleware(['auth', 'XSS']);
 
