@@ -24,7 +24,7 @@ $lang = Auth::user()->lang;
 
         <div class="navbar-wrapper">
             <div class="m-header main-logo" 
-            style="">
+            style="background-color:#584ED2 !important;border-bottom-right-radius:20px;">
 
                 <a href="{{ route('home') }}" class="b-brand">
                     <!-- ========   change your logo hear   ============ -->
@@ -33,8 +33,8 @@ $lang = Auth::user()->lang;
                     <!-- <p style="font-weight:bold;">
                 {{ $logos}}
             </p> -->
-                    <img src="{{asset( '/assets/images/HRMPRO-logos_transparent.png' )}}" alt="{{ env('APP_NAME') }}" class="logo" style="height:7rem !important; width:7rem !important;" />
-                    <!-- <img src="{{asset( '/assets/images/eduhr.png' )}}" alt="{{ env('APP_NAME') }}" class="logo" style="height:7rem !important; width:7rem !important;" /> -->
+                    <!-- <img src="{{asset( '/assets/images/HRMPRO-logos_transparent.png' )}}" alt="{{ env('APP_NAME') }}" class="logo" style="height:7rem !important; width:7rem !important;" /> -->
+                    <img src="{{asset( '/assets/images/eduhr.png' )}}" alt="{{ env('APP_NAME') }}" class="logo" style="height:7rem !important; width:7rem !important;" />
                     <!-- <img src="{{asset( '/assets/uploads/logo/logo-dark.png' )}}" alt="{{ env('APP_NAME') }}" class="logo logo-lg" style="height: 40px;" /> -->
                     <!-- <img src="{{asset('assets/images/theme-3.svg')}}" alt="{{ env('APP_NAME') }}" class="logo logo-lg" style="height: 40px;" /> -->
                 </a>

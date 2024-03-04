@@ -128,6 +128,26 @@
                         $LangName->fullName = 'English';
                     }
                 ?>
+
+                <?php if(count(Auth::user()->roles) > 1): ?>
+                    <li class="dropdown dash-h-item drp-language">
+                        <a class="dash-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#"
+                            role="button" aria-haspopup="false" aria-expanded="false" id="dropdownLanguage">
+                            <i class="ti ti-users nocolor"></i>
+                            <span class="drp-text hide-mob">Assigned Roles</span>
+                            <i class="ti ti-chevron-down drp-arrow nocolor"></i>
+                        </a>
+                        <div class="dropdown-menu dash-h-dropdown dropdown-menu-end" aria-labelledby="dropdownLanguage">
+                            <?php $__currentLoopData = Auth::user()->roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <a href="<?php echo e(route('change.role', $role)); ?>"
+                                    class="dropdown-item <?php echo e(Auth::user()->type == $role->name ? 'text-primary' : ''); ?>">
+                                    <span><?php echo e(ucFirst($role->name)); ?></span>
+                                </a>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </div>
+                    </li>
+                <?php endif; ?>
+
                 <li class="dropdown dash-h-item drp-language">
                     <a class="dash-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#"
                         role="button" aria-haspopup="false" aria-expanded="false" id="dropdownLanguage">
