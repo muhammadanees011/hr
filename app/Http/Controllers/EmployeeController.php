@@ -104,7 +104,7 @@ class EmployeeController extends Controller
                     $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                     $extension       = $request->file('document')[$key]->getClientOriginalExtension();
                     $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-                    $dir             = 'uploads/document/';
+                    $dir             = 'storage/uploads/document/';
 
                     $image_path      = $dir . $fileNameToStore;
 
@@ -275,7 +275,7 @@ class EmployeeController extends Controller
                         $extension       = $request->file('document')[$key]->getClientOriginalExtension();
                         $fileNameToStore = $filename . '_' . time() . '.' . $extension;
 
-                        $dir             = 'uploads/document/';
+                        $dir             = 'storage/uploads/document/';
 
                         $image_path      = $dir . $fileNameToStore;
 
@@ -363,6 +363,7 @@ class EmployeeController extends Controller
 
     public function show($id)
     {
+        
         if (\Auth::user()->can('Show Employee')) {
             $empId        = Crypt::decrypt($id);
             $documents    = Document::where('created_by', \Auth::user()->creatorId())->get();
@@ -371,6 +372,7 @@ class EmployeeController extends Controller
             $designations = Designation::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $employee     = Employee::find($empId);
             $employeesId  = \Auth::user()->employeeIdFormat($employee->employee_id);
+            // dd($documents);
 
             return view('employee.show', compact('employee', 'employeesId', 'branches', 'departments', 'designations', 'documents'));
         } else {
