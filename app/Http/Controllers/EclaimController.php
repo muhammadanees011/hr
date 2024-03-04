@@ -14,11 +14,11 @@ class EclaimController extends Controller
         if (\Auth::user()->can('Manage Eclaim')) {
             $query = Eclaim::with('claimType', 'employee');
 
-            if(\Auth::user()->type=="hr" && \Auth::user()->can('Approve Eclaim')){
-                $query = $query->where('status', 'pending');
-            } else if(\Auth::user()->type != "employee" && \Auth::user()->can('Approve Eclaim')){
-                $query = $query->where('status', 'approved by HR');
-            }
+            // if(\Auth::user()->type=="hr" && \Auth::user()->can('Approve Eclaim')){
+            //     $query = $query->where('status', 'pending');
+            // } else {
+            //     $query = $query->where('status', 'approved by HR');
+            // }
 
             if(\Auth::user()->type=="employee"){
                 $query = $query->where('employee_id', '=', \Auth::user()->id);
