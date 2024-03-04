@@ -23,7 +23,7 @@ $lang = Auth::user()->lang;
 
         <div class="navbar-wrapper">
             <div class="m-header main-logo" 
-            style="">
+            style="background-color:#584ED2 !important;border-bottom-right-radius:20px;">
 
                 <a href="<?php echo e(route('home')); ?>" class="b-brand">
                     <!-- ========   change your logo hear   ============ -->
@@ -33,8 +33,8 @@ $lang = Auth::user()->lang;
                 <?php echo e($logos); ?>
 
             </p> -->
-                    <img src="<?php echo e(asset( '/assets/images/HRMPRO-logos_transparent.png' )); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo" style="height:7rem !important; width:7rem !important;" />
-                    <!-- <img src="<?php echo e(asset( '/assets/images/eduhr.png' )); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo" style="height:7rem !important; width:7rem !important;" /> -->
+                    <!-- <img src="<?php echo e(asset( '/assets/images/HRMPRO-logos_transparent.png' )); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo" style="height:7rem !important; width:7rem !important;" /> -->
+                    <img src="<?php echo e(asset( '/assets/images/eduhr.png' )); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo" style="height:7rem !important; width:7rem !important;" />
                     <!-- <img src="<?php echo e(asset( '/assets/uploads/logo/logo-dark.png' )); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo logo-lg" style="height: 40px;" /> -->
                     <!-- <img src="<?php echo e(asset('assets/images/theme-3.svg')); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo logo-lg" style="height: 40px;" /> -->
                 </a>
@@ -369,6 +369,7 @@ $lang = Auth::user()->lang;
                             <a class="dash-link" href="<?php echo e(route('transferbalance.index')); ?>"><?php echo e(__('Transfer Balance')); ?></a>
                         </li>
                         <?php endif; ?>
+
                     </ul>
                 </li>
                 <?php endif; ?>
@@ -397,19 +398,24 @@ $lang = Auth::user()->lang;
                 <!-- tranning-->
 
 
-                <!-- HR-->
-                <?php if(Gate::check('Manage Awards') ||
-                Gate::check('Manage Transfer') ||
-                Gate::check('Manage Resignation') ||
-                Gate::check('Manage Travels') ||
-                Gate::check('Manage Promotion') ||
-                Gate::check('Manage Complaint') ||
-                Gate::check('Manage Warning') ||
-                Gate::check('Manage Termination') ||
-                Gate::check('Manage Announcement') ||
-                Gate::check('Manage Holiday')): ?>
-                <li class="dash-item dash-hasmenu <?php echo e(Request::segment(1) == 'holiday' ? 'dash-trigger active' : ''); ?>">
-                    <a href="#!" class="dash-link"><span class="dash-micon"><i class="ti ti-user-plus"></i></span><span class="dash-mtext"><?php echo e(__('HR Admin Setup')); ?></span><span class="dash-arrow"><i data-feather="chevron-right"></i></span></a>
+            <!-- HR-->
+            <?php if(Gate::check('Manage Awards') ||
+                    Gate::check('Manage Transfer') ||
+                    Gate::check('Manage Resignation') ||
+                    Gate::check('Manage Travels') ||
+                    Gate::check('Manage Promotion') ||
+                    Gate::check('Manage Complaint') ||
+                    Gate::check('Manage Warning') ||
+                    Gate::check('Manage Termination') ||
+                    Gate::check('Manage Announcement') ||
+                    Gate::check('Manage Holiday') ||
+                    Gate::check('Manage Holiday')): ?>
+                <li
+                    class="dash-item dash-hasmenu <?php echo e(Request::segment(1) == 'holiday' ? 'dash-trigger active' : ''); ?>">
+                    <a href="#!" class="dash-link"><span class="dash-micon"><i
+                                class="ti ti-user-plus"></i></span><span
+                            class="dash-mtext"><?php echo e(__('HR Admin Setup')); ?></span><span class="dash-arrow"><i
+                                data-feather="chevron-right"></i></span></a>
                     <ul class="dash-submenu">
                         <li class="dash-item <?php echo e(Request::segment(1) == 'award' ? 'active' : ''); ?>">
                             <a class="dash-link" href="<?php echo e(route('award.index')); ?>"><?php echo e(__('Award')); ?></a>
@@ -627,10 +633,24 @@ $lang = Auth::user()->lang;
                 </li>
                 <?php endif; ?>
 
-                
-                <?php if(\Auth::user()->type == 'company'): ?>
+            <!-- Eclaim-->
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Eclaim')): ?>
+                <li class="dash-item">
+                    <a href="<?php echo e(route('eclaim.index')); ?>" class="dash-link">
+                        <span class="dash-micon"><i class="ti ti-file"></i></span><span
+                            class="dash-mtext"><?php echo e(__('Manage Eclaim')); ?>
+
+                        </span>
+                    </a>
+                </li>
+            <?php endif; ?>
+
+            
+            <?php if(\Auth::user()->type == 'company'): ?>
                 <li class="dash-item <?php echo e(Request::route()->getName() == 'email_template.show' || Request::segment(1) == 'email_template_lang' || Request::route()->getName() == 'manageemail.lang' ? 'active' : ''); ?>">
-                    <a href="<?php echo e(route('manage.email.language', [$emailTemplate->id, \Auth::user()->lang])); ?>" class="dash-link"><span class="dash-micon"><i class="ti ti-template"></i></span><span class="dash-mtext"><?php echo e(__('Email Templates')); ?></span></a>
+                    <a href="<?php echo e(route('manage.email.language', [$emailTemplate->id, \Auth::user()->lang])); ?>"
+                        class="dash-link"><span class="dash-micon"><i class="ti ti-template"></i></span><span
+                            class="dash-mtext"><?php echo e(__('Email Templates')); ?></span></a>
                 </li>
                 <?php endif; ?>
                 <!--company policy-->
