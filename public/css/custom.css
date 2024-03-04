@@ -507,12 +507,12 @@ width: 15px !important;
 .job-card-body {
     padding: 15px;
     border-radius: 15px;
-    background: linear-gradient(277.29deg, rgba(111, 217, 67, 0.09) 0.99%, rgba(111, 217, 67, 0) 100.89%);
+    background: linear-gradient(277.29deg, rgba(88, 78, 210, 0.09) 0.99%, rgba(88, 78, 210, 0) 100.89%);
     -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
     -ms-border-radius: 15px;
     -o-border-radius: 15px;
-    border: 1px solid #6FD943;
+    border: 1px solid #584ED2;
 }
 
 .placedjob-section {

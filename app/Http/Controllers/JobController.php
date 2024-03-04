@@ -18,7 +18,7 @@ class JobController extends Controller
     public function index()
     {
         if (\Auth::user()->can('Manage Job Category')) {
-            $jobs = Job::where('created_by', '=', \Auth::user()->creatorId())->with('branches')->get();
+            $jobs = Job::where('created_by', '=', \Auth::user()->creatorId())->with(['branches'])->get();
 
             $data['total']     = Job::where('created_by', '=', \Auth::user()->creatorId())->count();
             $data['active']    = Job::where('status', 'active')->where('created_by', '=', \Auth::user()->creatorId())->count();
@@ -55,6 +55,8 @@ class JobController extends Controller
                 [
                     'title' => 'required',
                     'branch' => 'required',
+                    'department' => 'required',
+                    'contract_type' => 'required',
                     'category' => 'required',
                     'skill' => 'required',
                     'position' => 'required',
@@ -74,6 +76,8 @@ class JobController extends Controller
             $job                  = new Job();
             $job->title           = $request->title;
             $job->branch          = $request->branch;
+            $job->department      = $request->department;
+            $job->contract_type   = $request->contract_type;
             $job->category        = $request->category;
             $job->skill           = $request->skill;
             $job->position        = $request->position;
@@ -134,6 +138,8 @@ class JobController extends Controller
                 [
                     'title' => 'required',
                     'branch' => 'required',
+                    'department' => 'required',
+                    'contract_type' => 'required',
                     'category' => 'required',
                     'skill' => 'required',
                     'position' => 'required',
@@ -152,6 +158,8 @@ class JobController extends Controller
 
             $job->title           = $request->title;
             $job->branch          = $request->branch;
+            $job->department      = $request->department;
+            $job->contract_type   = $request->contract_type;
             $job->category        = $request->category;
             $job->skill           = $request->skill;
             $job->position        = $request->position;

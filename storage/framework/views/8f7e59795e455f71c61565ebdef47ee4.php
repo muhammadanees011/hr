@@ -176,10 +176,10 @@ $lang = Auth::user()->lang;
                         </li>
                         <li class="dash-item">
                             <a class="dash-link"><?php echo e(__('Pensions')); ?></a>
-                        </li>
-                        <li class="dash-item">
-                            <a class="dash-link"><?php echo e(__('Payroll Setup')); ?></a>
                         </li> -->
+                        <li class="dash-item">
+                            <a class="dash-link"  href="<?php echo e(route('bonus.index')); ?>"><?php echo e(__('Payroll Setup')); ?></a>
+                        </li>
                     </ul>
                 </li>
                 <?php endif; ?>
@@ -377,9 +377,10 @@ $lang = Auth::user()->lang;
                         <li class="dash-item">
                             <a class="dash-link" href="<?php echo e(route('transfer.index')); ?>"><?php echo e(__('Transfer')); ?></a>
                         </li>
-                        <li class="dash-item">
-                            <a class="dash-link" href="<?php echo e(route('resignation.index')); ?>"><?php echo e(__('Resignation')); ?></a>
-                        </li>
+                        <!-- <li class="dash-item">
+                            <a class="dash-link"
+                                href="<?php echo e(route('resignation.index')); ?>"><?php echo e(__('Resignation')); ?></a>
+                        </li> -->
                         <li class="dash-item">
                             <a class="dash-link" href="<?php echo e(route('travel.index')); ?>"><?php echo e(__('Trip')); ?></a>
                         </li>
@@ -392,9 +393,10 @@ $lang = Auth::user()->lang;
                         <li class="dash-item">
                             <a class="dash-link" href="<?php echo e(route('warning.index')); ?>"><?php echo e(__('Warning')); ?></a>
                         </li>
-                        <li class="dash-item">
-                            <a class="dash-link" href="<?php echo e(route('termination.index')); ?>"><?php echo e(__('Termination')); ?></a>
-                        </li>
+                        <!-- <li class="dash-item">
+                            <a class="dash-link"
+                                href="<?php echo e(route('termination.index')); ?>"><?php echo e(__('Termination')); ?></a>
+                        </li> -->
                         <li class="dash-item">
                             <a class="dash-link" href="<?php echo e(route('announcement.index')); ?>"><?php echo e(__('Announcement')); ?></a>
                         </li>
@@ -463,6 +465,50 @@ $lang = Auth::user()->lang;
                         <?php endif; ?>
                     </ul>
                 </li>
+            <?php endif; ?>
+            <!-- recruitment-->
+
+            <!--Exits-->
+            <!-- <?php if(Gate::check('Manage Job') ||
+                    Gate::check('Manage Job Application') ||
+                    Gate::check('Manage Job OnBoard') ||
+                    Gate::check('Manage Custom Question') ||
+                    Gate::check('Manage Interview Schedule') ||
+                    Gate::check('Manage Career')): ?> -->
+                <li
+                    class="dash-item dash-hasmenu  <?php echo e(Request::segment(1) == 'job' || Request::segment(1) == 'job-application' ? 'dash-trigger active' : ''); ?> ">
+                    <a href="#!" class="dash-link"><span class="dash-micon">
+                    <i class="ti ti-archive"></i></span><span
+                            class="dash-mtext"><?php echo e(__('Exits')); ?></span><span class="dash-arrow"><i
+                                data-feather="chevron-right"></i></span></a>
+                    <ul class="dash-submenu">
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Resignation')): ?>
+                        <li class="dash-item">
+                            <a class="dash-link" href="<?php echo e(route('resignation.index')); ?>"><?php echo e(__('Resignation')); ?></a>
+                        </li>
+                        <?php endif; ?>
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Termination')): ?>
+                        <li class="dash-item">
+                            <a class="dash-link" href="<?php echo e(route('termination.index')); ?>"><?php echo e(__('Termination')); ?></a>
+                        </li>
+                        <?php endif; ?>
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Retirement')): ?>
+                            <li class="dash-item <?php echo e(request()->is('retirement*') ? 'active' : ''); ?>">
+                                <a class="dash-link"
+                                    href="<?php echo e(route('retirement.index')); ?>"><?php echo e(__('Retirement')); ?></a>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </li>
+            <!-- <?php endif; ?> -->
+
+            <!--contract-->
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Contract')): ?>
+                <li
+                    class="dash-item <?php echo e(Request::route()->getName() == 'contract.index' || Request::route()->getName() == 'contract.show' ? 'active' : ''); ?>">
+                    <a href="<?php echo e(route('contract.index')); ?>" class="dash-link"><span class="dash-micon"><i
+                                class="ti ti-device-floppy"></i></span><span
+                            class="dash-mtext"><?php echo e(__('Contracts')); ?></span></a>
                 <?php endif; ?>
                 <!-- recruitment-->
                 <!--contract-->

@@ -262,7 +262,7 @@
                     }
                 },
                 series: <?php echo e($ticket_arr); ?>,
-                colors: ["#3ec9d6", '#6fd943', '#fd7e14', '#ff3a6e'],
+                colors: ["#3ec9d6", '#584ED2', '#fd7e14', '#ff3a6e'],
                 labels: ["Total", "Open", "Hold", "Close"],
                 legend: {
                     show: false

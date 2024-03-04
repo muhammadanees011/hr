@@ -1904,7 +1904,7 @@ class UsersTableSeeder extends Seeder
                 "guard_name" => "web",
                 "created_at" => date('Y-m-d H:i:s'),
                 "updated_at" => date('Y-m-d H:i:s'),
-         
+
             ],
             [
                 "name" => "Manage Pension",
@@ -1979,6 +1979,19 @@ class UsersTableSeeder extends Seeder
                 "updated_at" => now(),
             ],
             [
+                "name" => "Show Personal File",
+                "guard_name" => "web",
+                "created_at" => now(),
+                "updated_at" => now(),
+            ],
+            [
+                "name" => "Store Personal File",
+                "guard_name" => "web",
+                "created_at" => now(),
+                "updated_at" => now(),
+            ],
+            [
+
                 "name" => "Manage EclaimType",
                 "guard_name" => "web",
                 "created_at" => date('Y-m-d H:i:s'),
@@ -2366,6 +2379,8 @@ class UsersTableSeeder extends Seeder
             ["name" => "Create Pension OptIn"],
             ["name" => "Edit Pension OptIn"],
             ["name" => "Delete Pension OptIn"],
+            ["name" => "Show Personal File"],
+            ["name" => "Store Personal File"],
              ["name" => "Manage EclaimType"],
             ["name" => "Manage EclaimType"],
             ["name" => "Create EclaimType"],
@@ -2664,6 +2679,8 @@ class UsersTableSeeder extends Seeder
             ["name" => "Create Pension OptIn"],
             ["name" => "Edit Pension OptIn"],
             ["name" => "Delete Pension OptIn"],
+            ["name" => "Show Personal File"],
+            ["name" => "Store Personal File"],
             ["name" => "Manage Eclaim"],
             ["name" => "Create Eclaim"],
             ["name" => "Edit Eclaim"],

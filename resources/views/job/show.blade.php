@@ -37,6 +37,14 @@
                                     <td class="">{{ !empty($job->branches)?$job->branches->name:__('All') }}</td>
                                 </tr>
                                 <tr>
+                                    <td>{{__('Department')}}</td>
+                                    <td class="">{{ $job->departments->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{__('Contract Type')}}</td>
+                                    <td class="">{{ $job->contract_type }}</td>
+                                </tr>
+                                <tr>
                                     <td>{{__('Job Category')}}</td>
                                     <td class="">{{ !empty($job->categories)?$job->categories->title:'-' }}</td>
                                 </tr>

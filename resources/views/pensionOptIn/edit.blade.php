@@ -109,7 +109,7 @@
                 <div style="font-size: 18px;line-height: 2.5rem;"><b>Department Name:</b> ${data.employee.department.name}</div>
                 <div style="font-size: 18px;line-height: 2.5rem;"><b>Designation:</b> ${data.employee.designation.name}</div>
                 <hr>
-                <div style="font-size: 18px;line-height: 2.5rem;"><b>Salary:</b> $${data.employee.salary}</div>
+                <div style="font-size: 18px;line-height: 2.5rem;"><b>Salary:</b> £${data.employee.salary}</div>
                 <div style="font-size: 18px;line-height: 2.5rem;"><b>Salary Type:</b> ${data.employee.salary_type.name}</div>
             `);
             }

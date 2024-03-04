@@ -11,5 +11,9 @@ class Branch extends Model
         'name','created_by'
     ];
 
+    public function departments()
+    {
+        return $this->hasMany(Department::class, 'branch_id');
+    }
     
 }

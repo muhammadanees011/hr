@@ -11,6 +11,8 @@ class Job extends Model
         'description',
         'requirement',
         'branch',
+        'department',
+        'contract_type',
         'category',
         'skill',
         'position',
@@ -32,6 +34,11 @@ class Job extends Model
     public function branches()
     {
         return $this->hasOne('App\Models\Branch', 'id', 'branch');
+    }
+
+    public function departments()
+    {
+        return $this->hasOne('App\Models\Department', 'id', 'department');
     }
 
     public function categories()
