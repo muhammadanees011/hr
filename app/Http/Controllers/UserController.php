@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UserCreate;
+use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Invoice;
-use App\Mail\UserCreate;
 use App\Models\Notification;
 use App\Models\User;
 use App\Models\Utility;
@@ -39,8 +40,9 @@ class UserController extends Controller
         if (\Auth::user()->can('Create User')) {
             $user  = \Auth::user();
             $roles = Role::where('created_by', '=', $user->creatorId())->where('name', '!=', 'employee')->get()->pluck('name', 'id');
+            $departments = Department::get()->pluck('name', 'id');
 
-            return view('user.create', compact('roles'));
+            return view('user.create', compact('roles', 'departments'));
         } else {
             return response()->json(['error' => __('Permission denied.')], 401);
         }
@@ -89,6 +91,7 @@ class UserController extends Controller
                     'lang' => !empty($default_language) ? $default_language->value : 'en',
                     'created_by' => \Auth::user()->creatorId(),
                     'email_verified_at' => $date,
+                    'assigned_departments' => !empty($request['assigned_departments']) ? $request['assigned_departments'] : null
                 ]
             );
             $user->assignRole($role_r);
@@ -121,8 +124,9 @@ class UserController extends Controller
         if (\Auth::user()->can('Edit User')) {
             $user  = User::find($id);
             $roles = Role::where('created_by', '=', $user->creatorId())->where('name', '!=', 'employee')->get()->pluck('name', 'id');
+            $departments = Department::get()->pluck('name', 'id');
 
-            return view('user.edit', compact('user', 'roles'));
+            return view('user.edit', compact('user', 'roles', 'departments'));
         } else {
             return response()->json(['error' => __('Permission denied.')], 401);
         }
@@ -149,6 +153,8 @@ class UserController extends Controller
             $role          = Role::findById($request->role);
             $input         = $request->all();
             $input['type'] = $role->name;
+            $input['assigned_departments'] = !empty($input['assigned_departments']) ? $input['assigned_departments'] : null;
+
             $user->fill($input)->save();
 
             $user->assignRole($role);

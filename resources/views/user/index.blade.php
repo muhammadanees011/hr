@@ -197,5 +197,15 @@
                 }));
             }, 2000);
         });
+
+        $(document).on('change', '#role', function(){
+            const value = $('#role option:selected').text();
+            if(value.includes('manager')){
+                $('.dep_div').removeClass('d-none');
+            }else{
+                $('.dep_div').addClass('d-none');
+                $('.manager-department').val('').trigger('change');
+            }
+        });
     </script>
 @endpush

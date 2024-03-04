@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
 use App\Models\Contract;
-use App\Models\ContractType;
 use App\Models\ContractAttechment;
 use App\Models\ContractComment;
 use App\Models\ContractNote;
-use App\Models\ActivityLog;
-use App\Models\Utility;
+use App\Models\ContractType;
+use App\Models\Department;
+use App\Models\Employee;
 use App\Models\User;
+use App\Models\Utility;
 use Illuminate\Http\Request;
 
 class ContractController extends Controller
@@ -72,6 +74,27 @@ class ContractController extends Controller
                 $cnt_contract['last_30days'] = \App\Models\Contract::getContractSummary($last_30days);
 
                 return view('contracts.index', compact('contracts', 'cnt_contract'));
+            } elseif (\Auth::user()->type == 'manager') {
+                $employees = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('user_id');
+                $contracts   = Contract::whereIn('employee_name', $employees)->get();
+                $curr_month  = Contract::whereIn('employee_name', $employees)->whereMonth('start_date', '=', date('m'))->get();
+                $curr_week   = Contract::whereIn('employee_name', $employees)->whereBetween(
+                    'start_date',
+                    [
+                        \Carbon\Carbon::now()->startOfWeek(),
+                        \Carbon\Carbon::now()->endOfWeek(),
+                    ]
+                )->get();
+                $last_30days = Contract::whereIn('created_by', $employees)->whereDate('start_date', '>', \Carbon\Carbon::now()->subDays(30))->get();
+
+                // Contracts Summary
+                $cnt_contract                = [];
+                $cnt_contract['total']       = \App\Models\Contract::getContractSummary($contracts);
+                $cnt_contract['this_month']  = \App\Models\Contract::getContractSummary($curr_month);
+                $cnt_contract['this_week']   = \App\Models\Contract::getContractSummary($curr_week);
+                $cnt_contract['last_30days'] = \App\Models\Contract::getContractSummary($last_30days);
+
+                return view('contracts.index', compact('contracts', 'cnt_contract'));
             }
         } else {
             return redirect()->back()->with('error', __('Permission Denied.'));
@@ -86,7 +109,13 @@ class ContractController extends Controller
     public function create()
     {
         if (\Auth::user()->can('Create Contract')) {
-            $employee       = User::where('type', '=', 'employee')->get()->pluck('name', 'id');
+            if(\Auth::user()->type=="manager" && !empty(\Auth::user()->assigned_departments)){
+                $assignedDepartments = Department::get()->pluck('id');
+                $employeeIds = Employee::whereIn('department_id', $assignedDepartments)->get()->pluck('user_id');
+                $employee = User::where('type', '=', 'employee')->whereIn('id', $employeeIds)->get()->pluck('name', 'id');
+            }else{
+                $employee       = User::where('type', '=', 'employee')->get()->pluck('name', 'id');
+            }
 
             $contractType = ContractType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
 

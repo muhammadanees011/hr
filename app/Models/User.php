@@ -33,6 +33,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'is_login_enable',
         'created_by',
         'email_verified_at',
+        'assigned_departments'
     ];
 
     /**
@@ -52,6 +53,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'assigned_departments' => 'array'
     ];
 
     public static function defaultEmail()

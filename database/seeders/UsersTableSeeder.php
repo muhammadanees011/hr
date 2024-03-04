@@ -2392,6 +2392,7 @@ class UsersTableSeeder extends Seeder
             ]
         );
         $company->assignRole($companyRole);
+
         // HR
         $hrRole       = Role::create(
             [
@@ -2685,6 +2686,155 @@ class UsersTableSeeder extends Seeder
             ]
         );
         $hr->assignRole($hrRole);
+
+        // Manager
+        // HR
+        $managerRole       = Role::create(
+            [
+                'name' => 'manager',
+                'created_by' => $company->id,
+            ]
+        );
+        $managerPermission = [
+            ["name" => "Manage Language"],
+            ["name" => "Manage User"],
+            ["name" => "Create User"],
+            ["name" => "Edit User"],
+            ["name" => "Delete User"],
+            ["name" => "Create User"],
+            ["name" => "Edit User"],
+            ["name" => "Delete User"],
+            ["name" => "Manage Award"],
+            ["name" => "Create Award"],
+            ["name" => "Delete Award"],
+            ["name" => "Edit Award"],
+            ["name" => "Manage Transfer"],
+            ["name" => "Create Transfer"],
+            ["name" => "Delete Transfer"],
+            ["name" => "Edit Transfer"],
+            ["name" => "Manage Resignation"],
+            ["name" => "Create Resignation"],
+            ["name" => "Edit Resignation"],
+            ["name" => "Delete Resignation"],
+            ["name" => "Manage Travel"],
+            ["name" => "Create Travel"],
+            ["name" => "Edit Travel"],
+            ["name" => "Delete Travel"],
+            ["name" => "Manage Promotion"],
+            ["name" => "Create Promotion"],
+            ["name" => "Edit Promotion"],
+            ["name" => "Delete Promotion"],
+            ["name" => "Manage Complaint"],
+            ["name" => "Create Complaint"],
+            ["name" => "Edit Complaint"],
+            ["name" => "Delete Complaint"],
+            ["name" => "Manage Warning"],
+            ["name" => "Create Warning"],
+            ["name" => "Edit Warning"],
+            ["name" => "Delete Warning"],
+            ["name" => "Manage Termination"],
+            ["name" => "Create Termination"],
+            ["name" => "Edit Termination"],
+            ["name" => "Delete Termination"],
+            ["name" => "Manage Award Type"],
+            ["name" => "Create Award Type"],
+            ["name" => "Edit Award Type"],
+            ["name" => "Delete Award Type"],
+            ["name" => "Manage Termination Type"],
+            ["name" => "Create Termination Type"],
+            ["name" => "Edit Termination Type"],
+            ["name" => "Delete Termination Type"],
+            ["name" => "Manage Employee"],
+            ["name" => "Create Employee"],
+            ["name" => "Edit Employee"],
+            ["name" => "Delete Employee"],
+            ["name" => "Show Employee"],
+            ["name" => "Manage Payslip Type"],
+            ["name" => "Create Payslip Type"],
+            ["name" => "Edit Payslip Type"],
+            ["name" => "Delete Payslip Type"],
+            ["name" => "Manage Allowance Option"],
+            ["name" => "Create Allowance Option"],
+            ["name" => "Edit Allowance Option"],
+            ["name" => "Delete Allowance Option"],
+            ["name" => "Manage Loan Option"],
+            ["name" => "Create Loan Option"],
+            ["name" => "Edit Loan Option"],
+            ["name" => "Delete Loan Option"],
+            ["name" => "Manage Deduction Option"],
+            ["name" => "Create Deduction Option"],
+            ["name" => "Edit Deduction Option"],
+            ["name" => "Delete Deduction Option"],
+            ["name" => "Manage Set Salary"],
+            ["name" => "Create Set Salary"],
+            ["name" => "Edit Set Salary"],
+            ["name" => "Delete Set Salary"],
+            ["name" => "Manage Allowance"],
+            ["name" => "Create Allowance"],
+            ["name" => "Edit Allowance"],
+            ["name" => "Delete Allowance"],
+            ["name" => "Create Commission"],
+            ["name" => "Create Loan"],
+            ["name" => "Create Saturation Deduction"],
+            ["name" => "Create Other Payment"],
+            ["name" => "Create Overtime"],
+            ["name" => "Edit Commission"],
+            ["name" => "Delete Commission"],
+            ["name" => "Edit Loan"],
+            ["name" => "Delete Loan"],
+            ["name" => "Edit Saturation Deduction"],
+            ["name" => "Delete Saturation Deduction"],
+            ["name" => "Edit Other Payment"],
+            ["name" => "Delete Other Payment"],
+            ["name" => "Edit Overtime"],
+            ["name" => "Delete Overtime"],
+            ["name" => "Delete Attendance"],
+            ["name" => "Manage TimeSheet"],
+            ["name" => "Create TimeSheet"],
+            ["name" => "Edit TimeSheet"],
+            ["name" => "Delete TimeSheet"],
+            ["name" => 'Manage Assets'],
+            ["name" => 'Create Assets'],
+            ["name" => 'Edit Assets'],
+            ["name" => 'Delete Assets'],
+            ["name" => 'Manage Document'],
+            ["name" => 'Manage Employee Profile'],
+            ["name" => 'Show Employee Profile'],
+            ["name" => "Manage Career"],
+            ["name" => "Manage Performance Type"],
+            ["name" => "Create Performance Type"],
+            ["name" => "Edit Performance Type"],
+            ["name" => "Delete Performance Type"],
+            ["name" => "Manage Contract Type"],
+            ["name" => "Manage Contract"],
+            ["name" => "Create Contract"],
+            ["name" => "Edit Contract"],
+            ["name" => "Delete Contract"],
+            ["name" => "Store Note"],
+            ["name" => "Delete Note"],
+            ["name" => "Store Comment"],
+            ["name" => "Delete Comment"],
+            ["name" => "Delete Attachment"],
+            ["name" => "Create Contract Type"],
+            ["name" => "Edit Contract Type"],
+            ["name" => "Delete Contract Type"]
+        ];
+
+        $managerRole->givePermissionTo($managerPermission);
+
+        $manager = User::create(
+            [
+                'name' => 'manager',
+                'email' => 'manager@example.com',
+                'password' => Hash::make('1234'),
+                'type' => 'manager',
+                'lang' => 'en',
+                'avatar' => '',
+                'email_verified_at' => date("Y-m-d H:i:s"),
+                'created_by' => $company->id,
+            ]
+        );
+        $manager->assignRole($managerRole);
 
         //Employee
         $employeeRole       = Role::create(
