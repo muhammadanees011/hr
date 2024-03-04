@@ -638,7 +638,7 @@ $lang = Auth::user()->lang;
                 @endcan
 
             <!-- Eclaim-->
-            @can('Manage Eclaim')
+            <!-- @can('Manage Eclaim') -->
                 <li class="dash-item">
                     <a href="{{ route('eclaim.index') }}" class="dash-link">
                         <span class="dash-micon"><i class="ti ti-file"></i></span><span
@@ -646,7 +646,7 @@ $lang = Auth::user()->lang;
                         </span>
                     </a>
                 </li>
-            @endcan
+            <!-- @endcan -->
 
             {{-- Email Template --}}
             @if (\Auth::user()->type == 'company')
