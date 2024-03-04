@@ -127,6 +127,26 @@
                         $LangName->fullName = 'English';
                     }
                 @endphp
+
+                @if(count(Auth::user()->roles) > 1)
+                    <li class="dropdown dash-h-item drp-language">
+                        <a class="dash-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#"
+                            role="button" aria-haspopup="false" aria-expanded="false" id="dropdownLanguage">
+                            <i class="ti ti-users nocolor"></i>
+                            <span class="drp-text hide-mob">Assigned Roles</span>
+                            <i class="ti ti-chevron-down drp-arrow nocolor"></i>
+                        </a>
+                        <div class="dropdown-menu dash-h-dropdown dropdown-menu-end" aria-labelledby="dropdownLanguage">
+                            @foreach(Auth::user()->roles as $role)
+                                <a href="{{ route('change.role', $role) }}"
+                                    class="dropdown-item {{ Auth::user()->type == $role->name ? 'text-primary' : '' }}">
+                                    <span>{{ ucFirst($role->name) }}</span>
+                                </a>
+                            @endforeach
+                        </div>
+                    </li>
+                @endif
+
                 <li class="dropdown dash-h-item drp-language">
                     <a class="dash-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#"
                         role="button" aria-haspopup="false" aria-expanded="false" id="dropdownLanguage">

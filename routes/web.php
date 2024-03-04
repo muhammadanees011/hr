@@ -872,6 +872,8 @@ Route::group(['middleware' => ['verified']], function () {
         }
     );
 
+    Route::get('change-role/{role}', [RoleController::class, 'changeRole'])->name('change.role')->middleware(['auth', 'XSS']);
+    
     Route::resource('roles', RoleController::class)->middleware(
         [
             'auth',
