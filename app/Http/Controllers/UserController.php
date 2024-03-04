@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UserCreate;
+use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Invoice;
-use App\Mail\UserCreate;
 use App\Models\Notification;
 use App\Models\User;
 use App\Models\Utility;
@@ -39,8 +40,9 @@ class UserController extends Controller
         if (\Auth::user()->can('Create User')) {
             $user  = \Auth::user();
             $roles = Role::where('created_by', '=', $user->creatorId())->where('name', '!=', 'employee')->get()->pluck('name', 'id');
+            $departments = Department::get()->pluck('name', 'id');
 
-            return view('user.create', compact('roles'));
+            return view('user.create', compact('roles', 'departments'));
         } else {
             return response()->json(['error' => __('Permission denied.')], 401);
         }
@@ -75,7 +77,7 @@ class UserController extends Controller
                 }
             }
 
-            $role_r = Role::findById($request->role);
+            $role_r = Role::whereIn('id', $request->roles)->get();
             $date = date("Y-m-d H:i:s");
             $userpassword = $request->input('password');
 
@@ -85,13 +87,15 @@ class UserController extends Controller
                     'email' => $request['email'],
                     'is_login_enable' => !empty($request->password_switch) && $request->password_switch == 'on' ? 1 : 0,
                     'password' => !empty($userpassword) ? Hash::make($userpassword) : null,
-                    'type' => $role_r->name,
+                    'type' => $role_r->first()->name,
                     'lang' => !empty($default_language) ? $default_language->value : 'en',
                     'created_by' => \Auth::user()->creatorId(),
                     'email_verified_at' => $date,
+                    'assigned_departments' => !empty($request['assigned_departments']) ? $request['assigned_departments'] : null
                 ]
             );
-            $user->assignRole($role_r);
+            // $user->assignRole($role_r);
+            $user->syncRoles($role_r);
             $user->userDefaultData();
 
             $setings = Utility::settings();
@@ -121,8 +125,9 @@ class UserController extends Controller
         if (\Auth::user()->can('Edit User')) {
             $user  = User::find($id);
             $roles = Role::where('created_by', '=', $user->creatorId())->where('name', '!=', 'employee')->get()->pluck('name', 'id');
+            $departments = Department::get()->pluck('name', 'id');
 
-            return view('user.edit', compact('user', 'roles'));
+            return view('user.edit', compact('user', 'roles', 'departments'));
         } else {
             return response()->json(['error' => __('Permission denied.')], 401);
         }
@@ -142,16 +147,19 @@ class UserController extends Controller
 
             return redirect()->back()->with('error', $messages->first());
         }
-
+        
         if (\Auth::user()->can('Edit User')) {
             $user = User::findOrFail($id);
 
-            $role          = Role::findById($request->role);
+            // $role          = Role::findById($request->role);
+            $roles = Role::whereIn('id', $request->roles)->get();
+
             $input         = $request->all();
-            $input['type'] = $role->name;
+            $input['type'] = $roles->first()->name;
+            $input['assigned_departments'] = !empty($input['assigned_departments']) ? $input['assigned_departments'] : null;
             $user->fill($input)->save();
 
-            $user->assignRole($role);
+            $user->syncRoles($roles);
 
             return redirect()->route('user.index')->with('success', 'User successfully updated.');
         } else {

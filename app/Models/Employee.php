@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use SebastianBergmann\CodeCoverage\Percentage;
+use Illuminate\Database\Eloquent\Builder;
 
 class Employee extends Model
 {
@@ -306,5 +307,14 @@ class Employee extends Model
             'id',
             'pension_scheme_id'
         );
+    }
+
+    protected static function booted(){
+        static::addGlobalScope(function(Builder $builder){
+            if(\Auth::user()->type=="manager" && !empty(\Auth::user()->assigned_departments)){
+                $assignedDepartments = Department::get()->pluck('id');
+                $builder->whereIn('department_id', $assignedDepartments);
+            }
+        });
     }
 }
