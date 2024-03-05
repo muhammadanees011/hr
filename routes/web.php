@@ -33,6 +33,7 @@ use App\Http\Controllers\ContractController;
 use App\Http\Controllers\ContractTypeController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CustomQuestionController;
+use App\Http\Controllers\QuestionTemplateController;
 use App\Http\Controllers\DeductionOptionController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DepositController;
@@ -470,7 +471,7 @@ Route::group(['middleware' => ['verified']], function () {
     Route::get('retirement/description/{id}', [RetirementController::class,'description'])->name('retirement.description')->middleware(['auth','XSS',]);
 
     Route::resource('exitprocedure', ExitProcedureController::class)->middleware(['auth','XSS',]);
-    
+
     //health and fitness
     Route::resource('healthassessment', HealthAssessmentController::class)->middleware(['auth','XSS',]);
     Route::resource('gpnote', GPNoteController::class)->middleware(['auth','XSS',]);
@@ -908,7 +909,7 @@ Route::group(['middleware' => ['verified']], function () {
     );
 
     Route::get('change-role/{role}', [RoleController::class, 'changeRole'])->name('change.role')->middleware(['auth', 'XSS']);
-    
+
     Route::resource('roles', RoleController::class)->middleware(
         [
             'auth',
@@ -1227,6 +1228,13 @@ Route::group(['middleware' => ['verified']], function () {
     );
 
     Route::resource('custom-question', CustomQuestionController::class)->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+    Route::resource('question-template', QuestionTemplateController::class)->middleware(
         [
             'auth',
             'XSS',

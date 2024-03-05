@@ -23,7 +23,7 @@ class="dash-sidebar light-sidebar {{ isset($mode_setting['is_sidebar_transperent
         @endif
 
         <div class="navbar-wrapper">
-            <div class="m-header main-logo" 
+            <div class="m-header main-logo"
             style="background-color:#584ED2 !important;border-bottom-right-radius:20px;">
 
             <a href="{{ route('home') }}" class="b-brand">
@@ -484,6 +484,7 @@ class="dash-sidebar light-sidebar {{ isset($mode_setting['is_sidebar_transperent
                                 <a class="dash-link" href="{{ route('job.create') }}">{{ __('Job Create') }}</a>
                             </li>
                             @endcan
+
                             @can('Manage Job Application')
                             <li class="dash-item {{ request()->is('job-application*') ? 'active' : '' }}">
                                 <a class="dash-link" href="{{ route('job-application.index') }}">{{ __('Job Application') }}</a>
@@ -499,6 +500,12 @@ class="dash-sidebar light-sidebar {{ isset($mode_setting['is_sidebar_transperent
                             @can('Manage Job OnBoard')
                             <li class="dash-item">
                                 <a class="dash-link" href="{{ route('job.on.board') }}">{{ __('Job On-Boarding') }}</a>
+                            </li>
+                            @endcan
+
+                            @can('Manage Custom Question')
+                            <li class="dash-item">
+                                <a class="dash-link" href="{{ route('custom-question.index') }}">{{ __('Question Templates') }}</a>
                             </li>
                             @endcan
 
@@ -591,7 +598,7 @@ class="dash-sidebar light-sidebar {{ isset($mode_setting['is_sidebar_transperent
                             class="dash-item {{ Request::route()->getName() == 'contract.index' || Request::route()->getName() == 'contract.show' ? 'active' : '' }}">
                             <a href="{{ route('contract.index') }}" class="dash-link"><span class="dash-micon"><i
                                 class="ti ti-device-floppy"></i></span><span
-                                class="dash-mtext">{{ __('Contracts') }}</span></a>                
+                                class="dash-mtext">{{ __('Contracts') }}</span></a>
                                 @endcan
 
                                 <!-- {{-- @endcan --}} -->
