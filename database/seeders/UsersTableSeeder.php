@@ -2044,7 +2044,85 @@ class UsersTableSeeder extends Seeder
                 "created_at" => date('Y-m-d H:i:s'),
                 "updated_at" => date('Y-m-d H:i:s'),
             ],
-            
+            [
+                "name" => "DOB",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Gender",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Address",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Phone",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "City",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "State",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Country",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "ZipCode",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Applied for",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Applied at",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Resume",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Cover Letter",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Rating",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+        
         ];
         Permission::insert($arrPermissions);
 
@@ -2358,14 +2436,6 @@ class UsersTableSeeder extends Seeder
             ["name" => "Create Zoom meeting"],
             ["name" => "Show Zoom meeting"],
             ["name" => "Delete Zoom meeting"],
-            ["name" => "Manage Retirement"],
-            ["name" => "Create Retirement"],
-            ["name" => "Edit Retirement"],
-            ["name" => "Delete Retirement"],
-            ["name" => "Manage Exit Procedure"],
-            ["name" => "Create Exit Procedure"],
-            ["name" => "Edit Exit Procedure"],
-            ["name" => "Delete Exit Procedure"],
             ["name" => "Manage Pension"],
             ["name" => "Create Scheme"],
             ["name" => "Edit Scheme"],
@@ -2390,6 +2460,21 @@ class UsersTableSeeder extends Seeder
             ["name" => "Edit Eclaim"],
             ["name" => "Delete Eclaim"],
             ["name" => "Approve Eclaim"],
+            ["name" => "DOB"],
+            ["name" => "Gender"],
+            ["name" => "Address"],
+            ["name" => "Phone"],
+            ["name" => "City"],
+            ["name" => "State"],
+            ["name" => "Country"],
+            ["name" => "ZipCode"],
+            ["name" => "Applied for"],
+            ["name" => "Applied at"],
+            ["name" => "Resume"],
+            ["name" => "Cover Letter"],
+            ["name" => "Rating"],
+        
+        
         ];
 
         $companyRole->givePermissionTo($companyPermissions);
@@ -2410,11 +2495,13 @@ class UsersTableSeeder extends Seeder
         // HR
         $hrRole       = Role::create(
             [
+
                 'name' => 'hr',
                 'created_by' => $company->id,
             ]
         );
         $hrPermission = [
+
             ["name" => "Manage Language"],
             ["name" => "Manage User"],
             ["name" => "Create User"],
@@ -2658,14 +2745,6 @@ class UsersTableSeeder extends Seeder
             ["name" => "Delete Contract Type"],
             ["name" => "Manage Zoom meeting"],
             ["name" => "Show Zoom meeting"],
-            ["name" => "Manage Retirement"],
-            ["name" => "Create Retirement"],
-            ["name" => "Edit Retirement"],
-            ["name" => "Delete Retirement"],
-            ["name" => "Manage Exit Procedure"],
-            ["name" => "Create Exit Procedure"],
-            ["name" => "Edit Exit Procedure"],
-            ["name" => "Delete Exit Procedure"],
             ["name" => "Manage Pension"],
             ["name" => "Create Scheme"],
             ["name" => "Edit Scheme"],
@@ -2685,6 +2764,19 @@ class UsersTableSeeder extends Seeder
             ["name" => "Edit Eclaim"],
             ["name" => "Delete Eclaim"],
             ["name" => "Approve Eclaim"],
+            ["name" => "DOB"],
+            ["name" => "Gender"],
+            ["name" => "Address"],
+            ["name" => "Phone"],
+            ["name" => "City"],
+            ["name" => "State"],
+            ["name" => "Country"],
+            ["name" => "ZipCode"],
+            ["name" => "Applied for"],
+            ["name" => "Applied at"],
+            ["name" => "Resume"],
+            ["name" => "Cover Letter"],
+            ["name" => "Rating"],
         ];
 
         $hrRole->givePermissionTo($hrPermission);
@@ -2909,11 +3001,6 @@ class UsersTableSeeder extends Seeder
             ["name" => "Delete Attachment"],
             ["name" => "Manage Zoom meeting"],
             ["name" => "Show Zoom meeting"],
-            ["name" => "Manage Retirement"],
-            ["name" => "Create Retirement"],
-            ["name" => "Edit Retirement"],
-            ["name" => "Delete Retirement"],
-
         ];
 
         $employeeRole->givePermissionTo($employeePermission);
