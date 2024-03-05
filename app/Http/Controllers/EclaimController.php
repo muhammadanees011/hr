@@ -13,7 +13,7 @@ class EclaimController extends Controller
     public function index()
     {
         if (\Auth::user()->can('Manage Eclaim')) {
-            $query = Eclaim::with('claimType', 'employee')->where('created_by', '=', \Auth::user()->creatorId())->get();
+            $eclaims = Eclaim::with('claimType', 'employee')->where('created_by', '=', \Auth::user()->creatorId())->get();
 
             // if(\Auth::user()->type=="hr" && \Auth::user()->can('Approve Eclaim')){
             //     $query = $query->where('status', 'pending');
