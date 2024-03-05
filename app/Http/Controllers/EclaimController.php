@@ -13,7 +13,7 @@ class EclaimController extends Controller
     public function index()
     {
         if (\Auth::user()->can('Manage Eclaim')) {
-            $query = Eclaim::with('claimType', 'employee');
+            $query = Eclaim::with('claimType', 'employee')->where('created_by', '=', \Auth::user()->creatorId())->get();
 
             // if(\Auth::user()->type=="hr" && \Auth::user()->can('Approve Eclaim')){
             //     $query = $query->where('status', 'pending');
@@ -21,12 +21,12 @@ class EclaimController extends Controller
             //     $query = $query->where('status', 'approved by HR');
             // }
 
-            if(\Auth::user()->type=="employee"){
-                $query = $query->where('employee_id', '=', \Auth::user()->id);
-            }else {
-                $query = $query->where('created_by', '=', \Auth::user()->creatorId());
-            }
-            $eclaims = $query->get();
+            // if(\Auth::user()->type=="employee"){
+            //     $query = $query->where('employee_id', '=', \Auth::user()->id);
+            // }else {
+            //     $query = $query->where('created_by', '=', \Auth::user()->creatorId());
+            // }
+            // $eclaims = $query->get();
             return view('eclaim.index', compact('eclaims'));
         } else {
             return redirect()->back()->with('error', __('Permission denied.'));
