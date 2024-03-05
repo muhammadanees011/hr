@@ -1014,7 +1014,7 @@ Route::group(['middleware' => ['verified']], function () {
             'XSS',
         ]
     );
-    Route::get('p11-report', [ReportController::class, 'p11report'])->name('p11-report');
+    Route::get('report/p11-report', [ReportController::class, 'p11report'])->name('report.p11-report');
     Route::get('report/leave', [ReportController::class, 'leave'])->name('report.leave')->middleware(
         [
             'auth',

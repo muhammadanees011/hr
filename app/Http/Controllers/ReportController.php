@@ -835,34 +835,16 @@ class ReportController extends Controller
     }
     public function p11report(Request $request)
     {
+        if (\Auth::user()->can('Manage Report')) {
+            $startDate = !empty($request->start_date) ? $request->input('start_date') : Carbon::now()->subDays(30)->toDateString();
+            $endDate = !empty($request->end_date) ? $request->input('end_date') : Carbon::now()->toDateString();
+            
+            $eclaims = Eclaim::where('created_by', \Auth::user()->creatorId())->where('status','approved')->whereBetween(\DB::raw('Date(created_at)'), [$startDate, $endDate])->get();
+            $totalAmount = $eclaims->sum('amount');
 
-        $query = new Eclaim();
-        if (!empty($request->start_date) && !empty($request->end_date)) {
-            $query = $query->whereBetween('date', [$request->start_date, $request->end_date]);
+            return view('report.p11report', compact('eclaims', 'totalAmount'));
+        } else {
+            return redirect()->back()->with('error', __('Permission denied.'));
         }
-        else{
-            $startDate = Carbon::now()->subDays(30)->toDateString();
-            $endDate = Carbon::now()->toDateString();
-            $query = $query->whereBetween('date', [$startDate, $endDate]);
-        }
-        $currentMonthRecords = $query->get();
-        $totalAmount = 0;
-
-        foreach($currentMonthRecords as $single){
-             $totalAmount += $single->amount;
-        }
-        
-        // if (!$request->department_id){
-        // $currentMonth = Carbon::now()->month;
-        // $currentYear = Carbon::now()->year;
-        //  $currentMonthRecords = Eclaim::whereMonth('created_at', $currentMonth)
-        //                          ->whereYear('created_at', $currentYear)
-        //                          ->where('status', 'approved')
-        //                          ->get();
-
-        return view('report.p11report', compact('currentMonthRecords', 'totalAmount'));
-        // } else {
-        //     return redirect()->back()->with('error', __('Permission denied.'));
-        // }
     }
 }
