@@ -9,6 +9,10 @@
             {{ Form::label('is_required', __('Is Required'), ['class' => 'col-form-label']) }}
             {{ Form::select('is_required', $is_required, null, ['class' => 'form-control select2','required' => 'required']) }}
         </div>
+        <div class="form-group">
+            {{ Form::label('question-wordcount', __('Response word count'), ['class' => 'col-form-label']) }}
+            {{ Form::text('question-wordcount', null, ['class' => 'form-control', 'placeholder' => __('Enter response word count')]) }}
+        </div>
     </div>
 </div>
 <div class="modal-footer">

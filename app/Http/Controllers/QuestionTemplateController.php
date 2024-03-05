@@ -33,24 +33,6 @@ class QuestionTemplateController extends Controller
     {
         if(\Auth::user()->can('Create Custom Question'))
         {
-            $validator = \Validator::make(
-                $request->all(), [
-                                   'question' => 'required',
-                               ]
-            );
-            if($validator->fails())
-            {
-                $messages = $validator->getMessageBag();
-
-                return redirect()->back()->with('error', $messages->first());
-            }
-
-            $question              = new CustomQuestion();
-            $question->question    = $request->question;
-            $question->is_required = $request->is_required;
-            $question->created_by  = \Auth::user()->creatorId();
-            $question->save();
-
             return redirect()->back()->with('success', __('Question successfully created.'));
         }
         else
