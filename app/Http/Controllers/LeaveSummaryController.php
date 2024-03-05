@@ -22,17 +22,10 @@ class LeaveSummaryController extends Controller
 
     public function employeeLeaveSummary($id)
     {
-        if(\Auth::user()->can('Manage Retirement'))
-        {
-            $employee_id=$id;
-            $leavesummaries = LeaveSummary::where('employee_id',$employee_id)->where('created_by', '=', \Auth::user()->creatorId())->get();
+        $employee_id=$id;
+        $leavesummaries = LeaveSummary::where('employee_id',$employee_id)->where('created_by', '=', \Auth::user()->creatorId())->get();
 
-            return view('leavesummary.index', compact('leavesummaries','employee_id'));
-        }
-        else
-        {
-            return redirect()->back()->with('error', __('Permission denied.'));
-        }
+        return view('leavesummary.index', compact('leavesummaries','employee_id'));
     }
 
     /**
