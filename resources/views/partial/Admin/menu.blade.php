@@ -483,6 +483,10 @@ class="dash-sidebar light-sidebar {{ isset($mode_setting['is_sidebar_transperent
                             <li class="dash-item {{ Request::route()->getName() == 'job.create' ? 'active' : '-' }}">
                                 <a class="dash-link" href="{{ route('job.create') }}">{{ __('Job Create') }}</a>
                             </li>
+
+                            <li class="dash-item {{ Request::route()->getName() == 'job.template' ? 'active' : '-' }}">
+                                <a class="dash-link" href="{{ route('job.template') }}">{{ __('Job Templates') }}</a>
+                            </li>
                             @endcan
 
                             @can('Manage Job Application')

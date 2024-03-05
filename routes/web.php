@@ -1096,6 +1096,8 @@ Route::group(['middleware' => ['verified']], function () {
         ]
     );
 
+    Route::get('job/templates', [JobController::class, 'template'])->name('job.template');
+
 
     Route::resource('job', JobController::class)->middleware(
         [

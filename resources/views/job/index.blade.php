@@ -143,6 +143,12 @@
                             <td class="Action">
                                 @if (Gate::check('Edit Job') || Gate::check('Delete Job') || Gate::check('Show Job'))
                                 <span>
+                                    <div class="action-btn bg-secondary ms-2">
+                                        <a href="#" class="mx-3 btn btn-sm  align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __('Job Copy') }}">
+                                            <i class="ti ti-copy text-white"></i>
+                                        </a>
+                                    </div>
+
                                     @can('Show Job')
                                     <div class="action-btn bg-warning ms-2">
                                         <a href="{{ route('job.show', $job->id) }}" class="mx-3 btn btn-sm  align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __('Job Detail') }}">

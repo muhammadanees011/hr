@@ -154,12 +154,14 @@
             <header class="dash-header">
                 <nav class="navbar navbar-expand-md default">
                     <div class="container">
-                        <div class="navbar-brand">
+                        <div class="navbar-brand" style="background-color:#584ED2 !important;border-radius:15px; padding:10px;">
                             <a href="#">
                                 <!-- <img src="<?php echo e($logos . '/' . (isset($logo) && !empty($logo) ? $logo . '?' . time() : 'logo-dark.png' . '?' . time())); ?>"
                                     class="logo" alt="<?php echo e(config('app.name', 'HRMGO')); ?>" alt="logo"
                                     loading="lazy" style="max-height: 50px;" /> -->
-                                    <img src="<?php echo e(asset( '/assets/images/HRMPRO-logos_transparent.png' )); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo" style="height:105px;width:100%;"/>
+                                    <!-- <img src="<?php echo e(asset( '/assets/images/HRMPRO-logos_transparent.png' )); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo" style="height:105px;width:100%;"/> -->
+                                    <img src="<?php echo e(asset( '/assets/images/eduhr.png' )); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo" style="height:3.5rem !important; width:12rem !important;" />
+
                             </a>
                         </div>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
