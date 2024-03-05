@@ -210,6 +210,12 @@ $chatgpt = Utility::getValByName('enable_chatgpt');
                             @endforeach
                         </div>
                     </div>
+
+                    <div class="form-group col-md-12">
+                        {!! Form::label('question-template', __('Questions Template'), ['class' => 'col-form-label']) !!}
+                        {{ Form::select('question-template', [Qualification', 'Extra skills'], null, ['class' => 'form-control select2']) }}
+                    </div>
+
                 </div>
             </div>
         </div>

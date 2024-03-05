@@ -2,7 +2,18 @@
 <div class="modal-body">
 
     <div class="row">
-        
+        @if (\Auth::user()->type != 'employee')
+            <div class="col-md-12">
+                <div class="form-group">
+                    {{ Form::label('employee_id', __('Employee'), ['class' => 'col-form-label']) }}
+                    {{ Form::select('employee_id', $employees, null, ['class' => 'form-control select2', 'id' => 'employee_id', 'placeholder' => __('Select Employee')]) }}
+                </div>
+            </div>
+        @else
+            {{-- @foreach ($employees as $employee) --}}
+            {!! Form::hidden('employee_id', !empty($employees) ? $employees->id : 0, ['id' => 'employee_id']) !!}
+            {{-- @endforeach --}}
+        @endif
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="form-group">
                 {{ Form::label('type_id', __('Eclaim Type'), ['class' => 'form-label']) }}
