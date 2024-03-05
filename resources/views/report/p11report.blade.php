@@ -9,24 +9,29 @@
 @endsection
 
 @section('content')
-     <div class="col-sm-12 col-lg-12 col-xl-12 col-md-12">
+    <div class="col-sm-12 col-lg-12 col-xl-12 col-md-12">
         <div class=" mt-2 " id="multiCollapseExample1" style="">
             <div class="card">
                 <div class="card-body">
                     {{ Form::open(['route' => ['report.p11-report'], 'method' => 'get', 'id' => 'timesheet_filter']) }}
                     <div class="d-flex align-items-center justify-content-end">
                         <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mx-2">
-                                <div class="btn-box">
-                                    {{ Form::label('start_date', __('Start Date'), ['class' => 'form-label']) }}
-                                    {{ Form::text('start_date', isset($_GET['start_date']) ? $_GET['start_date'] : '', ['class' => 'month-btn form-control d_week current_date start_date', 'autocomplete' => 'off']) }}
-                                    
-                                </div>
+                            <div class="btn-box">
+                                {{ Form::label('start_date', __('Start Date'), ['class' => 'form-label']) }}
+                                {{ Form::text('start_date', $startDate, ['class' => 'month-btn form-control d_week current_date start_date', 'autocomplete' => 'off']) }}
                             </div>
-                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mx-2">
-                                <div class="btn-box">
-                                    {{ Form::label('end_date', __('End Date'), ['class' => 'form-label']) }}
-                                    {{ Form::text('end_date', isset($_GET['end_date']) ? $_GET['end_date'] : '', ['class' => 'month-btn form-control d_week current_date end_date', 'autocomplete' => 'off']) }}
-                                </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mx-2">
+                            <div class="btn-box">
+                                {{ Form::label('end_date', __('End Date'), ['class' => 'form-label']) }}
+                                {{ Form::text('end_date', $endDate, ['class' => 'month-btn form-control d_week current_date end_date', 'autocomplete' => 'off']) }}
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+                            <div class="btn-box" id="employee_div">
+                                {{ Form::label('employee', __('Employee'), ['class' => 'form-label']) }}
+                                {{ Form::select('employee', $employees, $employee, ['class' => 'form-control select2 ', 'required' => 'required', 'placeholder' => __('Select Employee')]) }}
+                            </div>
                         </div>
                         <div class="col-auto float-end ms-2 mt-4">
                             <a href="#" class="btn btn-sm btn-primary"
@@ -73,7 +78,7 @@
                                             </td>
                                             <td>{{ !empty($eclaim->employee) ? $eclaim->employee->name : '' }}</td>
                                         @endif
-                                        <td>{{env('CURRENCY_SYMBOL') ?? '£'}}{{ $eclaim->amount }}</td>
+                                        <td>{{ \Auth::user()->priceFormat($eclaim->amount) }}</td>
                                         <td>
                                             @if($eclaim->status=="pending")
                                                 <button class="btn bg-warning btn-sm">{{ucfirst($eclaim->status)}}</button>
@@ -88,26 +93,16 @@
                                         <td>{{ \Auth::user()->dateFormat($eclaim->created_at) }}</td>
                                     </tr>
                                 @endforeach
-
+                                <tr class="text-right">
+                                    <td colspan="{{\Auth::user()->type=="employee" ? '3': '5'}}">
+                                        <strong>Total Expense:</strong> {{\Auth::user()->priceFormat($totalAmount ?? 0)}}
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
-                        <h4>Total Amount: {{$totalAmount}} </h4>
                     </div>
                 </div>
             </div>
         </div>
-    @endsection
-
-    @push('script-page')
-        <script>
-            $(document).ready(function() {
-                var now = new Date();
-                var month = (now.getMonth() + 1);
-                var day = now.getDate();
-                if (month < 10) month = "0" + month;
-                if (day < 10) day = "0" + day;
-                var today = now.getFullYear() + '-' + month + '-' + day;
-                $('.current_date').val(today);
-            });
-        </script>
-    @endpush
+    </div>
+@endsection

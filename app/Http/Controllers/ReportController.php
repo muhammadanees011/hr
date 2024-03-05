@@ -838,11 +838,18 @@ class ReportController extends Controller
         if (\Auth::user()->can('Manage Report')) {
             $startDate = !empty($request->start_date) ? $request->input('start_date') : Carbon::now()->subDays(30)->toDateString();
             $endDate = !empty($request->end_date) ? $request->input('end_date') : Carbon::now()->toDateString();
+            $employee = !empty($request->employee) ? $request->employee : null;
             
-            $eclaims = Eclaim::where('created_by', \Auth::user()->creatorId())->where('status','approved')->whereBetween(\DB::raw('Date(created_at)'), [$startDate, $endDate])->get();
+            $eclaims = Eclaim::where('created_by', \Auth::user()->creatorId())
+                ->when(!empty($employee), function($query) use($employee){
+                    $query->where('employee_id', $employee);
+                })
+                ->where('status','approved')->whereBetween(\DB::raw('Date(created_at)'), [$startDate, $endDate])
+                ->get();
             $totalAmount = $eclaims->sum('amount');
 
-            return view('report.p11report', compact('eclaims', 'totalAmount'));
+            $employees = Employee::get()->pluck('name', 'id');
+            return view('report.p11report', compact('eclaims', 'totalAmount','startDate','endDate','employees','employee'));
         } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
