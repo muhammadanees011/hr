@@ -104,6 +104,24 @@ class ContractController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        if (\Auth::user()->can('Create Contract')) {
+            $employee       = User::where('type', '=', 'employee')->get()->pluck('name', 'id');
+
+            $contractType = ContractType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+
+            return view('contracts.create', compact('contractType', 'employee'));
+        } else {
+            return response()->json(['error' => __('Permission Denied.')], 401);
+        }
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
