@@ -9,10 +9,12 @@ $chatgpt = Utility::getValByName('enable_chatgpt');
 @push('css-page')
 <link href="{{ asset('public/libs/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') }}" rel="stylesheet" />
 <link rel="stylesheet" href="{{ asset('css/summernote/summernote-bs4.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/plugins/dropzone.min.css') }}">
 @endpush
 @push('script-page')
 <!-- <script src='{{ asset('assets/js/plugins/tinymce/tinymce.min.js') }}'></script>  -->
 <script src="{{ asset('public/libs/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js') }}"></script>
+<script src="{{ asset('assets/js/plugins/dropzone-amd-module.min.js') }}"></script>
 
 <script>
     var e = $('[data-toggle="tags"]');
@@ -213,7 +215,12 @@ $chatgpt = Utility::getValByName('enable_chatgpt');
 
                     <div class="form-group col-md-12">
                         {!! Form::label('question-template', __('Questions Template'), ['class' => 'col-form-label']) !!}
-                        {{ Form::select('question-template', [Qualification', 'Extra skills'], null, ['class' => 'form-control select2']) }}
+                        {{ Form::select('question-template', ['Qualification', 'Extra skills'], null, ['class' => 'form-control select2']) }}
+                    </div>
+
+                    <div class="form-group col-md-12">
+                    {!! Form::label('attachments', __('Attachments'), ['class' => 'col-form-label']) !!}
+                        <div class="col-md-12 dropzone browse-file" id="my-dropzone"></div>
                     </div>
 
                 </div>
@@ -260,6 +267,42 @@ $chatgpt = Utility::getValByName('enable_chatgpt');
 @endsection
 
 @push('script-page')
+<script>
+        Dropzone.autoDiscover = true;
+        myDropzone = new Dropzone("#my-dropzone", {
+            maxFiles: 20,
+            // maxFilesize: 209715200,
+            parallelUploads: 1,
+            // acceptedFiles: ".jpeg,.jpg,.png,.pdf,.doc,.txt",
+            url: "#",
+            success: function(file, response) {
+                if (response.is_success) {
+                    dropzoneBtn(file, response);
+                    show_toastr('{{ __('Success') }}', 'Attachment Create Successfully!', 'success');
+                } else {
+                    myDropzone.removeFile(file);
+                    show_toastr('{{ __('Error') }}', 'File type must be match with Storage setting.',
+                        'error');
+                }
+                location.reload();
+
+            },
+            error: function(file, response) {
+                myDropzone.removeFile(file);
+                if (response.error) {
+                    show_toastr('{{ __('Error') }}', response.error, 'error');
+                } else {
+                    show_toastr('{{ __('Error') }}', response.error, 'error');
+                }
+            }
+        });
+        myDropzone.on("sending", function(file, xhr, formData) {
+            formData.append("_token", $('meta[name="csrf-token"]').attr('content'));
+        });
+
+        
+    </script>
+
 <script>
     $(document).ready(function() {
         var now = new Date();

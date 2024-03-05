@@ -10,10 +10,12 @@ $chatgpt = Utility::getValByName('enable_chatgpt');
 <?php $__env->startPush('css-page'); ?>
 <link href="<?php echo e(asset('public/libs/bootstrap-tagsinput/dist/bootstrap-tagsinput.css')); ?>" rel="stylesheet" />
 <link rel="stylesheet" href="<?php echo e(asset('css/summernote/summernote-bs4.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('assets/css/plugins/dropzone.min.css')); ?>">
 <?php $__env->stopPush(); ?>
 <?php $__env->startPush('script-page'); ?>
 <!-- <script src='<?php echo e(asset('assets/js/plugins/tinymce/tinymce.min.js')); ?>'></script>  -->
 <script src="<?php echo e(asset('public/libs/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/js/plugins/dropzone-amd-module.min.js')); ?>"></script>
 
 <script>
     var e = $('[data-toggle="tags"]');
@@ -230,6 +232,20 @@ $chatgpt = Utility::getValByName('enable_chatgpt');
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
                     </div>
+
+                    <div class="form-group col-md-12">
+                        <?php echo Form::label('question-template', __('Questions Template'), ['class' => 'col-form-label']); ?>
+
+                        <?php echo e(Form::select('question-template', ['Qualification', 'Extra skills'], null, ['class' => 'form-control select2'])); ?>
+
+                    </div>
+
+                    <div class="form-group col-md-12">
+                    <?php echo Form::label('attachments', __('Attachments'), ['class' => 'col-form-label']); ?>
+
+                        <div class="col-md-12 dropzone browse-file" id="my-dropzone"></div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -267,15 +283,6 @@ $chatgpt = Utility::getValByName('enable_chatgpt');
         </div>
     </div>
     <div class="col-md-12 text-end row">
-        <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
-                <span class="caret"></span></button>
-            <ul class="dropdown-menu">
-                <li><a href="#">HTML</a></li>
-                <li><a href="#">CSS</a></li>
-                <li><a href="#">JavaScript</a></li>
-            </ul>
-        </div>
         <div class="form-group">
             <input type="submit" value="<?php echo e(__('Create')); ?>" class="btn btn-primary">
         </div>
@@ -286,6 +293,42 @@ $chatgpt = Utility::getValByName('enable_chatgpt');
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('script-page'); ?>
+<script>
+        Dropzone.autoDiscover = true;
+        myDropzone = new Dropzone("#my-dropzone", {
+            maxFiles: 20,
+            // maxFilesize: 209715200,
+            parallelUploads: 1,
+            // acceptedFiles: ".jpeg,.jpg,.png,.pdf,.doc,.txt",
+            url: "#",
+            success: function(file, response) {
+                if (response.is_success) {
+                    dropzoneBtn(file, response);
+                    show_toastr('<?php echo e(__('Success')); ?>', 'Attachment Create Successfully!', 'success');
+                } else {
+                    myDropzone.removeFile(file);
+                    show_toastr('<?php echo e(__('Error')); ?>', 'File type must be match with Storage setting.',
+                        'error');
+                }
+                location.reload();
+
+            },
+            error: function(file, response) {
+                myDropzone.removeFile(file);
+                if (response.error) {
+                    show_toastr('<?php echo e(__('Error')); ?>', response.error, 'error');
+                } else {
+                    show_toastr('<?php echo e(__('Error')); ?>', response.error, 'error');
+                }
+            }
+        });
+        myDropzone.on("sending", function(file, xhr, formData) {
+            formData.append("_token", $('meta[name="csrf-token"]').attr('content'));
+        });
+
+        
+    </script>
+
 <script>
     $(document).ready(function() {
         var now = new Date();
