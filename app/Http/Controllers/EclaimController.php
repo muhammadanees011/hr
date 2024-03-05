@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Eclaim;
 use App\Models\EclaimType;
+use App\Models\Employee;
 use App\Notifications\EclaimNotification;
 use Auth;
 use Illuminate\Http\Request;
@@ -36,7 +37,12 @@ class EclaimController extends Controller
     {
         if (\Auth::user()->can('Create Eclaim')) {
             $eClaimTypes = EclaimType::get()->pluck('title', 'id');
-            return view('eclaim.create', compact('eClaimTypes'));   
+            if (Auth::user()->type == 'employee') {
+                $employees = Employee::where('user_id', '=', \Auth::user()->id)->first();
+            } else {
+                $employees = Employee::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            }
+            return view('eclaim.create', compact('eClaimTypes','employees'));   
         } else {
             return response()->json(['error' => __('Permission denied.')], 401);
         }
@@ -49,6 +55,7 @@ class EclaimController extends Controller
         $validator = \Validator::make(
             $request->all(),
             [
+                'employee_id' => 'required',
                 'type_id' => 'required',
                 'amount' => 'required',
                 'receipt' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Assuming you're only allowing image files
@@ -76,7 +83,7 @@ class EclaimController extends Controller
         $eClaimType->receipt = $fileName ?? ''; // Assigning the filename if it exists, otherwise empty string
         $eClaimType->created_by = \Auth::user()->creatorId();
         $eClaimType->history = json_encode($history);
-        $eClaimType->employee_id =  \Auth::user()->id;
+        $eClaimType->employee_id =  $request->employee_id;
         $eClaimType->save();
 
         return redirect()->route('eclaim.index')->with('success', __('Eclaim successfully created.'));
@@ -94,10 +101,18 @@ class EclaimController extends Controller
     public function edit($id)
     {
         if (\Auth::user()->can('Edit Eclaim')) {
-            if ($eclaim->created_by == \Auth::user()->id) {
+            $eclaim = Eclaim::find($id);
+            if ((\Auth::user()->type=="employee" && $eclaim->created_by == \Auth::user()->id) || $eclaim->created_by== \Auth::user()->creatorId()) {
                 $eclaim = Eclaim::where('id', $id)->first();
                 $eClaimTypes = EclaimType::get()->pluck('title', 'id');
-                return view('eclaim.edit', compact('eclaim', 'eClaimTypes'));
+
+                if (Auth::user()->type == 'employee') {
+                    $employees = Employee::where('user_id', '=', \Auth::user()->id)->first();
+                } else {
+                    $employees = Employee::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+                }
+
+                return view('eclaim.edit', compact('eclaim', 'eClaimTypes', 'employees'));
             } else {
                 return response()->json(['error' => __('Permission denied.')], 401);
             }
@@ -109,7 +124,7 @@ class EclaimController extends Controller
     public function update(Request $request, Eclaim $eclaim)
 {
     if (\Auth::user()->can('Edit Eclaim')) {
-        if ($eclaim->created_by == \Auth::user()->id) {
+        if ((\Auth::user()->type=="employee" && $eclaim->created_by == \Auth::user()->id) || $eclaim->created_by== \Auth::user()->creatorId()) {
             $eclaim_id =  $eclaim->id;
             $validator = \Validator::make(
                 $request->all(),
@@ -154,7 +169,7 @@ class EclaimController extends Controller
     public function destroy(Eclaim $eclaim)
     {
         if (\Auth::user()->can('Delete Eclaim')) {
-            if ($eclaimType->created_by == \Auth::user()->id) {
+            if ((\Auth::user()->type=="employee" && $eclaim->created_by == \Auth::user()->id) || $eclaim->created_by== \Auth::user()->creatorId()) {
                 $id =  $eclaim->id;
                 $eclaim = Eclaim::find($id);
                 $eclaim->delete();
