@@ -22,7 +22,8 @@ $lang = Auth::user()->lang;
         <?php endif; ?>
 
         <div class="navbar-wrapper">
-            <div class="m-header main-logo">
+            <div class="m-header main-logo" 
+            style="background-color:#584ED2 !important;border-bottom-right-radius:20px;">
 
                 <a href="<?php echo e(route('home')); ?>" class="b-brand">
                     <!-- ========   change your logo hear   ============ -->
@@ -32,7 +33,8 @@ $lang = Auth::user()->lang;
                 <?php echo e($logos); ?>
 
             </p> -->
-                    <img src="<?php echo e(asset( '/assets/images/HRMPRO-logos_transparent.png' )); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo" style="height:175px;width:100%;" />
+                    <!-- <img src="<?php echo e(asset( '/assets/images/HRMPRO-logos_transparent.png' )); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo" style="height:7rem !important; width:7rem !important;" /> -->
+                    <img src="<?php echo e(asset( '/assets/images/eduhr.png' )); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo" style="height:7rem !important; width:7rem !important;" />
                     <!-- <img src="<?php echo e(asset( '/assets/uploads/logo/logo-dark.png' )); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo logo-lg" style="height: 40px;" /> -->
                     <!-- <img src="<?php echo e(asset('assets/images/theme-3.svg')); ?>" alt="<?php echo e(env('APP_NAME')); ?>" class="logo logo-lg" style="height: 40px;" /> -->
                 </a>
@@ -232,11 +234,6 @@ $lang = Auth::user()->lang;
                             <a class="dash-link" href="<?php echo e(route('timesheet.index')); ?>"><?php echo e(__('Timesheet')); ?></a>
                         </li>
                         <?php endif; ?>
-                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Leave')): ?>
-                        <li class="dash-item <?php echo e(Request::segment(2) == 'leave' ? ' active' : ''); ?>">
-                            <a class="dash-link" href="<?php echo e(route('leave.index')); ?>"><?php echo e(__('Manage Leave')); ?></a>
-                        </li>
-                        <?php endif; ?>
                         <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Attendance')): ?>
                         <li class="dash-item dash-hasmenu">
                             <a href="#!" class="dash-link"><span class="dash-mtext"><?php echo e(__('Attendance')); ?></span><span class="dash-arrow"><i data-feather="chevron-right"></i></span></a>
@@ -256,6 +253,49 @@ $lang = Auth::user()->lang;
                 </li>
                 <?php endif; ?>
                 <!--timesheet-->
+
+                <!-- Manage Leaves-->
+                <?php if(Gate::check('Manage Leave') || Gate::check('Manage Leave')): ?>
+                <li class="dash-item dash-hasmenu">
+                    <a href="#!" class="dash-link"><span class="dash-micon"><i class="ti ti-calendar"></i></span><span class="dash-mtext"><?php echo e(__('Manage Leave')); ?></span><span class="dash-arrow"><i data-feather="chevron-right"></i></span></a>
+                    <ul class="dash-submenu">
+
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Leave')): ?>
+                        <li class="dash-item <?php echo e(Request::segment(2) == 'leave' ? ' active' : ''); ?>">
+                            <a class="dash-link" href="<?php echo e(route('leave.index')); ?>"><?php echo e(__('Leave Request')); ?></a>
+                        </li>
+                        <?php endif; ?>
+
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Leave')): ?>
+                        <li class="dash-item <?php echo e(Request::segment(2) == 'leave' ? ' active' : ''); ?>">
+                            <a class="dash-link" href="<?php echo e(route('carryover.index')); ?>"><?php echo e(__('CarryOver Request')); ?></a>
+                        </li>
+                        <?php endif; ?>
+
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Leave')): ?>
+                        <?php if(\Auth::user()->type == 'employee'): ?>
+                        <li class="dash-item <?php echo e(Request::segment(1) == 'leavesummary' || Request::is('employees/leavesummary*') ? 'active' : ''); ?>">
+                            <a class="dash-link" href="<?php echo e(route('leavesummary.employee',Auth::user()->employee->id)); ?>"><?php echo e(__('Leave Summary')); ?></a>
+                        </li>
+                        <?php else: ?>
+                        <li class="dash-item <?php echo e(Request::segment(1) == 'leavesummary' || Request::is('employees/leavesummary*') ? 'active' : ''); ?>">
+                            <a class="dash-link" href="<?php echo e(route('leavesummary.employees')); ?>"><?php echo e(__('Leave Summary')); ?></a>
+                        </li>
+                        <?php endif; ?>
+                        <?php endif; ?>
+
+                        <li class="dash-item <?php echo e(Request::segment(1) == 'teamleave' ? ' active' : ''); ?>">
+                            <a class="dash-link" href="<?php echo e(route('leave.team')); ?>"><?php echo e(__('Team Time Off')); ?></a>
+                        </li>
+
+                        <li class="dash-item <?php echo e(Request::segment(1) == 'holiday' ? ' active' : ''); ?>">
+                            <a class="dash-link" href="<?php echo e(route('holiday.index')); ?>"><?php echo e(__('Holidays')); ?></a>
+                        </li>
+
+                    </ul>
+                </li>
+                <?php endif; ?>
+                <!--performance-->
 
                 <!-- performance-->
                 <?php if(Gate::check('Manage Indicator') || Gate::check('Manage Appraisal') || Gate::check('Manage Goal Tracking')): ?>
@@ -406,9 +446,9 @@ $lang = Auth::user()->lang;
                         <li class="dash-item">
                             <a class="dash-link" href="<?php echo e(route('announcement.index')); ?>"><?php echo e(__('Announcement')); ?></a>
                         </li>
-                        <li class="dash-item <?php echo e(Request::segment(1) == 'holiday' ? ' active' : ''); ?>">
+                        <!-- <li class="dash-item <?php echo e(Request::segment(1) == 'holiday' ? ' active' : ''); ?>">
                             <a class="dash-link" href="<?php echo e(route('holiday.index')); ?>"><?php echo e(__('Holidays')); ?></a>
-                        </li>
+                        </li> -->
                     </ul>
                 </li>
                 <?php endif; ?>
@@ -515,10 +555,43 @@ $lang = Auth::user()->lang;
                 <li class="dash-item <?php echo e(Request::route()->getName() == 'contract.index' || Request::route()->getName() == 'contract.show' ? 'active' : ''); ?>">
                     <a href="<?php echo e(route('contract.index')); ?>" class="dash-link"><span class="dash-micon"><i class="ti ti-device-floppy"></i></span><span class="dash-mtext"><?php echo e(__('Contracts')); ?></span></a>
                 </li>
+            <!-- Health And Fitness -->
+            <li
+                    class="dash-item dash-hasmenu  <?php echo e(Request::segment(1) == 'job' || Request::segment(1) == 'job-application' ? 'dash-trigger active' : ''); ?> ">
+                    <a href="#!" class="dash-link"><span class="dash-micon">
+                    <i class="ti ti-shield"></i></span><span
+                            class="dash-mtext"><?php echo e(__('Health And Fitness')); ?></span><span class="dash-arrow"><i
+                                data-feather="chevron-right"></i></span></a>
+                    <ul class="dash-submenu">
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Resignation')): ?>
+                        <li class="dash-item <?php echo e(request()->is('healthassessment*') ? 'active' : ''); ?>">
+                            <a class="dash-link" href="<?php echo e(route('healthassessment.index')); ?>"><?php echo e(__('Health Assessments')); ?></a>
+                        </li>
+                        <?php endif; ?>
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Termination')): ?>
+                        <li class="dash-item <?php echo e(request()->is('gpnote*') ? 'active' : ''); ?>">
+                            <a class="dash-link" href="<?php echo e(route('healthassessment.index')); ?>"><?php echo e(__('GP Notes')); ?></a>
+                        </li>
+                        <?php endif; ?>
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Retirement')): ?>
+                            <li class="dash-item <?php echo e(request()->is('selfcertification*') ? 'active' : ''); ?>">
+                                <a class="dash-link"
+                                    href="<?php echo e(route('healthassessment.index')); ?>"><?php echo e(__('Self Certifications')); ?></a>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </li>
+
+            <!--contract-->
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Contract')): ?>
+                <li
+                    class="dash-item <?php echo e(Request::route()->getName() == 'contract.index' || Request::route()->getName() == 'contract.show' ? 'active' : ''); ?>">
+                    <a href="<?php echo e(route('contract.index')); ?>" class="dash-link"><span class="dash-micon"><i
+                                class="ti ti-device-floppy"></i></span><span
+                            class="dash-mtext"><?php echo e(__('Contracts')); ?></span></a>                
                 <?php endif; ?>
 
-                
-
+                <!--  -->
 
                 <!-- ticket-->
                 <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Ticket')): ?>
@@ -567,8 +640,8 @@ $lang = Auth::user()->lang;
                 </li>
                 <?php endif; ?>
 
-                <!-- Eclaim-->
-                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Eclaim')): ?>
+            <!-- Eclaim-->
+            <!-- <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Eclaim')): ?> -->
                 <li class="dash-item">
                     <a href="<?php echo e(route('eclaim.index')); ?>" class="dash-link">
                         <span class="dash-micon"><i class="ti ti-file"></i></span><span class="dash-mtext"><?php echo e(__('Manage Eclaim')); ?>
@@ -576,7 +649,7 @@ $lang = Auth::user()->lang;
                         </span>
                     </a>
                 </li>
-                <?php endif; ?>
+            <!-- <?php endif; ?> -->
 
                 
                 <?php if(\Auth::user()->type == 'company'): ?>
