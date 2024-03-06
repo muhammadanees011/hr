@@ -15,12 +15,8 @@ class CarryOverController extends Controller
      */
     public function index()
     {
-        if (\Auth::user()->can('Manage Retirement')) {
-            $carryrequests = CarryOver::where('created_by', \Auth::user()->creatorId())->get();
-            return view('carryover.index', compact('carryrequests'));
-        } else {
-            return redirect()->back()->with('error', __('Permission denied.'));
-        }
+        $carryrequests = CarryOver::where('created_by', \Auth::user()->creatorId())->get();
+        return view('carryover.index', compact('carryrequests'));
     }
 
     /**

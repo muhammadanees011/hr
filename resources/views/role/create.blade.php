@@ -109,7 +109,7 @@
                                     'Performance Type',
                                     'Zoom meeting',
                                     'EclaimType',
-                                    'Eclaim'
+                                    'Eclaim',
                                     'Anonymise Application (Can View)'
                                 ];
                                 if (Auth::user()->type == 'super admin') {
