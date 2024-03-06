@@ -13,7 +13,7 @@ class HealthAssessmentController extends Controller
      */
     public function index()
     {
-        if(\Auth::user()->can('Manage Retirement'))
+        if(\Auth::user()->can('Manage Health And Fitness'))
         {
             $healthassessments = HealthAssessment::where('created_by', '=', \Auth::user()->creatorId())->get();
 
@@ -48,7 +48,7 @@ class HealthAssessmentController extends Controller
      */
     public function create()
     {
-        if(\Auth::user()->can('Create Retirement'))
+        if(\Auth::user()->can('Create Health And Fitness'))
         {
             $employees        = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             return view('healthassessment.create', compact('employees'));
@@ -64,7 +64,7 @@ class HealthAssessmentController extends Controller
      */
     public function store(Request $request)
     {
-        if(\Auth::user()->can('Create Retirement'))
+        if(\Auth::user()->can('Create Health And Fitness'))
         {
 
             $validator = \Validator::make(
@@ -122,7 +122,7 @@ class HealthAssessmentController extends Controller
      */
     public function edit(HealthAssessment $healthassessment)
     {
-        if(\Auth::user()->can('Edit Retirement'))
+        if(\Auth::user()->can('Edit Health And Fitness'))
         {
             $employees        = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             if($healthassessment->created_by == \Auth::user()->creatorId())
@@ -146,7 +146,7 @@ class HealthAssessmentController extends Controller
      */
     public function update(Request $request, HealthAssessment $healthassessment)
     {
-        if(\Auth::user()->can('Edit Retirement'))
+        if(\Auth::user()->can('Edit Health And Fitness'))
         {
             if($healthassessment->created_by == \Auth::user()->creatorId())
             {
@@ -194,7 +194,7 @@ class HealthAssessmentController extends Controller
      */
     public function destroy(HealthAssessment $healthassessment)
     {
-        if(\Auth::user()->can('Delete Retirement'))
+        if(\Auth::user()->can('Delete Health And Fitness'))
         {
             if($healthassessment->created_by == \Auth::user()->creatorId())
             {

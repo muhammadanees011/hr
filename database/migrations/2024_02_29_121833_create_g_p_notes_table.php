@@ -16,10 +16,10 @@ return new class extends Migration
             $table->integer('employee_id');
             $table->date('assessment_date');
             $table->string('presenting_complaint');
-            $table->string('history_of_present_illness');
+            $table->string('history_of_present_illness')->nullable();
             $table->string('past_medical_history')->nullable();
-            $table->string('assessment');
-            $table->longText('plan');
+            $table->string('assessment')->nullable();
+            $table->longText('plan')->nullable();
             $table->string('additional_comments')->nullable();
             $table->string('prescription_file')->nullable();
             $table->date('follow_up_date')->nullable();
