@@ -92,12 +92,15 @@
                             <div class="col-xl-10">
                                 <div class="row">
                                     <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
+                                        @if(\Auth::user()->type=="hr" || \Auth::user()->type=="company")
                                         <div class="btn-box">
-                                            {{ Form::label('branch', __('Select Branch*'), ['class' => 'form-label']) }}
+                                            {{ Form::label('branch', __('Select Branches*'), ['class' => 'form-label']) }}
                                             {{ Form::select('branch', $brances, isset($_GET['branch']) ? $_GET['branch'] : '', ['class' => ' select-width form-control', 'id' => 'branch_id']) }}
                                         </div>
+                                        @endif
                                     </div>
                                     <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
+                                    @if(\Auth::user()->type=="hr" || \Auth::user()->type=="company")
                                         <div class="btn-box">
                                             <div class="btn-box" id="department_id">
                                                 {{ Form::label('department', __('Department'), ['class' => 'form-label']) }}
@@ -106,6 +109,7 @@
                                                 </select>
                                             </div>
                                         </div>
+                                        @endif  
                                     </div>
                                     <div class="col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12">
                                         <div class="btn-box">
@@ -151,34 +155,7 @@
                         </h6>
                     </div>
                     <div class="card-header-right">
-                        <div class="btn-group card-option">
-                            <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                <i class="feather icon-more-vertical"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                @can('Edit Employee')
-                                    <a href="{{ route('employee.edit', \Illuminate\Support\Facades\Crypt::encrypt($employee->id)) }}"
-                                        class="dropdown-item" data-url="" data-size="md" data-ajax-popup="true"
-                                        data-title="{{ __('Edit employee') }}"><i class="ti ti-edit "></i><span
-                                            class="ms-2">{{ __('Edit') }}</span></a>
-                                @endcan
-
-                                @can('Delete Employee')
-                                    {!! Form::open([
-                                        'method' => 'DELETE',
-                                        'route' => ['employee.destroy', $employee->id],
-                                        'id' => 'delete-form-' . $employee->id,
-                                    ]) !!}
-                                    <a href="#" class="bs-pass-para dropdown-item"
-                                        data-confirm="{{ __('Are You Sure?') }}"
-                                        data-text="{{ __('This action can not be undone. Do you want to continue?') }}"
-                                        data-confirm-yes="delete-form-{{ $employee->id }}" title="{{ __('Delete') }}"><i
-                                            class="ti ti-trash"></i><span class="ms-2">{{ __('Delete') }}</span></a>
-                                    {!! Form::close() !!}
-                                @endcan
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
                 <div class="card-body">
@@ -195,16 +172,16 @@
                     <h4 class="mt-2 text-primary">{{ $employee->name }}</h4>
                     <small
                         class="">{{ ucfirst(!empty($employee->designation) ? $employee->designation->name : '') }}</small>
+                    <div><small class="">{{ ucfirst(!empty($employee->designation) ? $employee->user->email : '') }}</small></div>
+                    <div><small class="">{{ ucfirst(!empty($employee->designation) ? $employee->department->name : '') }}</small></div>
 
                     <div class="row mt-2">
                         <div class="col-12 col-sm-12">
                             <div class="d-grid">
                                 @can('Show Employee Profile')
-                                    <a class="btn btn-outline-primary mx-5"
-                                        href="{{ route('show.employee.profile', \Illuminate\Support\Facades\Crypt::encrypt($employee->id)) }}">{{ \Auth::user()->employeeIdFormat($employee->employee_id) }}</a>
+                                    <a class="btn  mx-5">{{ \Auth::user()->employeeIdFormat($employee->employee_id) }}</a>
                                 @else
-                                    <a class="btn btn-outline-primary mx-5"
-                                        href="{{ route('employee.show', \Illuminate\Support\Facades\Crypt::encrypt($employee->id)) }}">{{ \Auth::user()->employeeIdFormat($employee->employee_id) }}</a>
+                                    <a class="btn  mx-5">{{ \Auth::user()->employeeIdFormat($employee->employee_id) }}</a>
                                 @endcan
                             </div>
                         </div>
