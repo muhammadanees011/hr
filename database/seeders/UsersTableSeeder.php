@@ -2122,6 +2122,12 @@ class UsersTableSeeder extends Seeder
                 "created_at" => date('Y-m-d H:i:s'),
                 "updated_at" => date('Y-m-d H:i:s'),
             ],
+            [
+                "name" => "Edit Employee Type",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
         
         ];
         Permission::insert($arrPermissions);
@@ -2473,8 +2479,7 @@ class UsersTableSeeder extends Seeder
             ["name" => "Resume"],
             ["name" => "Cover Letter"],
             ["name" => "Rating"],
-        
-        
+            ["name" => "Edit Employee Type"]        
         ];
 
         $companyRole->givePermissionTo($companyPermissions);
@@ -2777,6 +2782,7 @@ class UsersTableSeeder extends Seeder
             ["name" => "Resume"],
             ["name" => "Cover Letter"],
             ["name" => "Rating"],
+            ["name" => "Edit Employee Type"]
         ];
 
         $hrRole->givePermissionTo($hrPermission);
