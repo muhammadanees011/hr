@@ -243,7 +243,7 @@ class EmployeeController extends Controller
                 return redirect()->route('employee.index')->with('success', __('Employee successfully created.') . ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '<br> <span class="text-danger">' . $resp['error'] . '</span>' : ''));
             }
 
-            return redirect()->route('employee.index')->with('success', __('Employee  successfully created.'));
+            return redirect()->route($employee->employee_type == 'Probation' ? 'employee.probation.index' : 'employee.index')->with('success', __('Employee  successfully created.'));
         } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
