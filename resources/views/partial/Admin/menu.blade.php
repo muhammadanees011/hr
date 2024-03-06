@@ -65,6 +65,9 @@ class="dash-sidebar light-sidebar {{ isset($mode_setting['is_sidebar_transperent
                             <li class="dash-item">
                                 <a class="dash-link" href="{{ route('report.income-expense') }}">{{ __('Income Vs Expense') }}</a>
                             </li>
+                            <li class="dash-item">
+                                <a class="dash-link" href="{{ route('report.p11-report') }}">{{ __('P11 Report') }}</a>
+                            </li>
 
                             <li class="dash-item">
                                 <a class="dash-link" href="{{ route('report.monthly.attendance') }}">{{ __('Monthly Attendance') }}</a>
@@ -734,39 +737,37 @@ class="dash-arrow"><i data-feather="chevron-right"></i></span></a>
 href="{{ route('report.income-expense') }}">{{ __('Income Vs Expense') }}</a>
 </li>
 
-<li class="dash-item">
-<a class="dash-link"
-href="{{ route('report.monthly.attendance') }}">{{ __('Monthly Attendance') }}</a>
-</li>
+                            <li class="dash-item">
+                                <a class="dash-link"
+                                href="{{ route('report.monthly.attendance') }}">{{ __('Monthly Attendance') }}</a>
+                            </li>
 
-<li class="dash-item">
-<a class="dash-link"
-href="{{ route('report.leave') }}">{{ __('Leave') }}</a>
-</li>
-
-
-<li class="dash-item">
-<a class="dash-link"
-href="{{ route('report.account.statement') }}">{{ __('Account Statement') }}</a>
-</li>
+                            <li class="dash-item">
+                                <a class="dash-link"
+                                href="{{ route('report.leave') }}">{{ __('Leave') }}</a>
+                            </li>
 
 
-<li class="dash-item">
-<a class="dash-link"
-href="{{ route('report.payroll') }}">{{ __('Payroll') }}</a>
-</li>
+                            <li class="dash-item">
+                                <a class="dash-link"
+                                href="{{ route('report.account.statement') }}">{{ __('Account Statement') }}</a>
+                            </li>
 
 
-<li class="dash-item">
-<a class="dash-link"
-href="{{ route('report.timesheet') }}">{{ __('Timesheet') }}</a>
-</li>
-@endcan
+                            <li class="dash-item">
+                                <a class="dash-link"
+                                href="{{ route('report.payroll') }}">{{ __('Payroll') }}</a>
+                            </li>
 
 
-</ul>
-</li>
-@endif -->
+                            <li class="dash-item">
+                                <a class="dash-link"
+                                href="{{ route('report.timesheet') }}">{{ __('Timesheet') }}</a>
+                            </li>
+                        @endcan
+                    </ul>
+                </li>
+                @endif
 
 
 <!--constant-->
