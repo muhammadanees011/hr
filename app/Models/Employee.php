@@ -23,6 +23,7 @@ class Employee extends Model
         'department_id',
         'designation_id',
         'company_doj',
+        'employee_type',
         'documents',
         'account_holder_name',
         'account_number',
@@ -307,6 +308,11 @@ class Employee extends Model
             'id',
             'pension_scheme_id'
         );
+    }
+
+    public function probationDetails()
+    {
+        return $this->hasOne(EmployeeProbation::class);
     }
 
     protected static function booted(){

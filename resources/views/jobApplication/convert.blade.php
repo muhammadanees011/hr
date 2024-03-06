@@ -113,22 +113,31 @@
                         {{ Form::select('department_id', $departments, null, ['class' => 'form-control department_id', 'id' => 'department_id', 'required' => 'required', 'placeholder' => 'Select Department']) }}
                     </div>
 
-                    <div class="form-group ">
+                    <div class="form-group col-md-6">
                         {{ Form::label('designation_id', __('Designation'), ['class' => 'col-form-label']) }}
                         <select class=" form-control select2-multiple" id="designation_id" name="designation_id"
                             data-toggle="select2" data-placeholder="{{ __('Select Designation ...') }}">
                             <option value="">{{ __('Select any Designation') }}</option>
                         </select>
                     </div>
-                    <div class="form-group ">
+                    <div class="form-group col-md-6">
                         {!! Form::label('company_doj', __('Company Date Of Joining'), ['class' => 'col-form-label']) !!}
                         {!! Form::date('company_doj', $jobOnBoard->joining_date, ['class' => 'form-control ', 'required' => 'required']) !!}
                     </div>  
 
-                    {{-- <div class="form-group col-md-6">
-                        {!! Form::label('termination_date', __('Termination Date'), ['class' => 'col-form-label']) !!}
-                        {!! Form::date('termination_date', old('termination_date'), ['class' => 'form-control ', 'required' => 'required']) !!}
-                    </div> --}}
+                    <div class="form-group col-md-6">
+                        {{ Form::label('employee_type', __('Select Employee Type'), ['class' => 'form-label']) }}
+                        <div class="form-icon-user">
+                            <select class="form-control  employee_type" name="employee_type" id="employee_type">
+                                <option value="Permanent">Permanent</option>
+                                <option value="Probation">Probation</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6" id="probation_days_input" style="display: none;">
+                        {!! Form::label('probation_days', __('Enter Probation Days'), ['class' => 'form-label']) !!}
+                        {!! Form::number('probation_days', null, ['class' => 'form-control']) !!}
+                    </div>
                    
                    
                 </div>
@@ -311,6 +320,25 @@
 
 @push('script-page')
     <script>
+        $(document).ready(function() {
+        // Function to toggle visibility of probation days input
+        function toggleProbationDaysInput() {
+            var selectedType = $('#employee_type').val();
+            if (selectedType === 'Probation') {
+                $('#probation_days_input').show();
+            } else {
+                $('#probation_days_input').hide();
+            }
+        }
+
+        // Initial state
+        toggleProbationDaysInput();
+
+        // Event listener for changes in the employee type select
+        $('#employee_type').change(function() {
+            toggleProbationDaysInput();
+        });
+    });
 
     $(document).ready(function() {
         var now = new Date();

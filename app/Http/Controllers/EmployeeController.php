@@ -22,6 +22,7 @@ use App\Imports\EmployeesImport;
 use App\Exports\EmployeesExport;
 use App\Models\Asset;
 use App\Models\Contract;
+use App\Models\EmployeeProbation;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\NOC;
 use App\Models\Termination;
@@ -44,9 +45,9 @@ class EmployeeController extends Controller
 
         if (\Auth::user()->can('Manage Employee')) {
             if (Auth::user()->type == 'employee') {
-                $employees = Employee::where('user_id', '=', Auth::user()->id)->get();
+                $employees = Employee::where('user_id', '=', Auth::user()->id)->where('employee_type', 'Permanent')->get();
             } else {
-                $employees = Employee::where('created_by', \Auth::user()->creatorId())->with(['branch', 'department', 'designation'])->get();
+                $employees = Employee::where('created_by', \Auth::user()->creatorId())->where('employee_type', 'Permanent')->with(['branch', 'department', 'designation'])->get();
             }
 
             return view('employee.index', compact('employees'));
@@ -59,11 +60,10 @@ class EmployeeController extends Controller
     {
         if (\Auth::user()->can('Manage Employee')) {
             if (Auth::user()->type == 'employee') {
-                $employees = Employee::where('user_id', '=', Auth::user()->id)->get();
+                $employees = Employee::where('user_id', '=', Auth::user()->id)->where('employee_type', 'Probation')->get();
             } else {
-                $employees = Employee::where('created_by', \Auth::user()->creatorId())->with(['branch', 'department', 'designation'])->get();
+                $employees = Employee::where('created_by', \Auth::user()->creatorId())->where('employee_type', 'Probation')->with(['branch', 'department', 'designation', 'probationDetails'])->get();
             }
-
             return view('employee.indexProbation', compact('employees'));
         } else {
             return redirect()->back()->with('error', __('Permission denied.'));
@@ -106,6 +106,8 @@ class EmployeeController extends Controller
                     'department_id' => 'required',
                     'designation_id' => 'required',
                     'document.*' => 'required',
+                    'employee_type' => 'required',
+                    'probation_days' => 'required_if:employee_type,Probation|numeric|min:1',
                 ]
             );
             if ($validator->fails()) {
@@ -174,6 +176,7 @@ class EmployeeController extends Controller
                     'department_id' => $request['department_id'],
                     'designation_id' => $request['designation_id'],
                     'company_doj' => $request['company_doj'],
+                    'employee_type' => $request['employee_type'],
                     'documents' => $document_implode,
                     'account_holder_name' => $request['account_holder_name'],
                     'account_number' => $request['account_number'],
@@ -184,6 +187,10 @@ class EmployeeController extends Controller
                     'created_by' => \Auth::user()->creatorId(),
                 ]
             );
+
+            if ($employee->employee_type == 'Probation') {
+                EmployeeProbationController::store($employee->id, $request['probation_days']);
+            }
 
             if ($request->hasFile('document')) {
                 foreach ($request->document as $key => $document) {
@@ -271,6 +278,8 @@ class EmployeeController extends Controller
                     'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:9',
                     'address' => 'required',
                     'document.*' => 'required',
+                    'employee_type' => 'required',
+                    'probation_days' => 'required_if:employee_type,Probation|numeric|min:1',
                 ]
             );
             if ($validator->fails()) {
@@ -280,6 +289,12 @@ class EmployeeController extends Controller
             }
 
             $employee = Employee::findOrFail($id);
+
+            if ($request['employee_type'] == 'Probation') {
+                $probation = EmployeeProbation::where('employee_id', $employee->id)->first();
+                $probation->duration = $request['probation_days'];
+                $probation->save();
+            }
 
             if ($request->document) {
                 foreach ($request->document as $key => $document) {
@@ -334,7 +349,7 @@ class EmployeeController extends Controller
             }
 
             if (\Auth::user()->type != 'employee') {
-                return redirect()->route('employee.index')->with('success', 'Employee successfully updated.');
+                return redirect()->route($employee->employee_type == 'Probation' ? 'employee.probation.index' : 'employee.index')->with('success', 'Employee successfully updated.');
             } else {
                 return redirect()->route('employee.show', \Illuminate\Support\Facades\Crypt::encrypt($employee->id))->with('success', 'Employee successfully updated.');
             }
@@ -379,7 +394,7 @@ class EmployeeController extends Controller
 
     public function show($id)
     {
-        
+
         if (\Auth::user()->can('Show Employee')) {
             $empId        = Crypt::decrypt($id);
             $documents    = Document::where('created_by', \Auth::user()->creatorId())->get();
@@ -915,6 +930,21 @@ class EmployeeController extends Controller
             $personalFile->save();
 
             return redirect()->route('employee.personalFile', encrypt($request->employee_id))->with('success', __('Document successfully uplaoded.'));
+        } else {
+            return redirect()->back()->with('error', __('Permission denied.'));
+        }
+    }
+
+    public function EmployeeTypeUpdate(Request $request, $id)
+    {
+        if (\Auth::user()->can('Edit Employee Type')) {
+            $probation = EmployeeProbation::where('employee_id', $id)->first();
+            if ($probation->delete()) {
+                $employee = Employee::where('id', $id)->first();
+                $employee->employee_type = 'Permanent';
+                $employee->save();
+            }
+            return redirect()->back()->with('success', __('Employee now changed to permanent status!'));
         } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }

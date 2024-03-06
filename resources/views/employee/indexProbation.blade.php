@@ -72,21 +72,33 @@
                                 {{ \Auth::user()->dateFormat($employee->company_doj) }}
                             </td>
                             <td>
-                                @php
-                                $randomMonths = rand(50, 90); 
-                                echo $randomMonths . ' Days';
-                                @endphp
+                                {{ $employee->probationDetails->duration . ' Days'}}
                             </td>
                             <td>
                                 @php
-                                $randomMonths = rand(1, 50); 
-                                echo $randomMonths . ' Days';
+                                $probationDetails = $employee->probationDetails;
+                                if ($probationDetails) {
+                                $startDate = strtotime($probationDetails->started_date);
+                                $currentDate = strtotime(date('Y-m-d'));
+                                $durationLeft = $probationDetails->duration - floor(($currentDate - $startDate) / (60 * 60 * 24));
+
+                                echo max(0, $durationLeft) . ' Days';
+                                }
                                 @endphp
                             </td>
                             @if (Gate::check('Edit Employee') || Gate::check('Delete Employee'))
                             <td class="Action">
                                 @if ($employee->is_active == 1)
                                 <span>
+                                    @can('Edit Employee Type')
+                                    <div class="action-btn bg-warning ms-2">
+                                        {!! Form::open(['method' => 'put', 'route' => ['employee.probation.update', $employee->id], 'id' => 'probation-update-form-' . $employee->id]) !!}
+                                        <button class="mx-3 btn btn-sm  align-items-center" data-bs-toggle="tooltip" title="" data-bs-original-title="{{ __('Convert to Permanent Employee') }}" type="submit">
+                                            <i class="ti ti-arrows-right-left text-white"></i>
+                                        </button>
+                                        </form>
+                                    </div>
+                                    @endcan
 
                                     @can('Show Personal File')
                                     <div class="action-btn bg-primary ms-2">
