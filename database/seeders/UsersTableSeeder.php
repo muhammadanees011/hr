@@ -2128,6 +2128,31 @@ class UsersTableSeeder extends Seeder
                 "created_at" => date('Y-m-d H:i:s'),
                 "updated_at" => date('Y-m-d H:i:s'),
             ],
+            //
+            [
+                "name" => "Manage Health And Fitness",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Create Health And Fitness",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Edit Health And Fitness",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Delete Health And Fitness",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
         
         ];
         Permission::insert($arrPermissions);
@@ -2479,7 +2504,11 @@ class UsersTableSeeder extends Seeder
             ["name" => "Resume"],
             ["name" => "Cover Letter"],
             ["name" => "Rating"],
-            ["name" => "Edit Employee Type"]        
+            ["name" => "Edit Employee Type"],
+            ["name" => "Manage Health And Fitness"],
+            ["name" => "Create Health And Fitness"],
+            ["name" => "Edit Health And Fitness"],
+            ["name" => "Delete Health And Fitness"],
         ];
 
         $companyRole->givePermissionTo($companyPermissions);
@@ -2782,7 +2811,11 @@ class UsersTableSeeder extends Seeder
             ["name" => "Resume"],
             ["name" => "Cover Letter"],
             ["name" => "Rating"],
-            ["name" => "Edit Employee Type"]
+            ["name" => "Edit Employee Type"],
+            ["name" => "Manage Health And Fitness"],
+            ["name" => "Create Health And Fitness"],
+            ["name" => "Edit Health And Fitness"],
+            ["name" => "Delete Health And Fitness"],
         ];
 
         $hrRole->givePermissionTo($hrPermission);
@@ -2931,7 +2964,11 @@ class UsersTableSeeder extends Seeder
             ["name" => "Delete Attachment"],
             ["name" => "Create Contract Type"],
             ["name" => "Edit Contract Type"],
-            ["name" => "Delete Contract Type"]
+            ["name" => "Delete Contract Type"],
+            ["name" => "Manage Health And Fitness"],
+            ["name" => "Create Health And Fitness"],
+            ["name" => "Edit Health And Fitness"],
+            ["name" => "Delete Health And Fitness"],
         ];
 
         $managerRole->givePermissionTo($managerPermission);
@@ -3007,6 +3044,9 @@ class UsersTableSeeder extends Seeder
             ["name" => "Delete Attachment"],
             ["name" => "Manage Zoom meeting"],
             ["name" => "Show Zoom meeting"],
+            ["name" => "Manage Health And Fitness"],
+            ["name" => "Create Health And Fitness"],
+            ["name" => "Edit Health And Fitness"],
         ];
 
         $employeeRole->givePermissionTo($employeePermission);
