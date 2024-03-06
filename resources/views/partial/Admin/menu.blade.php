@@ -580,20 +580,20 @@ class="dash-sidebar light-sidebar {{ isset($mode_setting['is_sidebar_transperent
                             class="dash-mtext">{{ __('Health And Fitness') }}</span><span class="dash-arrow"><i
                                 data-feather="chevron-right"></i></span></a>
                                 <ul class="dash-submenu">
-                                    @can('Manage Resignation')
+                                    @can('Manage Health And Fitness')
                                     <li class="dash-item {{ request()->is('healthassessment*') ? 'active' : '' }}">
                                         <a class="dash-link" href="{{ route('healthassessment.index') }}">{{ __('Health Assessments') }}</a>
                                     </li>
                                     @endcan
-                                    @can('Manage Termination')
+                                    @can('Manage Health And Fitness')
                                     <li class="dash-item {{ request()->is('gpnote*') ? 'active' : '' }}">
-                                        <a class="dash-link" href="{{ route('healthassessment.index') }}">{{ __('GP Notes') }}</a>
+                                        <a class="dash-link" href="{{ route('gpnote.index') }}">{{ __('GP Notes') }}</a>
                                     </li>
                                     @endcan
-                                    @can('Manage Retirement')
+                                    @can('Manage Health And Fitness')
                                     <li class="dash-item {{ request()->is('selfcertification*') ? 'active' : '' }}">
                                         <a class="dash-link"
-                                        href="{{ route('healthassessment.index') }}">{{ __('Self Certifications') }}</a>
+                                        href="{{ route('selfcertification.index') }}">{{ __('Self Certifications') }}</a>
                                     </li>
                                     @endcan
                                 </ul>

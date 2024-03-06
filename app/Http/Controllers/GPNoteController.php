@@ -13,7 +13,7 @@ class GPNoteController extends Controller
      */
     public function index()
     {
-        if(\Auth::user()->can('Manage Retirement'))
+        if(\Auth::user()->can('Manage Health And Fitness'))
         {
             $gpnotes = GPNote::where('created_by', '=', \Auth::user()->creatorId())->get();
 
@@ -30,7 +30,7 @@ class GPNoteController extends Controller
      */
     public function create()
     {
-        if(\Auth::user()->can('Create Retirement'))
+        if(\Auth::user()->can('Create Health And Fitness'))
         {
             $employees        = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             return view('gpnote.create', compact('employees'));
@@ -47,7 +47,7 @@ class GPNoteController extends Controller
     public function store(Request $request)
     {
         
-        if(\Auth::user()->can('Create Retirement'))
+        if(\Auth::user()->can('Create Health And Fitness'))
         {
 
             $validator = \Validator::make(
@@ -88,9 +88,15 @@ class GPNoteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(GPNote $gPNote)
+    public function show(GPNote $gpnote)
     {
-        //
+        if ($gpnote->created_by == \Auth::user()->creatorId()) {
+            $employee   = $gpnote->employee->name;
+
+            return view('gpnote.show', compact('gpnote', 'employee'));
+        } else {
+            return redirect()->back()->with('error', __('Permission Denied.'));
+        }
     }
 
     /**
@@ -98,7 +104,7 @@ class GPNoteController extends Controller
      */
     public function edit(GPNote $gpnote)
     {
-        if(\Auth::user()->can('Edit Retirement'))
+        if(\Auth::user()->can('Edit Health And Fitness'))
         {
             $employees        = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             if($gpnote->created_by == \Auth::user()->creatorId())
@@ -121,7 +127,7 @@ class GPNoteController extends Controller
      */
     public function update(Request $request, GPNote $gpnote)
     {
-        if(\Auth::user()->can('Create Retirement'))
+        if(\Auth::user()->can('Create Health And Fitness'))
         {
 
             $validator = \Validator::make(
@@ -162,7 +168,7 @@ class GPNoteController extends Controller
      */
     public function destroy(GPNote $gpnote)
     {   
-        if(\Auth::user()->can('Delete Retirement'))
+        if(\Auth::user()->can('Delete Health And Fitness'))
         {
             if($gpnote->created_by == \Auth::user()->creatorId())
             {

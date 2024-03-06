@@ -11,7 +11,7 @@ class LeaveSummaryController extends Controller
 {
     public function employees()
     {
-        if (\Auth::user()->can('Manage Retirement')) {
+        if (\Auth::user()->can('Manage Leave')) {
             $employees = Employee::where('created_by', \Auth::user()->creatorId())->with(['branch', 'department', 'designation'])->get();
 
             return view('leavesummary.employees', compact('employees'));
@@ -22,10 +22,13 @@ class LeaveSummaryController extends Controller
 
     public function employeeLeaveSummary($id)
     {
-        $employee_id=$id;
-        $leavesummaries = LeaveSummary::where('employee_id',$employee_id)->where('created_by', '=', \Auth::user()->creatorId())->get();
+        if(\Auth::user()->can('Manage Leave'))
+        {
+            $employee_id=$id;
+            $leavesummaries = LeaveSummary::where('employee_id',$employee_id)->where('created_by', '=', \Auth::user()->creatorId())->get();
 
         return view('leavesummary.index', compact('leavesummaries','employee_id'));
+        }
     }
 
     /**
@@ -33,7 +36,7 @@ class LeaveSummaryController extends Controller
      */
     public function index()
     {
-        if(\Auth::user()->can('Manage Retirement'))
+        if(\Auth::user()->can('Manage Leave'))
         {
             $leavesummaries = LeaveSummary::where('created_by', '=', \Auth::user()->creatorId())->get();
 
@@ -50,7 +53,7 @@ class LeaveSummaryController extends Controller
      */
     public function create($id)
     {   
-        if(\Auth::user()->can('Create Retirement'))
+        if(\Auth::user()->can('Create Leave'))
         {
             $employee_id=$id;
             $employees  = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
@@ -68,7 +71,7 @@ class LeaveSummaryController extends Controller
      */
     public function store(Request $request,$employee_id)
     {
-        if(\Auth::user()->can('Manage Leave'))
+        if(\Auth::user()->can('Create Leave'))
         {
 
             $validator = \Validator::make(
@@ -127,7 +130,7 @@ class LeaveSummaryController extends Controller
      */
     public function edit(LeaveSummary $leavesummary)
     {
-        if(\Auth::user()->can('Edit Retirement'))
+        if(\Auth::user()->can('Edit Leave'))
         {
             $employees        = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $leavetypes = LeaveType::where('created_by', '=', \Auth::user()->creatorId())->get();
@@ -154,7 +157,7 @@ class LeaveSummaryController extends Controller
     public function update(Request $request, LeaveSummary $leavesummary)
     {
          
-        if(\Auth::user()->can('Create Retirement'))
+        if(\Auth::user()->can('Edit Leave'))
         {
 
             $validator = \Validator::make(
@@ -198,7 +201,7 @@ class LeaveSummaryController extends Controller
      */
     public function destroy($id,$employee_id)
     {
-        if(\Auth::user()->can('Delete Retirement'))
+        if(\Auth::user()->can('Delete Leave'))
         {
             $leavesummary=LeaveSummary::where('id',$id);
             $leavesummary->delete();
