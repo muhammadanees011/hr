@@ -1468,6 +1468,7 @@ Route::group(['middleware' => ['verified']], function () {
     // videos
     Route::resource('video', VideoController::class)->middleware(['auth',  'XSS']);
     Route::get('video/{id}/edit', [VideoController::class, 'edit'])->name('video.edit');
+    Route::get('video/{id}/show-video', [VideoController::class, 'showVideo'])->name('video.showvideo');
 
     // cache
     Route::get('/config-cache', function () {
