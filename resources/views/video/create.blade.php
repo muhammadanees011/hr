@@ -1,64 +1,46 @@
-{{ Form::open(['url' => 'eclaim', 'method' => 'post', 'enctype' => 'multipart/form-data']) }}
+{{ Form::open(['url' => 'video', 'method' => 'post', 'enctype' => 'multipart/form-data']) }}
 <div class="modal-body">
-
     <div class="row">
-        @if (\Auth::user()->type != 'employee')
-            <div class="col-md-12">
-                <div class="form-group">
-                    {{ Form::label('employee_id', __('Employee'), ['class' => 'col-form-label']) }}
-                    {{ Form::select('employee_id', $employees, null, ['class' => 'form-control select2', 'id' => 'employee_id', 'placeholder' => __('Select Employee')]) }}
-                </div>
-            </div>
-        @else
-            {{-- @foreach ($employees as $employee) --}}
-            {!! Form::hidden('employee_id', !empty($employees) ? $employees->id : 0, ['id' => 'employee_id']) !!}
-            {{-- @endforeach --}}
-        @endif
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="form-group">
-                {{ Form::label('type_id', __('Eclaim Type'), ['class' => 'form-label']) }}
+                {{ Form::label('title', __('Title'), ['class' => 'form-label']) }}
                 <div class="form-icon-user">
-                    {{ Form::select('type_id', $eClaimTypes, null, ['class' => 'form-control select2 ', 'required' => 'required', 'placeholder' => __('Select Eclaim Type')]) }}
+                    {{ Form::text('title', null, ['class' => 'form-control', 'required' => 'required', 'placeholder' => __('Enter Title')]) }}
                 </div>
-            </div>
-        </div>
-
-        <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="form-group">
-                {{ Form::label('amount', __('Amount'), ['class' => 'form-label']) }}
-                <div class="form-icon-user">
-                    {{ Form::number('amount', null, ['class' => 'form-control', 'required' => 'required', 'placeholder' => __('Enter Amount')]) }}
-                </div>
-                @error('amount')
-                    <span class="invalid-amount" role="alert">
+                @error('title')
+                    <span class="invalid-title" role="alert">
                         <strong class="text-danger">{{ $message }}</strong>
                     </span>
                 @enderror
             </div>
         </div>
-
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="form-group">
-                {{ Form::label('receipt', __('Receipt'), ['class' => 'col-form-label']) }}
-                <div class="choose-files ">
-                    <label for="receipt">
-                        <div class=" bg-primary receipt "> <i
-                                class="ti ti-upload px-1"></i>{{ __('Choose file here') }}
-                        </div>
-                        <input style="margin-top: -50px" type="file" class="form-control file" name="receipt"  onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
-                        <img id="blah" class="mt-3"  width="100" src="" />
-                    </label>
+                {{ Form::label('source_type', __('Source'), ['class' => 'form-label']) }}
+                {{ Form::select('source_type', ['' => 'Select Source', 'link' => 'File Link', 'file' => 'Source File'], isset($_GET['source_type']) ? $_GET['source_type'] : '', ['class' => 'form-control select', 'id' => 'source_type']) }}
+            </div>
+        </div>
+        
+<div class="col-lg-12 col-md-12 col-sm-12" id="sourceFileSection" style="display: none;">
+    <div class="form-group">
+        {{ Form::label('video_file', __('Source File'), ['class' => 'col-form-label']) }}
+        <div class="choose-files">
+            <label for="video_file">
+                <div class="bg-primary receipt"> <i class="ti ti-upload px-1"></i>{{ __('Choose file here') }}</div>
+                {{ Form::file('video_file', ['class' => 'form-control file', 'id' => 'video_file', 'onchange' => 'playSelectedVideo(this)']) }}
+                <video id="video_player" controls width="400" style="display: none;"></video>
+            </label>
+        </div>
+    </div>
+</div>
+        <div class="col-lg-12 col-md-12 col-sm-12" id="sourceLink" style="display: none;">
+            <div class="form-group">
+                {{ Form::label('video_link', __('Link'), ['class' => 'form-label']) }}
+                <div class="form-icon-user">
+                    {{ Form::text('video_link', null, ['class' => 'form-control', 'placeholder' => __('Enter Link')]) }}
                 </div>
             </div>
         </div>
-
-        <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="form-group">
-                {{ Form::label('description', __('Description'),['class'=>'col-form-label']) }}
-                {{ Form::textarea('description', '', array('class' => 'form-control', 'rows' => '3')) }}
-            </div>
-        </div>
-
     </div>
 </div>
 <div class="modal-footer">
@@ -66,3 +48,38 @@
     <input type="submit" value="{{ __('Create') }}" class="btn btn-primary">
 </div>
 {{ Form::close() }}
+
+<script>
+$(document).ready(function() {
+    $('#source_type').change(function() {
+        var selectedOption = $(this).val();
+        console.log(selectedOption);
+        if (selectedOption === 'file') {
+            $('#sourceFileSection').show();
+            $('#sourceLink').hide();
+        } else if(selectedOption === 'link') {
+            $('#sourceFileSection').hide();
+            $('#sourceLink').show();
+        } else {
+            $('#sourceFileSection').hide();
+            $('#sourceLink').hide();
+        }
+    });
+});
+</script>
+<script>
+function playSelectedVideo(input) {
+    var videoPlayer = document.getElementById('video_player');
+    var file = input.files[0];
+    var videoURL = URL.createObjectURL(file);
+    
+    // Set the source of the video player to the selected file
+    videoPlayer.src = videoURL;
+    
+    // Show the video player
+    videoPlayer.style.display = 'block';
+    
+    // Play the video
+    videoPlayer.play();
+}
+</script>

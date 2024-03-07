@@ -1,66 +1,53 @@
-{{ Form::model($eclaim, ['route' => ['eclaim.update', $eclaim->id], 'method' => 'put', 'enctype' => 'multipart/form-data']) }}
+{{ Form::model($video, ['route' => ['video.update', $video->id], 'method' => 'PUT']) }}
 <div class="modal-body">
     <div class="row">
-        @if (\Auth::user()->type != 'employee')
-            <div class="col-md-12">
-                <div class="form-group">
-                    {{ Form::label('employee_id', __('Employee'), ['class' => 'col-form-label']) }}
-                    {{ Form::select('employee_id', $employees, $eclaim->employee_id, ['class' => 'form-control select2', 'id' => 'employee_id', 'placeholder' => __('Select Employee')]) }}
-                </div>
-            </div>
-        @else
-            {{-- @foreach ($employees as $employee) --}}
-            {!! Form::hidden('employee_id', !empty($employees) ? $employees->id : 0, ['id' => 'employee_id']) !!}
-            {{-- @endforeach --}}
-        @endif
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="form-group">
-                {{ Form::label('type_id', __('Eclaim Type'), ['class' => 'form-label']) }}
+                {{ Form::label('title', __('Title'), ['class' => 'form-label']) }}
                 <div class="form-icon-user">
-                    {{ Form::select('type_id', $eClaimTypes, null, ['class' => 'form-control select2', 'required' => 'required', 'placeholder' => __('Select Eclaim Type')]) }}
+                    {{ Form::text('title', null, ['class' => 'form-control', 'required' => 'required', 'placeholder' => __('Enter Title')]) }}
                 </div>
-            </div>
-        </div>
-
-        <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="form-group">
-                {{ Form::label('amount', __('Amount'), ['class' => 'form-label']) }}
-                <div class="form-icon-user">
-                    {{ Form::number('amount', null, ['class' => 'form-control', 'required' => 'required', 'placeholder' => __('Enter Amount')]) }}
-                </div>
-                @error('amount')
-                    <span class="invalid-amount" role="alert">
+                @error('title')
+                    <span class="invalid-title" role="alert">
                         <strong class="text-danger">{{ $message }}</strong>
                     </span>
                 @enderror
             </div>
         </div>
-
-        <div class="col-lg-12 col-md-12 col-sm-12">
-    <div class="form-group">
-        {{ Form::label('receipt', __('Receipt'), ['class' => 'col-form-label']) }}
-        <div class="choose-files">
-            <label for="receipt">
-                <div class="bg-primary receipt"> <i class="ti ti-upload px-1"></i>{{ __('Choose file here') }}</div>
-                {{ Form::file('receipt', ['class' => 'form-control file', 'onchange' => 'document.getElementById("blah").src = window.URL.createObjectURL(this.files[0])']) }}
-                @if($eclaim->receipt)
-                    <img id="blah" class="mt-3" width="100" src="{{ asset('eclaimreceipts/'.$eclaim->receipt) }}" />
-                @else
-                    <img id="blah" class="mt-3" width="100" src="{{ asset('placeholder-image.jpg') }}" />
-                @endif
-            </label>
-        </div>
-    </div>
-</div>
-
-
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="form-group">
-                {{ Form::label('description', __('Description'), ['class' => 'col-form-label']) }}
-                {{ Form::textarea('description', null, ['class' => 'form-control', 'rows' => '3']) }}
+                {{ Form::label('source_type', __('Source'), ['class' => 'form-label']) }}
+                {{ Form::select('source_type', ['' => 'Select Source', 'link' => 'File Link', 'file' => 'Source File'], $video->source_type, ['class' => 'form-control select', 'id' => 'source_type']) }}
+                
             </div>
         </div>
+        <div class="col-lg-12 col-md-12 col-sm-12" id="sourceFileSection" @if($video->source_type == 'file') style="display: block;" @endif>
+            <div class="form-group">
+                {{ Form::label('video_file', __('Source File'), ['class' => 'col-form-label']) }}
+                <div class="choose-files">
+                    <label for="video_file">
+                        <div class="bg-primary receipt"> <i class="ti ti-upload px-1"></i>{{ __('Choose file here') }}</div>
+                        {{ Form::file('video_file', ['class' => 'form-control file', 'onchange' => 'document.getElementById("blah").src = window.URL.createObjectURL(this.files[0])']) }}
+                        @if($video->video_file)
+                            <video controls width="400" height="300">
+                                <source src="{{ asset('videos/'.$video->video_file) }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        @else
 
+                        @endif
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12" id="sourceLink" @if($video->source_type == 'link') style="display: block;" @endif>
+            <div class="form-group">
+                {{ Form::label('video_link', __('Link'), ['class' => 'form-label']) }}
+                <div class="form-icon-user">
+                    {{ Form::text('video_link', $video->video_link, ['class' => 'form-control', 'placeholder' => __('Enter Link')]) }}
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div class="modal-footer">
@@ -68,3 +55,32 @@
     <input type="submit" value="{{ __('Update') }}" class="btn btn-primary">
 </div>
 {{ Form::close() }}
+
+<script>
+$(document).ready(function() {
+    // Function to toggle visibility based on source type
+    function toggleVisibility(selectedOption) {
+        if (selectedOption === 'file') {
+            $('#sourceFileSection').show();
+            $('#sourceLink').hide();
+        } else if (selectedOption === 'link') {
+            $('#sourceFileSection').hide();
+            $('#sourceLink').show();
+        } else {
+            $('#sourceFileSection').hide();
+            $('#sourceLink').hide();
+        }
+    }
+
+    // Call toggleVisibility on page load
+    var selectedOption = $('#source_type').val();
+    toggleVisibility(selectedOption);
+
+    // Call toggleVisibility on dropdown change
+    $(document).on('change', '#source_type', function() {
+        var selectedOption = $(this).val();
+        toggleVisibility(selectedOption);
+    });
+});
+
+</script>
