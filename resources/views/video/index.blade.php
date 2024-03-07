@@ -28,10 +28,7 @@
                     <table class="table" id="pc-dt-simple">
                         <thead>
                             <tr>
-                                    <th>{{ __('Title') }}</th>
-                                    <th>{{ __('Source') }}</th>
-                                <th>{{ __('Video Link') }}</th>
-                                <th>{{ __('File Name') }}</th>
+                                <th>{{ __('Title') }}</th>
                                 <th width="200px">{{ __('Action') }}</th>
                             </tr>
                         </thead>
@@ -39,10 +36,6 @@
                             @foreach ($videos as $video)
                                 <tr>
                                 <td>{{ $video->title }}</td>
-                                    <td>{{ $video->source_type }}</td>
-                                    <td>{{ $video->video_link ?? "NA" }}</td>
-                                    <td>{{ $video->video_file ?? "NA" }}</td>
-                                    
                                     <td class="Action">
                                         <span>
                                             @can('Edit Eclaim')
@@ -91,4 +84,37 @@
             </div>
         </div>
 @endsection
+@push('script-page')
+<script>
+    function playSelectedVideo(input) {
+        var videoPlayer = document.getElementById('video_player');
+        var file = input.files[0];
+        var videoURL = URL.createObjectURL(file);
+        
+        // Set the source of the video player to the selected file
+        videoPlayer.src = videoURL;
+        
+        // Show the video player
+        videoPlayer.style.display = 'block';
+        
+        // Play the video
+        videoPlayer.play();
+    }
 
+    $(document).ready(function() {
+        $(document).on('change','#source_type',function() {
+            const selectedOption = $(this).val();
+            if (selectedOption === 'file') {
+                $('#sourceFileSection').show();
+                $('#sourceLink').hide();
+            } else if(selectedOption === 'link') {
+                $('#sourceFileSection').hide();
+                $('#sourceLink').show();
+            } else {
+                $('#sourceFileSection').hide();
+                $('#sourceLink').hide();
+            }
+        });
+    });
+</script>
+@endpush

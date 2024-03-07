@@ -1,4 +1,4 @@
-{{ Form::model($video, ['route' => ['video.update', $video->id], 'method' => 'PUT']) }}
+{{ Form::model($video, ['route' => ['video.update', $video->id], 'method' => 'PUT', 'enctype' => 'multipart/form-data']) }}
 <div class="modal-body">
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
@@ -17,7 +17,7 @@
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="form-group">
                 {{ Form::label('source_type', __('Source'), ['class' => 'form-label']) }}
-                {{ Form::select('source_type', ['' => 'Select Source', 'link' => 'File Link', 'file' => 'Source File'], $video->source_type, ['class' => 'form-control select', 'id' => 'source_type']) }}
+                {{ Form::select('source_type', ['' => 'Select Source', 'link' => 'Via Link', 'file' => 'Via File'], $video->source_type, ['class' => 'form-control select', 'id' => 'source_type']) }}
                 
             </div>
         </div>
@@ -27,15 +27,9 @@
                 <div class="choose-files">
                     <label for="video_file">
                         <div class="bg-primary receipt"> <i class="ti ti-upload px-1"></i>{{ __('Choose file here') }}</div>
-                        {{ Form::file('video_file', ['class' => 'form-control file', 'onchange' => 'document.getElementById("blah").src = window.URL.createObjectURL(this.files[0])']) }}
-                        @if($video->video_file)
-                            <video controls width="400" height="300">
-                                <source src="{{ asset('videos/'.$video->video_file) }}" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                        @else
-
-                        @endif
+                        {{ Form::file('video_file', ['class' => 'form-control file', 'id' => 'video_file', 'onchange' => 'playSelectedVideo(this)']) }}
+                        
+                            <video id="video_player" controls autoplay width="400" src="{{ asset('videos/'.$video->video_file) }}" style="display: @if(empty($video->video_file)) none; @endif"></video>
                     </label>
                 </div>
             </div>

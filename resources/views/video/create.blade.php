@@ -17,7 +17,7 @@
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="form-group">
                 {{ Form::label('source_type', __('Source'), ['class' => 'form-label']) }}
-                {{ Form::select('source_type', ['' => 'Select Source', 'link' => 'File Link', 'file' => 'Source File'], isset($_GET['source_type']) ? $_GET['source_type'] : '', ['class' => 'form-control select', 'id' => 'source_type']) }}
+                {{ Form::select('source_type', ['' => 'Select Source', 'link' => 'Via Link', 'file' => 'Via File'], isset($_GET['source_type']) ? $_GET['source_type'] : '', ['class' => 'form-control select', 'id' => 'source_type']) }}
             </div>
         </div>
         
@@ -48,38 +48,3 @@
     <input type="submit" value="{{ __('Create') }}" class="btn btn-primary">
 </div>
 {{ Form::close() }}
-
-<script>
-$(document).ready(function() {
-    $('#source_type').change(function() {
-        var selectedOption = $(this).val();
-        console.log(selectedOption);
-        if (selectedOption === 'file') {
-            $('#sourceFileSection').show();
-            $('#sourceLink').hide();
-        } else if(selectedOption === 'link') {
-            $('#sourceFileSection').hide();
-            $('#sourceLink').show();
-        } else {
-            $('#sourceFileSection').hide();
-            $('#sourceLink').hide();
-        }
-    });
-});
-</script>
-<script>
-function playSelectedVideo(input) {
-    var videoPlayer = document.getElementById('video_player');
-    var file = input.files[0];
-    var videoURL = URL.createObjectURL(file);
-    
-    // Set the source of the video player to the selected file
-    videoPlayer.src = videoURL;
-    
-    // Show the video player
-    videoPlayer.style.display = 'block';
-    
-    // Play the video
-    videoPlayer.play();
-}
-</script>
