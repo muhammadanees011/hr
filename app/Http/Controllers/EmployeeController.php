@@ -461,15 +461,11 @@ class EmployeeController extends Controller
     public function meetTeam(Request $request)
     {
         $query = new Employee();
-        // if (!empty($request->branch)) {
-        //     $employees->where('branch_id', $request->branch);
-        // }
         $user_id = Auth::user()->id;
         $auth_emp = Employee::where('user_id', $user_id)->first();
         if(\Auth::user()->type=="hr" || \Auth::user()->type=="company"){
             $query = $query->where('created_by', \Auth::user()->creatorId())->with(['designation', 'user']);
         }elseif(\Auth::user()->type=="employee" || \Auth::user()->type=="manager"){
-            // return "we are employee or manager";
             $query = $query->where('department_id', $auth_emp->department->id)->with(['designation', 'user']);
         }
         if (!empty($request->department)) {
@@ -481,13 +477,8 @@ class EmployeeController extends Controller
         $employees = $query->get();
 
         $brances = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-        $brances->prepend('All', '0');
-
         $departments = Department::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-        $departments->prepend('All', '0');
-
         $designations = Designation::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-        $designations->prepend('All', '0');
 
         return view('employee.meetTeam', compact('employees', 'departments', 'designations', 'brances'));
     }
