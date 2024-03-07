@@ -264,15 +264,14 @@ $enable_cookie = \App\Models\Utility::getCookieSetting('enable_cookie');
     <script>
         $(document).ready(function() {
             // Set the maximum word limit
-            var maxWords = 100;
-
+            var maxWords = <?php echo json_encode($wordCounts[0]['limit'], 15, 512) ?>;
             // Add input event listener to the textarea
             $('#coverLetter').on('input', function() {
                 var words = $(this).val().match(/\S+/g) || [];
                 var wordCount = words.length;
 
                 // Display word count
-                $('#wordCount').text('Word Count: ' + wordCount + '/100');
+                $('#wordCount').text('Word Count: ' + wordCount + '/' + maxWords);
 
                 // Disable textarea if it exceeds the word limit
                 if (wordCount > maxWords) {

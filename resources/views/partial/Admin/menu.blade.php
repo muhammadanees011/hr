@@ -525,6 +525,12 @@ class="dash-sidebar light-sidebar {{ isset($mode_setting['is_sidebar_transperent
                             </li>
                             @endcan
 
+                            @can('Manage Word Count')
+                            <li class="dash-item">
+                                <a class="dash-link" href="{{ route('config-word-count.index') }}">{{ __('Config Word Count') }}</a>
+                            </li>
+                            @endcan
+
                             @can('Manage Career')
                             <li class="dash-item">
                                 <a class="dash-link" href="{{ route('career', [\Auth::user()->creatorId(), $lang]) }}" target="_blank">{{ __('Career') }}</a>

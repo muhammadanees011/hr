@@ -10,6 +10,7 @@ use App\Models\JobApplicationNote;
 use App\Models\JobCategory;
 use App\Models\User;
 use App\Models\JobStage;
+use App\Models\JobWordCount;
 use Illuminate\Http\Request;
 
 class JobController extends Controller
@@ -285,6 +286,10 @@ class JobController extends Controller
 
         $questions = CustomQuestion::wherein('id', $que)->get();
 
+        $getUserJobCreatedBy = User::where('id', $job->createdBy->id)->first()->created_by;
+        $getWordCountCreatedBy = User::where('id', $getUserJobCreatedBy == 0 ? 1: $getUserJobCreatedBy)->first()->id;
+        $wordCounts = JobWordCount::where('created_by', $getWordCountCreatedBy)->get();
+
         $languages = \Utility::languages();
 
         $currantLang = \Session::get('lang');
@@ -293,7 +298,7 @@ class JobController extends Controller
         }
 
 
-        return view('job.apply', compact('companySettings', 'job', 'questions', 'languages', 'currantLang'));
+        return view('job.apply', compact('companySettings', 'job', 'questions', 'languages', 'currantLang', 'wordCounts'));
     }
 
     public function jobApplyData(Request $request, $code)
