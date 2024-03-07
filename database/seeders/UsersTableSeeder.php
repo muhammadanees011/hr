@@ -2128,7 +2128,18 @@ class UsersTableSeeder extends Seeder
                 "created_at" => date('Y-m-d H:i:s'),
                 "updated_at" => date('Y-m-d H:i:s'),
             ],
-            //
+            [
+                "name" => "Manage Word Count",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
+                "name" => "Edit Word Count",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
             [
                 "name" => "Manage Health And Fitness",
                 "guard_name" => "web",
@@ -2505,6 +2516,8 @@ class UsersTableSeeder extends Seeder
             ["name" => "Cover Letter"],
             ["name" => "Rating"],
             ["name" => "Edit Employee Type"],
+            ["name" => "Manage Word Count"],     
+            ["name" => "Edit Word Count"],    
             ["name" => "Manage Health And Fitness"],
             ["name" => "Create Health And Fitness"],
             ["name" => "Edit Health And Fitness"],

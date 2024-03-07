@@ -98,6 +98,7 @@ use App\Http\Controllers\GPNoteController;
 use App\Http\Controllers\SelfCertificationController;
 use App\Http\Controllers\LeaveSummaryController;
 use App\Http\Controllers\CarryOverController;
+use App\Http\Controllers\JobWordCountController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -1239,6 +1240,13 @@ Route::group(['middleware' => ['verified']], function () {
     );
 
     Route::resource('question-template', QuestionTemplateController::class)->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+    Route::resource('config-word-count', JobWordCountController::class)->middleware(
         [
             'auth',
             'XSS',

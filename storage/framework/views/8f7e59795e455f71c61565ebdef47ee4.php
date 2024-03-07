@@ -156,10 +156,10 @@ $lang = Auth::user()->lang;
             <li class="dash-item <?php echo e(Request::segment(1) == 'employee-probation' ? 'active' : ''); ?>">
                 <a href="<?php echo e(route('employee.probation.index')); ?>" class="dash-link"><span class="dash-micon"><i class="ti ti-user"></i></span><span class="dash-mtext"><?php echo e(__('Probation')); ?></span></a>
             </li>
+            <?php endif; ?>
             <li class="dash-item <?php echo e(Request::segment(1) == 'meet-team' ? 'active' : ''); ?>">
                 <a href="<?php echo e(route('employee.meetTeam')); ?>" class="dash-link"><span class="dash-micon"><i class="ti ti-users"></i></span><span class="dash-mtext"><?php echo e(__('Meet Team')); ?></span></a>
             </li>
-            <?php endif; ?>
             <!-- employee-->
 
             <!-- payroll-->
@@ -518,6 +518,12 @@ $lang = Auth::user()->lang;
                             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Interview Schedule')): ?>
                             <li class="dash-item">
                                 <a class="dash-link" href="<?php echo e(route('interview-schedule.index')); ?>"><?php echo e(__('Interview Schedule')); ?></a>
+                            </li>
+                            <?php endif; ?>
+
+                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Word Count')): ?>
+                            <li class="dash-item">
+                                <a class="dash-link" href="<?php echo e(route('config-word-count.index')); ?>"><?php echo e(__('Config Word Count')); ?></a>
                             </li>
                             <?php endif; ?>
 
