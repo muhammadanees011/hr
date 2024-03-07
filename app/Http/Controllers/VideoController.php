@@ -91,7 +91,6 @@ class VideoController extends Controller
      */
     public function update(Request $request, Video $video)
     {
-        $auth_id = Auth::user()->id;
         $validator = \Validator::make(
             $request->all(),
             [
@@ -103,23 +102,33 @@ class VideoController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        if(!empty($video->video_file) && !empty($request->video_link)){
+            $oldFile = public_path('/videos/'.$video->video_file);
+            if (\File::exists($oldFile)) {
+                \File::delete($oldFile);
+            }
+            $video->video_file = null;
+        }
+
         if ($request->hasFile('video_file')) {
             $file = $request->file('video_file');
             $fileName = time() . '_' . $file->getClientOriginalName();
             $path = public_path() . '/videos';
             $file->move($path,$fileName);
-        }
 
+            $oldFile = public_path('/videos/'.$video->video_file);
+            if (\File::exists($oldFile)) {
+                \File::delete($oldFile);
+            }
+            $video->video_file = $fileName;
+        }
 
         $video->title = $request->title;
         $video->source_type = $request->source_type;
         $video->video_link = $request->video_link;
-        $video->video_file = $fileName ?? $video->video_file;
-        $video->created_by = $auth_id;
         $video->save();
     
         return redirect()->route('video.index')->with('success', __('Video updated successfully.'));
-        //
     }
 
     /**
@@ -127,6 +136,11 @@ class VideoController extends Controller
      */
     public function destroy(Video $video)
     {
+        // CHECKING IF FILE EXISTS THEN DELETE
+        $oldFile = public_path('/videos/'.$video->video_file);
+        if (\File::exists($oldFile)) {
+            \File::delete($oldFile);
+        }
         $video->delete();
         return redirect()->route('video.index')->with('success', __('Video deleted successfully.'));
         
