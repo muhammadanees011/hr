@@ -55,7 +55,7 @@ class VideoController extends Controller
         $video->title = $request->title;
         $video->source_type = $request->source_type;
         $video->video_link = $request->video_link;
-        $video->video_file = $fileName;
+        $video->video_file = $fileName ?? null;
         $video->created_by = $auth_id;
         $video->save();
     
@@ -79,6 +79,11 @@ class VideoController extends Controller
     {
         $video =  Video::where('id', $id)->first();
         return view('video.edit', compact('video'));
+    }
+    public function showVideo($id)
+    {
+        $video =  Video::where('id', $id)->first();
+        return view('video.video', compact('video'));
     }
 
     /**
