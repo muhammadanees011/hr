@@ -65,6 +65,9 @@ class="dash-sidebar light-sidebar {{ isset($mode_setting['is_sidebar_transperent
                             <li class="dash-item">
                                 <a class="dash-link" href="{{ route('report.income-expense') }}">{{ __('Income Vs Expense') }}</a>
                             </li>
+                            <li class="dash-item">
+                                <a class="dash-link" href="{{ route('report.p11-report') }}">{{ __('P11 Report') }}</a>
+                            </li>
 
                             <li class="dash-item">
                                 <a class="dash-link" href="{{ route('report.monthly.attendance') }}">{{ __('Monthly Attendance') }}</a>
@@ -583,20 +586,20 @@ class="dash-sidebar light-sidebar {{ isset($mode_setting['is_sidebar_transperent
                             class="dash-mtext">{{ __('Health And Fitness') }}</span><span class="dash-arrow"><i
                                 data-feather="chevron-right"></i></span></a>
                                 <ul class="dash-submenu">
-                                    @can('Manage Resignation')
+                                    @can('Manage Health And Fitness')
                                     <li class="dash-item {{ request()->is('healthassessment*') ? 'active' : '' }}">
                                         <a class="dash-link" href="{{ route('healthassessment.index') }}">{{ __('Health Assessments') }}</a>
                                     </li>
                                     @endcan
-                                    @can('Manage Termination')
+                                    @can('Manage Health And Fitness')
                                     <li class="dash-item {{ request()->is('gpnote*') ? 'active' : '' }}">
-                                        <a class="dash-link" href="{{ route('healthassessment.index') }}">{{ __('GP Notes') }}</a>
+                                        <a class="dash-link" href="{{ route('gpnote.index') }}">{{ __('GP Notes') }}</a>
                                     </li>
                                     @endcan
-                                    @can('Manage Retirement')
+                                    @can('Manage Health And Fitness')
                                     <li class="dash-item {{ request()->is('selfcertification*') ? 'active' : '' }}">
                                         <a class="dash-link"
-                                        href="{{ route('healthassessment.index') }}">{{ __('Self Certifications') }}</a>
+                                        href="{{ route('selfcertification.index') }}">{{ __('Self Certifications') }}</a>
                                     </li>
                                     @endcan
                                 </ul>
@@ -740,39 +743,37 @@ class="dash-arrow"><i data-feather="chevron-right"></i></span></a>
 href="{{ route('report.income-expense') }}">{{ __('Income Vs Expense') }}</a>
 </li>
 
-<li class="dash-item">
-<a class="dash-link"
-href="{{ route('report.monthly.attendance') }}">{{ __('Monthly Attendance') }}</a>
-</li>
+                            <li class="dash-item">
+                                <a class="dash-link"
+                                href="{{ route('report.monthly.attendance') }}">{{ __('Monthly Attendance') }}</a>
+                            </li>
 
-<li class="dash-item">
-<a class="dash-link"
-href="{{ route('report.leave') }}">{{ __('Leave') }}</a>
-</li>
-
-
-<li class="dash-item">
-<a class="dash-link"
-href="{{ route('report.account.statement') }}">{{ __('Account Statement') }}</a>
-</li>
+                            <li class="dash-item">
+                                <a class="dash-link"
+                                href="{{ route('report.leave') }}">{{ __('Leave') }}</a>
+                            </li>
 
 
-<li class="dash-item">
-<a class="dash-link"
-href="{{ route('report.payroll') }}">{{ __('Payroll') }}</a>
-</li>
+                            <li class="dash-item">
+                                <a class="dash-link"
+                                href="{{ route('report.account.statement') }}">{{ __('Account Statement') }}</a>
+                            </li>
 
 
-<li class="dash-item">
-<a class="dash-link"
-href="{{ route('report.timesheet') }}">{{ __('Timesheet') }}</a>
-</li>
-@endcan
+                            <li class="dash-item">
+                                <a class="dash-link"
+                                href="{{ route('report.payroll') }}">{{ __('Payroll') }}</a>
+                            </li>
 
 
-</ul>
-</li>
-@endif -->
+                            <li class="dash-item">
+                                <a class="dash-link"
+                                href="{{ route('report.timesheet') }}">{{ __('Timesheet') }}</a>
+                            </li>
+                        @endcan
+                    </ul>
+                </li>
+                @endif
 
 
 <!--constant-->

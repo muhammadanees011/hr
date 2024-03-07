@@ -15,8 +15,12 @@ class CarryOverController extends Controller
      */
     public function index()
     {
-        $carryrequests = CarryOver::where('created_by', \Auth::user()->creatorId())->get();
-        return view('carryover.index', compact('carryrequests'));
+        if (\Auth::user()->can('Manage Leave')) {
+            $carryrequests = CarryOver::where('created_by', \Auth::user()->creatorId())->get();
+            return view('carryover.index', compact('carryrequests'));
+        } else {
+            return redirect()->back()->with('error', __('Permission denied.'));
+        }
     }
 
     /**
@@ -24,10 +28,13 @@ class CarryOverController extends Controller
      */
     public function create()
     {
+        if (\Auth::user()->can('Create Leave')) {
         $employees  = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
         $leavetypes = LeaveType::where('created_by', '=', \Auth::user()->creatorId())->get();
         return view('carryover.create', compact('employees','leavetypes'));
-        
+        } else {
+            return redirect()->back()->with('error', __('Permission denied.'));
+        } 
     }
 
     /**
@@ -35,6 +42,7 @@ class CarryOverController extends Controller
      */
     public function store(Request $request)
     {
+        if (\Auth::user()->can('Create Leave')) {
             $validator = \Validator::make(
                 $request->all(), [
                     'employee_id' => 'required',
@@ -66,6 +74,9 @@ class CarryOverController extends Controller
             $carryover->created_by   = \Auth::user()->creatorId();
             $carryover->save();
             return redirect()->route('carryover.index')->with('success', __('CarryOver Requested successfully created.'));
+        } else {
+            return redirect()->back()->with('error', __('Permission denied.'));
+        } 
     
     }
 
@@ -129,7 +140,7 @@ class CarryOverController extends Controller
      */
     public function edit(CarryOver $carryover)
     { 
-        if(\Auth::user()->can('Create Retirement'))
+        if(\Auth::user()->can('Edit Leave'))
         {
             $employees  = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $leavetypes = LeaveType::where('created_by', '=', \Auth::user()->creatorId())->get();
@@ -146,7 +157,7 @@ class CarryOverController extends Controller
      */
     public function update(Request $request, CarryOver $carryover)
     {
-        if(\Auth::user()->can('Manage Leave'))
+        if(\Auth::user()->can('Edit Leave'))
         {
 
             $validator = \Validator::make(
@@ -191,7 +202,7 @@ class CarryOverController extends Controller
      */
     public function destroy(CarryOver $carryover)
     {  
-        if(\Auth::user()->can('Manage Leave'))
+        if(\Auth::user()->can('Delete Leave'))
         {
             $carryover->delete();
 
