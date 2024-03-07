@@ -1,21 +1,5 @@
 <?php
 
-use App\Http\Controllers\PensionSchemeController;
-use App\Models\Employee;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\AwardController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\SettingsController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\ReportController;
-use App\Http\Controllers\MeetingController;
-use App\Http\Controllers\IncomeTypeController;
-use App\Http\Controllers\ExpenseController;
-use App\Http\Controllers\ExpenseTypeController;
-use App\Http\Controllers\AttendanceEmployeeController;
-use App\Http\Controllers\LeaveController;
-use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\AccountListController;
 use App\Http\Controllers\AiTemplateController;
 use App\Http\Controllers\AllowanceController;
@@ -23,8 +7,12 @@ use App\Http\Controllers\AllowanceOptionController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AppraisalController;
 use App\Http\Controllers\AssetController;
+use App\Http\Controllers\AttendanceEmployeeController;
+use App\Http\Controllers\AwardController;
 use App\Http\Controllers\AwardTypeController;
+use App\Http\Controllers\BonusController;
 use App\Http\Controllers\BranchController;
+use App\Http\Controllers\CarryOverController;
 use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\CompanyPolicyController;
 use App\Http\Controllers\CompetenciesController;
@@ -33,7 +21,6 @@ use App\Http\Controllers\ContractController;
 use App\Http\Controllers\ContractTypeController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CustomQuestionController;
-use App\Http\Controllers\QuestionTemplateController;
 use App\Http\Controllers\DeductionOptionController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DepositController;
@@ -43,10 +30,18 @@ use App\Http\Controllers\DucumentUploadController;
 use App\Http\Controllers\EclaimController;
 use App\Http\Controllers\EclaimTypeController;
 use App\Http\Controllers\EmailTemplateController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ExitProcedureController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ExpenseTypeController;
+use App\Http\Controllers\GPNoteController;
 use App\Http\Controllers\GoalTrackingController;
 use App\Http\Controllers\GoalTypeController;
+use App\Http\Controllers\HealthAssessmentController;
 use App\Http\Controllers\HolidayController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IncomeTypeController;
 use App\Http\Controllers\IndicatorController;
 use App\Http\Controllers\InterviewScheduleController;
 use App\Http\Controllers\JobApplicationController;
@@ -55,22 +50,39 @@ use App\Http\Controllers\JobController;
 use App\Http\Controllers\JobStageController;
 use App\Http\Controllers\LandingPageSectionController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\LeaveSummaryController;
+use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\LoanOptionController;
+use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\NotificationTemplatesController;
 use App\Http\Controllers\OtherPaymentController;
+use App\Http\Controllers\OverTimePolicyController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\PaySlipController;
 use App\Http\Controllers\PayeesController;
 use App\Http\Controllers\PayerController;
 use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\PayslipTypeController;
+use App\Http\Controllers\PensionOptInController;
+use App\Http\Controllers\PensionOptoutController;
+use App\Http\Controllers\PensionSchemeController;
 use App\Http\Controllers\PerformanceTypeController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PromotionController;
+use App\Http\Controllers\ProvidentFundsPolicyController;
+use App\Http\Controllers\QuestionTemplateController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ResignationController;
+use App\Http\Controllers\RetirementController;
+use App\Http\Controllers\RetirementTypeController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SaturationDeductionController;
+use App\Http\Controllers\SelfCertificationController;
 use App\Http\Controllers\SetSalaryController;
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\TaxRuleController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\TerminationController;
 use App\Http\Controllers\TerminationTypeController;
@@ -82,22 +94,11 @@ use App\Http\Controllers\TrainingTypeController;
 use App\Http\Controllers\TransferBalanceController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\TravelController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\VideoController;
 use App\Http\Controllers\WarningController;
 use App\Http\Controllers\ZoomMeetingController;
-use App\Http\Controllers\BonusController;
-use App\Http\Controllers\TaxRuleController;
-use App\Http\Controllers\ProvidentFundsPolicyController;
-use App\Http\Controllers\RetirementTypeController;
-use App\Http\Controllers\RetirementController;
-use App\Http\Controllers\ExitProcedureController;
-use App\Http\Controllers\OverTimePolicyController;
-use App\Http\Controllers\PensionOptInController;
-use App\Http\Controllers\PensionOptoutController;
-use App\Http\Controllers\HealthAssessmentController;
-use App\Http\Controllers\GPNoteController;
-use App\Http\Controllers\SelfCertificationController;
-use App\Http\Controllers\LeaveSummaryController;
-use App\Http\Controllers\CarryOverController;
+use App\Models\Employee;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -265,7 +266,7 @@ Route::group(['middleware' => ['verified']], function () {
             'XSS',
         ]
     );
-    Route::get('meet-team', [EmployeeController::class, 'MeetTeam'])->name('employee.meetTeam')->middleware(
+    Route::get('meet-team', [EmployeeController::class, 'meetTeam'])->name('employee.meetTeam')->middleware(
         [
             'auth',
             'XSS',
@@ -1463,6 +1464,9 @@ Route::group(['middleware' => ['verified']], function () {
     Route::post('eclaim/{id}/edit', [EclaimController::class, 'edit']);
     Route::get('eclaim/showHistory/{id}', [EclaimController::class, 'showHistory']);
     Route::get('eclaim/showReceipt/{id}', [EclaimController::class, 'showReceipt']);
+
+    // videos
+    Route::resource('video', VideoController::class)->middleware(['auth',  'XSS']);
 
     // cache
     Route::get('/config-cache', function () {
