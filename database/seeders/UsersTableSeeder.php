@@ -2135,13 +2135,18 @@ class UsersTableSeeder extends Seeder
                 "updated_at" => date('Y-m-d H:i:s'),
             ],
             [
+                "name" => "Edit Word Count",
+                "guard_name" => "web",
+                "created_at" => date('Y-m-d H:i:s'),
+                "updated_at" => date('Y-m-d H:i:s'),
+            ],
+            [
                 "name" => "Manage Health And Fitness",
                 "guard_name" => "web",
                 "created_at" => date('Y-m-d H:i:s'),
                 "updated_at" => date('Y-m-d H:i:s'),
             ],
             [
-                "name" => "Edit Word Count",
                 "name" => "Create Health And Fitness",
                 "guard_name" => "web",
                 "created_at" => date('Y-m-d H:i:s'),
