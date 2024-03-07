@@ -107,19 +107,15 @@
 
                     </div>
                     <h4 class="mt-2 text-primary">{{ $employee->name }}</h4>
+                    <div><small class="">{{ $employee->email ?? '' }}</small></div>
+                    <div><small class="">{{ ucfirst($employee->department->name ?? "") }}</small></div>
                     <small
-                        class="">{{ ucfirst(!empty($employee->designation) ? $employee->designation->name : '') }}</small>
-                    <div><small class="">{{ ucfirst(!empty($employee->designation) ? $employee->user->email : '') }}</small></div>
-                    <div><small class="">{{ ucfirst(!empty($employee->designation) ? $employee->department->name : '') }}</small></div>
+                        class="">{{ ucfirst($employee->designation->name ?? '') }}</small>
 
                     <div class="row mt-2">
                         <div class="col-12 col-sm-12">
                             <div class="d-grid">
-                                @can('Show Employee Profile')
-                                    <a class="btn  mx-5">{{ \Auth::user()->employeeIdFormat($employee->employee_id) }}</a>
-                                @else
-                                    <a class="btn  mx-5">{{ \Auth::user()->employeeIdFormat($employee->employee_id) }}</a>
-                                @endcan
+                                <a class="btn btn-outline-primary mx-5">{{ \Auth::user()->employeeIdFormat($employee->employee_id) }}</a>
                             </div>
                         </div>
                     </div>
