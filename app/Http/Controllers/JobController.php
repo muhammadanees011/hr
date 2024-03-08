@@ -9,6 +9,7 @@ use App\Models\JobApplication;
 use App\Models\JobApplicationNote;
 use App\Models\JobAttachment;
 use App\Models\JobCategory;
+use App\Models\Department;
 use App\Models\User;
 use App\Models\JobStage;
 use App\Models\JobWordCount;
@@ -57,11 +58,13 @@ class JobController extends Controller
         $branches = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
         $branches->prepend('All', 0);
 
+        $departments = Department::all()->pluck('name', 'id');
+
         $status = Job::$status;
 
         $customQuestion = CustomQuestion::where('created_by', \Auth::user()->creatorId())->get();
 
-        return view('job.create', compact('categories', 'status', 'branches', 'customQuestion'));
+        return view('job.create', compact('categories', 'departments', 'status', 'branches', 'customQuestion'));
     }
 
 
@@ -75,7 +78,7 @@ class JobController extends Controller
                 [
                     'title' => 'required',
                     'branch' => 'required',
-                    'department' => 'required',
+                    'department_id' => 'required',
                     'contract_type' => 'required',
                     'category' => 'required',
                     'skill' => 'required',
@@ -96,7 +99,7 @@ class JobController extends Controller
             $job                  = new Job();
             $job->title           = $request->title;
             $job->branch          = $request->branch;
-            $job->department      = $request->department;
+            $job->department      = $request->department_id;
             $job->contract_type   = $request->contract_type;
             $job->category        = $request->category;
             $job->skill           = $request->skill;
@@ -161,7 +164,7 @@ class JobController extends Controller
                 [
                     'title' => 'required',
                     'branch' => 'required',
-                    'department' => 'required',
+                    'department_id' => 'required',
                     'contract_type' => 'required',
                     'category' => 'required',
                     'skill' => 'required',
