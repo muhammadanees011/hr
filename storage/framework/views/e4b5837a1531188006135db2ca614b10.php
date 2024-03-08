@@ -1,22 +1,22 @@
 <?php
-    $logo = \App\Models\Utility::get_file('uploads/logo/');
-    $setting = App\Models\Utility::colorset();
-    $color = !empty($setting['theme_color']) ? $setting['theme_color'] : 'theme-3';
-    $SITE_RTL = \App\Models\Utility::getValByName('SITE_RTL');
-    $company_logo_light = Utility::getValByName('company_logo_light');
-    $company_favicon = Utility::getValByName('company_favicon');
-    
-    $getseo = App\Models\Utility::getSeoSetting();
-    $metatitle = isset($getseo['meta_title']) ? $getseo['meta_title'] : '';
-    $metadesc = isset($getseo['meta_description']) ? $getseo['meta_description'] : '';
-    $meta_image = \App\Models\Utility::get_file('uploads/meta/');
-    $meta_logo = isset($getseo['meta_image']) ? $getseo['meta_image'] : '';
-    $enable_cookie = \App\Models\Utility::getCookieSetting('enable_cookie');
-    if (isset($setting['color_flag']) && $setting['color_flag'] == 'true') {
-        $themeColor = 'custom-color';
-    } else {
-        $themeColor = $color;
-    }
+$logo = \App\Models\Utility::get_file('uploads/logo/');
+$setting = App\Models\Utility::colorset();
+$color = !empty($setting['theme_color']) ? $setting['theme_color'] : 'theme-3';
+$SITE_RTL = \App\Models\Utility::getValByName('SITE_RTL');
+$company_logo_light = Utility::getValByName('company_logo_light');
+$company_favicon = Utility::getValByName('company_favicon');
+
+$getseo = App\Models\Utility::getSeoSetting();
+$metatitle = isset($getseo['meta_title']) ? $getseo['meta_title'] : '';
+$metadesc = isset($getseo['meta_description']) ? $getseo['meta_description'] : '';
+$meta_image = \App\Models\Utility::get_file('uploads/meta/');
+$meta_logo = isset($getseo['meta_image']) ? $getseo['meta_image'] : '';
+$enable_cookie = \App\Models\Utility::getCookieSetting('enable_cookie');
+if (isset($setting['color_flag']) && $setting['color_flag'] == 'true') {
+$themeColor = 'custom-color';
+} else {
+$themeColor = $color;
+}
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +30,9 @@
     <title>
         <?php echo e(!empty($companySettings['title_text']) ? $companySettings['title_text']->value : config('app.name', 'HRMGO')); ?>
 
-        - <?php echo e(__('Career')); ?></title>
+        - <?php echo e(__('Career')); ?>
+
+    </title>
 
     <!-- SEO META -->
     <meta name="title" content="<?php echo e($metatitle); ?>">
@@ -41,37 +43,33 @@
     <meta property="og:url" content="<?php echo e(env('APP_URL')); ?>">
     <meta property="og:title" content="<?php echo e($metatitle); ?>">
     <meta property="og:description" content="<?php echo e($metadesc); ?>">
-    <meta property="og:image"
-        content="<?php echo e(isset($meta_logo) && !empty(asset('storage/uploads/meta/' . $meta_logo)) ? asset('storage/uploads/meta/' . $meta_logo) : 'hrmgo.png'); ?>">
+    <meta property="og:image" content="<?php echo e(isset($meta_logo) && !empty(asset('storage/uploads/meta/' . $meta_logo)) ? asset('storage/uploads/meta/' . $meta_logo) : 'hrmgo.png'); ?>">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="<?php echo e(env('APP_URL')); ?>">
     <meta property="twitter:title" content="<?php echo e($metatitle); ?>">
     <meta property="twitter:description" content="<?php echo e($metadesc); ?>">
-    <meta property="twitter:image"
-        content="<?php echo e(isset($meta_logo) && !empty(asset('storage/uploads/meta/' . $meta_logo)) ? asset('storage/uploads/meta/' . $meta_logo) : 'hrmgo.png'); ?>">
+    <meta property="twitter:image" content="<?php echo e(isset($meta_logo) && !empty(asset('storage/uploads/meta/' . $meta_logo)) ? asset('storage/uploads/meta/' . $meta_logo) : 'hrmgo.png'); ?>">
 
 
-    <link rel="icon"
-        href="<?php echo e($logo . '/' . (isset($company_favicon) && !empty($company_favicon) ? $company_favicon .'?'.time() : 'favicon.png' .'?'.time())); ?>"
-        type="image/x-icon" />
+    <link rel="icon" href="<?php echo e($logo . '/' . (isset($company_favicon) && !empty($company_favicon) ? $company_favicon .'?'.time() : 'favicon.png' .'?'.time())); ?>" type="image/x-icon" />
     <link rel="stylesheet" href="<?php echo e(asset('assets/fonts/tabler-icons.min.css')); ?>">
     <link rel="stylesheet" href="<?php echo e(asset('css/site.css')); ?>" id="stylesheet">
     <?php if(isset($setting['dark_mode']) && $setting['dark_mode'] == 'on'): ?>
-        <link rel="stylesheet" href="<?php echo e(asset('assets/css/style-dark.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/style-dark.css')); ?>">
     <?php else: ?>
-        <link rel="stylesheet" href="<?php echo e(asset('assets/css/style.css')); ?>"id="main-style-link">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/style.css')); ?>" id="main-style-link">
     <?php endif; ?>
     <link rel="stylesheet" href="<?php echo e(asset('css/custom.css')); ?>">
 
     <?php if(isset($setting['dark_mode']) && $setting['dark_mode'] == 'on'): ?>
-        <link rel="stylesheet" href="<?php echo e(asset('assets/css/custom-dark.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/custom-dark.css')); ?>">
     <?php endif; ?>
 
     <style>
         :root {
-            --color-customColor: <?=$color ?>;
+            --color-customColor: <?= $color ?>;
         }
     </style>
     <link rel="stylesheet" href="<?php echo e(asset('css/custom-color.css')); ?>">
@@ -85,8 +83,7 @@
             <nav class="navbar">
                 <div class="container">
                     <a class="navbar-brand" href="#">
-                        <img src="<?php echo e($logo . '/' . (isset($company_logo_light) && !empty($company_logo_light) ? $company_logo_light .'?'.time() : 'logo-light.png' .'?'.time())); ?>"
-                            alt="logo" style="width: 90px">
+                        <img src="<?php echo e($logo . '/' . (isset($company_logo_light) && !empty($company_logo_light) ? $company_logo_light .'?'.time() : 'logo-light.png' .'?'.time())); ?>" alt="logo" style="width: 90px">
 
                     </a>
                 </div>
@@ -116,17 +113,18 @@
 
                             <div class="d-flex flex-wrap justify-content-center gap-1 mb-4">
                                 <?php $__currentLoopData = explode(',', $job->skill); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $skill): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <span class="badge rounded p-2 bg-primary"><?php echo e($skill); ?></span>
+                                <span class="badge rounded p-2 bg-primary"><?php echo e($skill); ?></span>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </div>
 
                             <?php if(!empty($job->branches) ? $job->branches->name : ''): ?>
-                                <p> <i class="ti ti-map-pin ms-1"></i>
-                                    <?php echo e(!empty($job->branches) ? $job->branches->name : ''); ?></p>
+                            <p> <i class="ti ti-map-pin ms-1"></i>
+                                <?php echo e(!empty($job->branches) ? $job->branches->name : ''); ?>
+
+                            </p>
                             <?php endif; ?>
 
-                            <a href="<?php echo e(route('job.apply', [$job->code, $currantLang])); ?>"
-                                class="btn btn-primary rounded"><?php echo e(__('Apply now')); ?> <i class="ti ti-send ms-2"></i>
+                            <a href="<?php echo e(route('job.apply', [$job->code, $currantLang])); ?>" class="btn btn-primary rounded"><?php echo e(__('Apply now')); ?> <i class="ti ti-send ms-2"></i>
                             </a>
                         </div>
                         <h3><?php echo e(__('Requirements')); ?></h3>
@@ -136,6 +134,36 @@
                         <h3><?php echo e(__('Description')); ?></h3><br>
                         <?php echo $job->description; ?>
 
+
+                        <?php if(count($job->JobAttachments) > 0): ?>
+                        <?php endif; ?>
+                        <hr>
+                        <h3><?php echo e(__('Attachments')); ?></h3><br>
+                        <?php $__currentLoopData = $job->JobAttachments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $file): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <div class=" py-3">
+                            <div class="list-group-item ">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h6 class="text-sm mb-0">
+                                            <a href="#!"><?php echo e($file->files); ?></a>
+                                        </h6>
+                                        <p class="card-text small text-muted">
+                                            <?php echo e(number_format(\File::size(storage_path('job_attachment/' . $file->files)) / 1048576, 2) . ' ' . _('MB')); ?>
+
+                                        </p>
+                                    </div>
+                                    <?php
+                                    $attachments = \App\Models\Utility::get_file('job_attachment');
+                                    ?>
+                                    <div class="action-btn bg-warning p-0 w-auto    ">
+                                        <a href="<?php echo e($attachments . '/' . $file->files); ?>" class=" btn btn-sm d-inline-flex align-items-center" download="" data-bs-toggle="tooltip" title="Download">
+                                            <span class="text-white"><i class="ti ti-download"></i></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
                 </div>
             </section>
@@ -151,11 +179,10 @@
     <script src="<?php echo e(asset('js/demo.js')); ?> "></script>
 
     <?php echo $__env->yieldPushContent('custom-scripts'); ?>
-<?php if($enable_cookie['enable_cookie'] == 'on'): ?>
+    <?php if($enable_cookie['enable_cookie'] == 'on'): ?>
     <?php echo $__env->make('layouts.cookie_consent', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-<?php endif; ?>
+    <?php endif; ?>
 
 </body>
 
-</html>
-<?php /**PATH C:\wamp64\www\hrmgo\resources\views/job/requirement.blade.php ENDPATH**/ ?>
+</html><?php /**PATH C:\wamp64\www\hrmgo\resources\views/job/requirement.blade.php ENDPATH**/ ?>

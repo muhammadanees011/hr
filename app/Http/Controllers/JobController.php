@@ -7,10 +7,12 @@ use App\Models\CustomQuestion;
 use App\Models\Job;
 use App\Models\JobApplication;
 use App\Models\JobApplicationNote;
+use App\Models\JobAttachment;
 use App\Models\JobCategory;
 use App\Models\User;
 use App\Models\JobStage;
 use App\Models\JobWordCount;
+use App\Models\Utility;
 use Illuminate\Http\Request;
 
 class JobController extends Controller
@@ -104,13 +106,16 @@ class JobController extends Controller
             $job->end_date        = $request->end_date;
             $job->description     = $request->description;
             $job->requirement     = $request->requirement;
-            $job->code            = uniqid();
+            $job->code            = empty(session('job_code')) ? uniqid() : session('job_code');
             $job->applicant       = !empty($request->applicant) ? implode(',', $request->applicant) : '';
             $job->visibility      = !empty($request->visibility) ? implode(',', $request->visibility) : '';
             $job->custom_question = !empty($request->custom_question) ? implode(',', $request->custom_question) : '';
             $job->created_by      = \Auth::user()->creatorId();
             $job->save();
 
+            if (!empty(session('job_code'))) {
+                session()->forget('job_code');
+            }
             return redirect()->route('job.index')->with('success', __('Job  successfully created.'));
         } else {
             return redirect()->route('job.index')->with('error', __('Permission denied.'));
@@ -287,7 +292,7 @@ class JobController extends Controller
         $questions = CustomQuestion::wherein('id', $que)->get();
 
         $getUserJobCreatedBy = User::where('id', $job->createdBy->id)->first()->created_by;
-        $getWordCountCreatedBy = User::where('id', $getUserJobCreatedBy == 0 ? 1: $getUserJobCreatedBy)->first()->id;
+        $getWordCountCreatedBy = User::where('id', $getUserJobCreatedBy == 0 ? 1 : $getUserJobCreatedBy)->first()->id;
         $wordCounts = JobWordCount::where('created_by', $getWordCountCreatedBy)->get();
 
         $languages = \Utility::languages();
@@ -393,5 +398,118 @@ class JobController extends Controller
         $jobApplication->save();
 
         return redirect()->back()->with('success', __('Job application successfully send.'));
+    }
+    public function filesUpload(Request $request)
+    {
+        if (\Auth::user()->type == 'company' || \Auth::user()->type == 'hr') {
+            $request->validate(['file' => 'required']);
+            $filenameWithExt = $request->file('file')->getClientOriginalName();
+            $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension       = $request->file('file')->getClientOriginalExtension();
+            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+
+            $dir = 'job_attachment/';
+            $path = Utility::upload_file($request, 'file', $fileNameToStore, $dir, []);
+
+            if (empty(session('job_code'))) {
+                session(['job_code' => uniqid()]);
+            }
+
+            if ($path['flag'] == 1) {
+                $file = $path['url'];
+            } else {
+                return redirect()->back()->with('error', __($path['msg']));
+            }
+            $file                 = JobAttachment::create(
+                [
+                    'job_code' => session('job_code'),
+                    'created_by' => \Auth::user()->id,
+                    'files' => $fileNameToStore,
+                ]
+            );
+            $return               = [];
+            $return['is_success'] = true;
+            $return['delete']     = route(
+                'job.files.delete',
+                [
+                    $file->id,
+                    0
+                ]
+            );
+
+            return response()->json($return);
+        }
+    }
+
+    public function editFilesUpload(Request $request)
+    {
+        if (\Auth::user()->type == 'company' || \Auth::user()->type == 'hr') {
+            $request->validate(['file' => 'required']);
+            $filenameWithExt = $request->file('file')->getClientOriginalName();
+            $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension       = $request->file('file')->getClientOriginalExtension();
+            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+
+            $dir = 'job_attachment/';
+            $path = Utility::upload_file($request, 'file', $fileNameToStore, $dir, []);
+
+            if ($path['flag'] == 1) {
+                $file = $path['url'];
+            } else {
+                return redirect()->back()->with('error', __($path['msg']));
+            }
+            $file                 = JobAttachment::create(
+                [
+                    'job_code' => $request->job_code,
+                    'created_by' => \Auth::user()->id,
+                    'files' => $fileNameToStore,
+                ]
+            );
+            $return               = [];
+            $return['is_success'] = true;
+            $return['delete']     = route(
+                'job.files.delete',
+                [
+                    $file->id,
+                    0
+                ]
+            );
+
+            return response()->json($return);
+        }
+    }
+    public function fileDelete($id, $redirect)
+    {
+        if (\Auth::user()->can('Delete Attachment')) {
+            $file = JobAttachment::where('id', $id)->first();
+            if ($file) {
+                $path = storage_path('job_attachment/' . $file->files);
+                if (file_exists($path)) {
+                    \File::delete($path);
+                }
+                $file->delete();
+                if ($redirect == 1) {
+                    return redirect()->back()->with('success', __('Attachment successfully deleted!'));
+                }else{
+                    return response()->json(
+                        [
+                            'is_success' => true,
+                            'error' => __('Attachment successfully deleted!'),
+                        ],
+                        200
+                    );
+                }
+            } else {
+                return response()->json(
+                    [
+                        'is_success' => false,
+                        'error' => __('File is not exist.'),
+                    ],
+                    200
+                );
+            }
+        } else {
+            return redirect()->back()->with('error', __('Permission Denied.'));
+        }
     }
 }

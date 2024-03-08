@@ -57,4 +57,8 @@ class Job extends Model
     {
         return $this->hasOne('App\Models\User', 'id', 'created_by');
     }
+    public function jobAttachments()
+    {
+        return $this->hasMany(JobAttachment::class, 'job_code', 'code');
+    }
 }

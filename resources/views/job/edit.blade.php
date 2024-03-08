@@ -12,11 +12,12 @@ $chatgpt = Utility::getValByName('enable_chatgpt');
 <link href="{{ asset('public//libs/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') }}" rel="stylesheet" />
 <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 <link rel="stylesheet" href="{{ asset('css/summernote/summernote-bs4.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/plugins/dropzone.min.css') }}">
 @endpush
 @push('script-page')
 {{-- <script src='{{ asset('assets/js/plugins/tinymce/tinymce.min.js') }}'></script> --}}
 <script src="{{ asset('public/libs/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js') }}"></script>
-
+<script src="{{ asset('assets/js/plugins/dropzone-amd-module.min.js') }}"></script>
 <script>
     var e = $('[data-toggle="tags"]');
     e.length && e.each(function() {
@@ -49,7 +50,7 @@ $chatgpt = Utility::getValByName('enable_chatgpt');
 {{Form::model($job,array('route' => array('job.update', $job->id), 'method' => 'PUT')) }}
 <div class="row">
     <div class="col-md-6 ">
-        <div class="card card-fluid job2-card">
+        <div class="card card-fluid job2-card" style="height: auto !important;">
             <div class="card-body ">
                 <div class="row">
                     <div class="form-group col-md-12">
@@ -104,7 +105,7 @@ $chatgpt = Utility::getValByName('enable_chatgpt');
         </div>
     </div>
     <div class="col-md-6 ">
-        <div class="card card-fluid job2-card">
+        <div class="card card-fluid job2-card" style="height: auto !important;">
             <div class="card-body ">
                 <div class="row">
                     <div class="col-md-6">
@@ -162,6 +163,55 @@ $chatgpt = Utility::getValByName('enable_chatgpt');
                             @endforeach
                         </div>
                     </div>
+
+                    <div class="form-group col-md-12">
+                        {!! Form::label('attachments', __('Attachments'), ['class' => 'col-form-label']) !!}
+                        <div class="col-md-12 dropzone browse-file" id="my-dropzone"></div>
+                    </div>
+                    @foreach ($job->JobAttachments as $file)
+                                            <div class=" py-3">
+                                                <div class="list-group-item ">
+                                                    <div class="row align-items-center">
+                                                        <div class="col">
+                                                            <h6 class="text-sm mb-0">
+                                                                <a href="#!">{{ $file->files }}</a>
+                                                            </h6>
+                                                            <p class="card-text small text-muted">
+                                                                {{ number_format(\File::size(storage_path('job_attachment/' . $file->files)) / 1048576, 2) . ' ' . _('MB') }}
+                                                            </p>
+                                                        </div>
+                                                        @php
+                                                            $attachments = \App\Models\Utility::get_file('job_attachment');
+                                                        @endphp
+                                                        <div class="action-btn bg-warning p-0 w-auto    ">
+                                                            <a href="{{ $attachments . '/' . $file->files }}"
+                                                                class=" btn btn-sm d-inline-flex align-items-center"
+                                                                download="" data-bs-toggle="tooltip"
+                                                                title="Download">
+                                                                <span class="text-white"><i
+                                                                        class="ti ti-download"></i></span>
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-auto actions">
+                                                            @can('Delete Attachment')
+                                                                    <div class="action-btn bg-danger ms-2">
+                                                                        <form action=""></form>
+                                                                        {!! Form::open(['method' => 'DELETE', 'route' => ['job.files.delete', $file->id, 1]]) !!}
+                                                                        <a href="#!"
+                                                                            class="mx-3 btn btn-sm  align-items-center bs-pass-para"
+                                                                            data-bs-toggle="tooltip"
+                                                                            data-bs-placement="top"
+                                                                            title="{{ __('Delete') }}">
+                                                                            <i class="ti ti-trash text-white"></i>
+                                                                        </a>
+                                                                        {!! Form::close() !!}
+                                                                    </div>
+                                                            @endcan
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
                 </div>
             </div>
         </div>
@@ -207,6 +257,86 @@ $chatgpt = Utility::getValByName('enable_chatgpt');
 
 
 @push('script-page')
+<script>
+    Dropzone.autoDiscover = true;
+    myDropzone = new Dropzone("#my-dropzone", {
+        maxFiles: 20,
+        // maxFilesize: 209715200,
+        parallelUploads: 1,
+        // acceptedFiles: ".jpeg,.jpg,.png,.pdf,.doc,.txt",
+        url: "{{ route('job.edit.files.upload') }}",
+        success: function(file, response) {
+            if (response.is_success) {
+                dropzoneBtn(file, response);
+                show_toastr('{{ __('Success') }}', 'Attachment Create Successfully!', 'success');
+            } else {
+                myDropzone.removeFile(file);
+                show_toastr('{{ __('Error') }}', 'File type must be match with Storage setting.',
+                    'error');
+            }
+            // location.reload();
+        },
+        error: function(file, response) {
+            myDropzone.removeFile(file);
+            if (response.error) {
+                show_toastr('{{ __('Error') }}', response.error, 'error');
+            } else {
+                show_toastr('{{ __('Error') }}', response.error, 'error');
+            }
+        }
+    });
+    myDropzone.on("sending", function(file, xhr, formData) {
+        formData.append("_token", $('meta[name="csrf-token"]').attr('content'));
+        formData.append("job_code", "{{ $job->code }}");
+    });
+
+    function dropzoneBtn(file, response) {
+        var del = document.createElement('a');
+        del.setAttribute('href', response.delete);
+        del.setAttribute('class', "action-btn btn-danger mx-1 mt-1 btn btn-sm d-inline-flex align-items-center");
+        del.setAttribute('data-toggle', "tooltip");
+        del.setAttribute('data-original-title', "{{ __('Delete') }}");
+        del.innerHTML = "<i class='ti ti-trash'></i>";
+
+        del.addEventListener("click", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (confirm("Are you sure ?")) {
+                var btn = $(this);
+                $.ajax({
+                    url: btn.attr('href'),
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    type: 'DELETE',
+                    success: function(response) {
+                        if (response.is_success) {
+                            btn.closest('.dz-file-preview').remove();
+                            btn.closest('.dz-image-preview').remove();
+                        } else {
+                            show_toastr('{{ __('Error') }}', response.error, 'error');
+                        }
+                    },
+                    error: function(response) {
+                        response = response.responseJSON;
+                        if (response.is_success) {
+                            show_toastr('{{ __('Error') }}', response.error, 'error');
+                        } else {
+                            show_toastr('{{ __('Error') }}', response.error, 'error');
+                        }
+                    }
+                })
+            }
+        });
+
+        var html = document.createElement('div');
+        html.setAttribute('class', "text-center mt-10");
+        html.appendChild(del);
+
+        file.previewTemplate.appendChild(html);
+    }
+</script>
+
 <script>
     $(document).ready(function() {
         var b_id = $('#branch').val();
