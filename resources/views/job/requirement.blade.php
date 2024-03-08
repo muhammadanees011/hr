@@ -135,7 +135,6 @@ $themeColor = $color;
                         {!! $job->description !!}
 
                         @if(count($job->JobAttachments) > 0)
-                        @endif
                         <hr>
                         <h3>{{ __('Attachments') }}</h3><br>
                         @foreach ($job->JobAttachments as $file)
@@ -162,6 +161,7 @@ $themeColor = $color;
                             </div>
                         </div>
                         @endforeach
+                        @endif
                     </div>
                 </div>
             </section>
