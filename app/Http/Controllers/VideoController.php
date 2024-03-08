@@ -69,7 +69,7 @@ class VideoController extends Controller
      */
     public function show(Video $video)
     {
-        //
+        return view('video.video', compact('video'));
     }
 
     /**
@@ -80,11 +80,11 @@ class VideoController extends Controller
         $video =  Video::where('id', $id)->first();
         return view('video.edit', compact('video'));
     }
-    public function showVideo($id)
-    {
-        $video =  Video::where('id', $id)->first();
-        return view('video.video', compact('video'));
-    }
+    // public function showVideo($id)
+    // {
+    //     $video =  Video::where('id', $id)->first();
+    //     return view('video.video', compact('video'));
+    // }
 
     /**
      * Update the specified resource in storage.

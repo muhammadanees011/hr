@@ -21,12 +21,12 @@
 <div class="modal-body">
     <div class="video-container">
         @if($video->video_file)
-            <video controls class="video-player">
+            <video controls autoplay class="video-player">
                 <source src="{{ asset('videos/'.$video->video_file) }}" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         @elseif($video->video_link)
-            <video controls class="video-player">
+            <video controls autoplay class="video-player">
                 <source src="{{ $video->video_link }}" controls width="320" height="240" type="video/mp4">
                 Your browser does not support the video tag.
             </video>

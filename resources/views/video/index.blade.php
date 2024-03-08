@@ -38,7 +38,7 @@
                                 <td>{{ $video->title }}</td>
                                     <td class="Action">
                                         <span>
-                                            @can('Edit Eclaim')
+                                            @if(in_array(\Auth::user()->type, ['company','hr']) && \Auth::user()->can('Edit Video'))
                                                 <div class="action-btn bg-info ms-2">
                                                     <a href="#" class="mx-3 btn btn-sm  align-items-center"
                                                     data-url="{{ URL::to('video/' . $video->id . '/edit') }}"
@@ -48,7 +48,7 @@
                                                         <i class="ti ti-pencil text-white"></i>
                                                     </a>
                                                 </div>
-                                            @endcan
+                                            @endif
 
                                                 <div class="action-btn bg-danger ms-2">
                                                     {!! Form::open(['method' => 'DELETE', 'route' => ['video.destroy', $video->id], 'id' => 'delete-form-' . $video->id]) !!}
@@ -63,9 +63,9 @@
                                                 <div class="action-btn bg-info ms-2">
                                                     <a href="#" class="mx-3 btn btn-sm bg-info  align-items-center"
                                                     
-                                                    data-url="{{ URL::to('video/' . $video->id . '/show-video') }}"    
+                                                    data-url="{{ URL::to('video/' . $video->id) }}"    
                                                     data-ajax-popup="true" data-size="md" data-bs-toggle="tooltip" title=""
-                                                        data-title="{{ __('Video') }}"
+                                                        data-title="{{ __(ucfirst($video->title)) }}"
                                                         
                                                         data-bs-original-title="{{ __('View Video') }}">
                                                         <i class="ti ti-eye text-white"></i>
