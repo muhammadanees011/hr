@@ -450,48 +450,48 @@ Route::group(['middleware' => ['verified']], function () {
     );
 
     //payslip
-    Route::resource('paysliptype', PayslipTypeController::class)->middleware(['auth','XSS',]);
-    Route::resource('allowance', AllowanceController::class)->middleware(['auth','XSS',]);
-    Route::resource('commission', CommissionController::class)->middleware(['auth','XSS',]);
-    Route::resource('allowanceoption', AllowanceOptionController::class)->middleware(['auth','XSS',]);
-    Route::resource('loanoption', LoanOptionController::class)->middleware(['auth','XSS',]);
-    Route::resource('deductionoption', DeductionOptionController::class)->middleware(['auth','XSS',]);
-    Route::resource('loan', LoanController::class)->middleware(['auth','XSS',]);
-    Route::resource('saturationdeduction', SaturationDeductionController::class)->middleware(['auth','XSS',]);
-    Route::resource('overtime', OvertimeController::class)->middleware(['auth','XSS',]);
+    Route::resource('paysliptype', PayslipTypeController::class)->middleware(['auth', 'XSS',]);
+    Route::resource('allowance', AllowanceController::class)->middleware(['auth', 'XSS',]);
+    Route::resource('commission', CommissionController::class)->middleware(['auth', 'XSS',]);
+    Route::resource('allowanceoption', AllowanceOptionController::class)->middleware(['auth', 'XSS',]);
+    Route::resource('loanoption', LoanOptionController::class)->middleware(['auth', 'XSS',]);
+    Route::resource('deductionoption', DeductionOptionController::class)->middleware(['auth', 'XSS',]);
+    Route::resource('loan', LoanController::class)->middleware(['auth', 'XSS',]);
+    Route::resource('saturationdeduction', SaturationDeductionController::class)->middleware(['auth', 'XSS',]);
+    Route::resource('overtime', OvertimeController::class)->middleware(['auth', 'XSS',]);
 
     //payroll-setup
-    Route::resource('bonus', BonusController::class)->middleware(['auth','XSS',]);
-    Route::get('delete-bonus/{id}', [BonusController::class,'deleteBonus'])->name('deleteBonus')->middleware(['auth','XSS',]);
-    Route::resource('taxrules', TaxRuleController::class)->middleware(['auth','XSS',]);
-    Route::resource('providentfundspolicy', ProvidentFundsPolicyController::class)->middleware(['auth','XSS',]);
-    Route::resource('overtimepolicy', OverTimePolicyController::class)->middleware(['auth','XSS',]);
+    Route::resource('bonus', BonusController::class)->middleware(['auth', 'XSS',]);
+    Route::get('delete-bonus/{id}', [BonusController::class, 'deleteBonus'])->name('deleteBonus')->middleware(['auth', 'XSS',]);
+    Route::resource('taxrules', TaxRuleController::class)->middleware(['auth', 'XSS',]);
+    Route::resource('providentfundspolicy', ProvidentFundsPolicyController::class)->middleware(['auth', 'XSS',]);
+    Route::resource('overtimepolicy', OverTimePolicyController::class)->middleware(['auth', 'XSS',]);
 
     //exits
-    Route::resource('retirementtype', RetirementTypeController::class)->middleware(['auth','XSS',]);
-    Route::resource('retirement', RetirementController::class)->middleware(['auth','XSS',]);
-    Route::get('retirement/description/{id}', [RetirementController::class,'description'])->name('retirement.description')->middleware(['auth','XSS',]);
+    Route::resource('retirementtype', RetirementTypeController::class)->middleware(['auth', 'XSS',]);
+    Route::resource('retirement', RetirementController::class)->middleware(['auth', 'XSS',]);
+    Route::get('retirement/description/{id}', [RetirementController::class, 'description'])->name('retirement.description')->middleware(['auth', 'XSS',]);
 
-    Route::resource('exitprocedure', ExitProcedureController::class)->middleware(['auth','XSS',]);
+    Route::resource('exitprocedure', ExitProcedureController::class)->middleware(['auth', 'XSS',]);
 
     //health and fitness
-    Route::resource('healthassessment', HealthAssessmentController::class)->middleware(['auth','XSS',]);
-    Route::resource('gpnote', GPNoteController::class)->middleware(['auth','XSS',]);
-    Route::resource('selfcertification', SelfCertificationController::class)->middleware(['auth','XSS',]);
+    Route::resource('healthassessment', HealthAssessmentController::class)->middleware(['auth', 'XSS',]);
+    Route::resource('gpnote', GPNoteController::class)->middleware(['auth', 'XSS',]);
+    Route::resource('selfcertification', SelfCertificationController::class)->middleware(['auth', 'XSS',]);
 
     //manage leaves
     // Route::resource('leavesummary', LeaveSummaryController::class)->middleware(['auth','XSS',]);
-    Route::get('leavesummary/create/{id}', [LeaveSummaryController::class,'create'])->name('leavesummary.create')->middleware(['auth','XSS',]);
-    Route::post('leavesummary/{id}', [LeaveSummaryController::class,'store'])->name('leavesummary.store')->middleware(['auth','XSS',]);
+    Route::get('leavesummary/create/{id}', [LeaveSummaryController::class, 'create'])->name('leavesummary.create')->middleware(['auth', 'XSS',]);
+    Route::post('leavesummary/{id}', [LeaveSummaryController::class, 'store'])->name('leavesummary.store')->middleware(['auth', 'XSS',]);
 
-    Route::get('/employees/leavesummary', [LeaveSummaryController::class,'employees'])->name('leavesummary.employees')->middleware(['auth','XSS',]);
-    Route::get('/employees/leavesummary/{id}', [LeaveSummaryController::class,'employeeLeaveSummary'])->name('leavesummary.employee')->middleware(['auth','XSS',]);
-    Route::get('/delete/leavesummary/{id}/{employee_id}', [LeaveSummaryController::class,'destroy'])->name('leavesummary.destroy')->middleware(['auth','XSS',]);
+    Route::get('/employees/leavesummary', [LeaveSummaryController::class, 'employees'])->name('leavesummary.employees')->middleware(['auth', 'XSS',]);
+    Route::get('/employees/leavesummary/{id}', [LeaveSummaryController::class, 'employeeLeaveSummary'])->name('leavesummary.employee')->middleware(['auth', 'XSS',]);
+    Route::get('/delete/leavesummary/{id}/{employee_id}', [LeaveSummaryController::class, 'destroy'])->name('leavesummary.destroy')->middleware(['auth', 'XSS',]);
 
-    Route::resource('carryover', CarryOverController::class)->middleware(['auth','XSS',]);
-    Route::get('carryover/{id}/action', [CarryOverController::class,'action'])->name('carryover.action')->middleware(['auth','XSS',]);
-    Route::post('carryover/changeaction', [CarryOverController::class,'changeaction'])->name('carryover.changeaction')->middleware(['auth','XSS',]);
-    Route::get('leave/team', [LeaveController::class, 'teamTimeOff'])->name('leave.team')->middleware(['auth','XSS',]);
+    Route::resource('carryover', CarryOverController::class)->middleware(['auth', 'XSS',]);
+    Route::get('carryover/{id}/action', [CarryOverController::class, 'action'])->name('carryover.action')->middleware(['auth', 'XSS',]);
+    Route::post('carryover/changeaction', [CarryOverController::class, 'changeaction'])->name('carryover.changeaction')->middleware(['auth', 'XSS',]);
+    Route::get('leave/team', [LeaveController::class, 'teamTimeOff'])->name('leave.team')->middleware(['auth', 'XSS',]);
 
     Route::post('event/getdepartment', [EventController::class, 'getdepartment'])->name('event.getdepartment')->middleware(
         [
@@ -1101,13 +1101,15 @@ Route::group(['middleware' => ['verified']], function () {
 
     Route::get('job/templates', [JobController::class, 'template'])->name('job.template');
 
-
     Route::resource('job', JobController::class)->middleware(
         [
             'auth',
             'XSS',
         ]
     );
+    Route::post('job/files/upload', [JobController::class, 'filesUpload'])->name('job.files.upload');
+    Route::post('job/edit/files/upload', [JobController::class, 'editFilesUpload'])->name('job.edit.files.upload');
+    Route::delete('job/files/delete/{id}/{redirect}', [JobController::class, 'fileDelete'])->name('job.files.delete');
 
     // Route::get('career/{id}/{lang}', [JobController::class, 'career'])->name('career');
     // Route::get('job/requirement/{code}/{lang}', [JobController::class, 'jobRequirement'])->name('job.requirement');
@@ -1368,7 +1370,7 @@ Route::group(['middleware' => ['verified']], function () {
     Route::resource('contract_type', ContractTypeController::class)->middleware(['auth', 'XSS']);
     Route::resource('contract', ContractController::class)->middleware(['auth', 'XSS']);
     Route::post('/contract_status_edit/{id}', [ContractController::class, 'contract_status_edit'])->name('contract.status')->middleware(['auth', 'XSS']);
-    Route::post('/contract/{id}/file', [ContcractController::class, 'fileUpload'])->name('contracts.file.upload')->middleware(['auth', 'XSS']);
+    Route::post('/contract/{id}/file', [ContractController::class, 'fileUpload'])->name('contracts.file.upload')->middleware(['auth', 'XSS']);
     Route::get('/contract/{id}/file/{fid}',  [ContractController::class, 'fileDownload'])->name('contracts.file.download')->middleware(['auth', 'XSS']);
     Route::get('/contract/{id}/file/delete/{fid}', [ContractController::class, 'fileDelete'])->name('contracts.file.delete')->middleware(['auth', 'XSS']);
     Route::post('/contract/{id}/notestore', [ContractController::class, 'noteStore'])->name('contracts.note.store')->middleware(['auth']);

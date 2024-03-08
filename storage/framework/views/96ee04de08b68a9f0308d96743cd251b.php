@@ -49,8 +49,7 @@ $chatgpt = Utility::getValByName('enable_chatgpt');
                 var emp_select = `<select class="form-control department_id" name="department" placeholder="Select Department"></select>`;
                 $('.department_div').html(emp_select);
 
-                $('.department_id').append('<option value=""> <?php echo e(__('
-                    Select Department ')); ?> </option>');
+                $('.department_id').append('<option value=""> <?php echo e(__('Select Department')); ?> </option>');
                 $.each(data, function(key, value) {
                     $('.department_id').append('<option value="' + key + '">' + value + '</option>');
                 });
@@ -241,7 +240,7 @@ $chatgpt = Utility::getValByName('enable_chatgpt');
                     </div>
 
                     <div class="form-group col-md-12">
-                    <?php echo Form::label('attachments', __('Attachments'), ['class' => 'col-form-label']); ?>
+                        <?php echo Form::label('attachments', __('Attachments'), ['class' => 'col-form-label']); ?>
 
                         <div class="col-md-12 dropzone browse-file" id="my-dropzone"></div>
                     </div>
@@ -294,40 +293,83 @@ $chatgpt = Utility::getValByName('enable_chatgpt');
 
 <?php $__env->startPush('script-page'); ?>
 <script>
-        Dropzone.autoDiscover = true;
-        myDropzone = new Dropzone("#my-dropzone", {
-            maxFiles: 20,
-            // maxFilesize: 209715200,
-            parallelUploads: 1,
-            // acceptedFiles: ".jpeg,.jpg,.png,.pdf,.doc,.txt",
-            url: "#",
-            success: function(file, response) {
-                if (response.is_success) {
-                    dropzoneBtn(file, response);
-                    show_toastr('<?php echo e(__('Success')); ?>', 'Attachment Create Successfully!', 'success');
-                } else {
-                    myDropzone.removeFile(file);
-                    show_toastr('<?php echo e(__('Error')); ?>', 'File type must be match with Storage setting.',
-                        'error');
-                }
-                location.reload();
-
-            },
-            error: function(file, response) {
+    Dropzone.autoDiscover = true;
+    myDropzone = new Dropzone("#my-dropzone", {
+        maxFiles: 20,
+        // maxFilesize: 209715200,
+        parallelUploads: 1,
+        // acceptedFiles: ".jpeg,.jpg,.png,.pdf,.doc,.txt",
+        url: "<?php echo e(route('job.files.upload')); ?>",
+        success: function(file, response) {
+            if (response.is_success) {
+                dropzoneBtn(file, response);
+                show_toastr('<?php echo e(__('Success')); ?>', 'Attachment Create Successfully!', 'success');
+            } else {
                 myDropzone.removeFile(file);
-                if (response.error) {
-                    show_toastr('<?php echo e(__('Error')); ?>', response.error, 'error');
-                } else {
-                    show_toastr('<?php echo e(__('Error')); ?>', response.error, 'error');
-                }
+                show_toastr('<?php echo e(__('Error')); ?>', 'File type must be match with Storage setting.',
+                    'error');
+            }
+            // location.reload();
+        },
+        error: function(file, response) {
+            myDropzone.removeFile(file);
+            if (response.error) {
+                show_toastr('<?php echo e(__('Error')); ?>', response.error, 'error');
+            } else {
+                show_toastr('<?php echo e(__('Error')); ?>', response.error, 'error');
+            }
+        }
+    });
+    myDropzone.on("sending", function(file, xhr, formData) {
+        formData.append("_token", $('meta[name="csrf-token"]').attr('content'));
+    });
+
+    function dropzoneBtn(file, response) {
+        var del = document.createElement('a');
+        del.setAttribute('href', response.delete);
+        del.setAttribute('class', "action-btn btn-danger mx-1 mt-1 btn btn-sm d-inline-flex align-items-center");
+        del.setAttribute('data-toggle', "tooltip");
+        del.setAttribute('data-original-title', "<?php echo e(__('Delete')); ?>");
+        del.innerHTML = "<i class='ti ti-trash'></i>";
+
+        del.addEventListener("click", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (confirm("Are you sure ?")) {
+                var btn = $(this);
+                $.ajax({
+                    url: btn.attr('href'),
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    type: 'DELETE',
+                    success: function(response) {
+                        if (response.is_success) {
+                            btn.closest('.dz-file-preview').remove();
+                            btn.closest('.dz-image-preview').remove();
+                        } else {
+                            show_toastr('<?php echo e(__('Error')); ?>', response.error, 'error');
+                        }
+                    },
+                    error: function(response) {
+                        response = response.responseJSON;
+                        if (response.is_success) {
+                            show_toastr('<?php echo e(__('Error')); ?>', response.error, 'error');
+                        } else {
+                            show_toastr('<?php echo e(__('Error')); ?>', response.error, 'error');
+                        }
+                    }
+                })
             }
         });
-        myDropzone.on("sending", function(file, xhr, formData) {
-            formData.append("_token", $('meta[name="csrf-token"]').attr('content'));
-        });
 
-        
-    </script>
+        var html = document.createElement('div');
+        html.setAttribute('class', "text-center mt-10");
+        html.appendChild(del);
+
+        file.previewTemplate.appendChild(html);
+    }
+</script>
 
 <script>
     $(document).ready(function() {
