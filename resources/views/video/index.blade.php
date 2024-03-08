@@ -38,7 +38,7 @@
                                 <td>{{ $video->title }}</td>
                                     <td class="Action">
                                         <span>
-                                            @if(in_array(\Auth::user()->type, ['company','hr']) && \Auth::user()->can('Edit Video'))
+                                            @if(in_array(\Auth::user()->type, ['company','hr']))
                                                 <div class="action-btn bg-info ms-2">
                                                     <a href="#" class="mx-3 btn btn-sm  align-items-center"
                                                     data-url="{{ URL::to('video/' . $video->id . '/edit') }}"
@@ -48,8 +48,6 @@
                                                         <i class="ti ti-pencil text-white"></i>
                                                     </a>
                                                 </div>
-                                            @endif
-
                                                 <div class="action-btn bg-danger ms-2">
                                                     {!! Form::open(['method' => 'DELETE', 'route' => ['video.destroy', $video->id], 'id' => 'delete-form-' . $video->id]) !!}
                                                     <a href="#" class="mx-3 btn btn-sm  align-items-center bs-pass-para"
@@ -58,20 +56,19 @@
                                                             class="ti ti-trash text-white text-white"></i></a>
                                                     </form>
                                                 </div>
+                                            @endif
 
-
-                                                <div class="action-btn bg-info ms-2">
-                                                    <a href="#" class="mx-3 btn btn-sm bg-info  align-items-center"
+                                            <div class="action-btn bg-info ms-2">
+                                                <a href="#" class="mx-3 btn btn-sm bg-info  align-items-center"
+                                                
+                                                data-url="{{ URL::to('video/' . $video->id) }}"    
+                                                data-ajax-popup="true" data-size="md" data-bs-toggle="tooltip" title=""
+                                                    data-title="{{ __(ucfirst($video->title)) }}"
                                                     
-                                                    data-url="{{ URL::to('video/' . $video->id) }}"    
-                                                    data-ajax-popup="true" data-size="md" data-bs-toggle="tooltip" title=""
-                                                        data-title="{{ __(ucfirst($video->title)) }}"
-                                                        
-                                                        data-bs-original-title="{{ __('View Video') }}">
-                                                        <i class="ti ti-eye text-white"></i>
-                                                    </a>
-                                                </div>
-
+                                                    data-bs-original-title="{{ __('View Video') }}">
+                                                    <i class="ti ti-eye text-white"></i>
+                                                </a>
+                                            </div>
                                                  
                                         </span>
                                     </td>

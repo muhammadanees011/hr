@@ -9,12 +9,8 @@ class VideoController extends Controller
 {
     public function index()
     {
-        // if (\Auth::user()->can('Manage Video')) {
-            $videos = Video::where('created_by', '=', \Auth::user()->creatorId())->get();
-            return view('video.index', compact('videos'));
-        // } else {
-        //     return redirect()->back()->with('error', __('Permission denied.'));
-        // }
+        $videos = Video::where('created_by', '=', \Auth::user()->creatorId())->get();
+        return view('video.index', compact('videos'));
     }
 
     /**
@@ -80,11 +76,7 @@ class VideoController extends Controller
         $video =  Video::where('id', $id)->first();
         return view('video.edit', compact('video'));
     }
-    // public function showVideo($id)
-    // {
-    //     $video =  Video::where('id', $id)->first();
-    //     return view('video.video', compact('video'));
-    // }
+    
 
     /**
      * Update the specified resource in storage.
