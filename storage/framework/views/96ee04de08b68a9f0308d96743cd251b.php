@@ -300,7 +300,7 @@ $chatgpt = Utility::getValByName('enable_chatgpt');
             // maxFilesize: 209715200,
             parallelUploads: 1,
             // acceptedFiles: ".jpeg,.jpg,.png,.pdf,.doc,.txt",
-            url: "#",
+            url: "/sdasdasdad",
             success: function(file, response) {
                 if (response.is_success) {
                     dropzoneBtn(file, response);
@@ -314,6 +314,7 @@ $chatgpt = Utility::getValByName('enable_chatgpt');
 
             },
             error: function(file, response) {
+                console.log(response);
                 myDropzone.removeFile(file);
                 if (response.error) {
                     show_toastr('<?php echo e(__('Error')); ?>', response.error, 'error');

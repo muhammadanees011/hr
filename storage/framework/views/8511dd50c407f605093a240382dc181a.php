@@ -25,13 +25,15 @@
 <?php $__env->startSection('content'); ?>
     <div class='col-xl-12'>
         <div class="row">
+            
+        <?php $__currentLoopData = $contract_type; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $typ): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="col-xl-3">
                 <div class="card comp-card">
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h6 class="m-b-20"><?php echo e(__('Total Contracts')); ?></h6>
-                                <h3 class="text-primary"><?php echo e($cnt_contract['total']); ?></h3>
+                                <h6 class="m-b-20"><?php echo e(__($typ['name'])); ?></h6>
+                                <h3 class="text-primary"><?php echo e($typ['total_amount']); ?></h3>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-handshake bg-success text-white"></i>
@@ -40,8 +42,9 @@
                     </div>
                 </div>
             </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-            <div class="col-xl-3">
+            <!-- <div class="col-xl-3">
                 <div class="card comp-card">
                     <div class="card-body">
                         <div class="row align-items-center">
@@ -87,7 +90,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="col-xl-12">
                 <div class="card table-card">
