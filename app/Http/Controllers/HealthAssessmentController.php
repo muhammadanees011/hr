@@ -227,7 +227,7 @@ class HealthAssessmentController extends Controller
     public function fileUpload($id, Request $request)
     {
         $healthassessment = HealthAssessment::find($id);
-        if (\Auth::user()->type == 'company' || \Auth::user()->type == 'hr') {
+        if (\Auth::user()->type == 'company' || \Auth::user()->type == 'hr' || \Auth::user()->type == 'employee') {
             $request->validate(['file' => 'required']);
             $dir = 'healthfitness_attachment/';
             $files = $request->file->getClientOriginalName();
@@ -300,7 +300,7 @@ class HealthAssessmentController extends Controller
 
     public function fileDelete($id, $file_id)
     {
-        if (\Auth::user()->can('Delete Attachment')) {
+        if (\Auth::user()->can('Manage Health And Fitness')) {
             $healthassessment = HealthAssessment::find($id);
             $file = HealthFitnessAttachment::find($file_id);
             if ($file) {
