@@ -112,7 +112,7 @@
                                             <td>{{ $healthassessment->employee->name }}</td>
                                             <td>{{ $healthassessment->assessment_date }}</td>
                                             <td>{{ $healthassessment->assessment_type }}</td>
-                                            <td>{{ \Illuminate\Support\Str::limit($healthassessment->details, 40) }}</td>
+                                            <td>{!! \Illuminate\Support\Str::limit($healthassessment->assessment_result, 40) !!}</td>
                                             <td class="Action">
                                                 <span>
                                                     {{-- @if (\Auth::user()->type == 'company' || \Auth::user()->type == 'hr' || \Auth::user()->type == 'employee') --}}

@@ -30,7 +30,7 @@
                         <div class="row align-items-center">
                             <div class="col">
                                 <h6 class="m-b-20">{{ __('Total Self Certification') }}</h6>
-                                <h3 class="text-primary">10</h3>
+                                <h3 class="text-primary">{{$cnt_selfcertification['total']  }}</h3>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-handshake bg-success text-white"></i>
@@ -46,7 +46,7 @@
                         <div class="row align-items-center">
                             <div class="col">
                                 <h6 class="m-b-20">{{ __('This Month Total Self Certification') }}</h6>
-                                <h3 class="text-info">5</h3>
+                                <h3 class="text-info">{{$cnt_selfcertification['this_month'] }}</h3>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-handshake bg-info text-white"></i>
@@ -62,7 +62,7 @@
                         <div class="row align-items-center">
                             <div class="col">
                                 <h6 class="m-b-20">{{ __('This Week Total Self Certification') }}</h6>
-                                <h3 class="text-warning">3</h3>
+                                <h3 class="text-warning">{{$cnt_selfcertification['this_week'] }}</h3>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-handshake bg-warning text-white"></i>
@@ -78,7 +78,7 @@
                         <div class="row align-items-center">
                             <div class="col">
                                 <h6 class="m-b-20">{{ __('Last 30 Days Total Self Certification') }}</h6>
-                                <h3 class="text-danger">3</h3>
+                                <h3 class="text-danger">{{$cnt_selfcertification['last_30days'] }}</h3>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-handshake bg-danger text-white"></i>
@@ -112,7 +112,7 @@
                                             <td>{{ $selfcertification->employee->name }}</td>
                                             <td>{{ $selfcertification->certification_date }}</td>
                                             <td>{{ $selfcertification->certification_type }}</td>
-                                            <td>{{ \Illuminate\Support\Str::limit($selfcertification->details, 40) }}</td>
+                                            <td>{!! \Illuminate\Support\Str::limit($selfcertification->details, 40) !!}</td>
                                             <td class="Action">
                                                 <span>
                                                     {{-- @if (\Auth::user()->type == 'company' || \Auth::user()->type == 'hr' || \Auth::user()->type == 'employee') --}}

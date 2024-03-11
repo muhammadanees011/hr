@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\SelfCertification;
 use App\Models\Employee;
+use App\Models\Utility;
+use App\Models\HealthFitnessAttachment;
 use Illuminate\Http\Request;
 
 class SelfCertificationController extends Controller
@@ -17,7 +19,24 @@ class SelfCertificationController extends Controller
         {
             $selfcertifications = SelfCertification::where('created_by', '=', \Auth::user()->creatorId())->get();
 
-            return view('selfcertification.index', compact('selfcertifications'));
+            $total_selfcertifications = SelfCertification::where('created_by', '=', \Auth::user()->creatorId())->count();
+            $curr_month  = SelfCertification::where('created_by', '=', \Auth::user()->creatorId())->whereMonth('created_at', '=', date('m'))->count();
+            $curr_week   = SelfCertification::where('created_by', '=', \Auth::user()->creatorId())->whereBetween(
+                'created_at',
+                [
+                    \Carbon\Carbon::now()->startOfWeek(),
+                    \Carbon\Carbon::now()->endOfWeek(),
+                ]
+            )->count();
+            $last_30days = SelfCertification::where('created_by', '=', \Auth::user()->creatorId())->whereDate('created_at', '>', \Carbon\Carbon::now()->subDays(30))->count();
+
+            $cnt_selfcertification                = [];
+            $cnt_selfcertification['total']       = $total_selfcertifications;
+            $cnt_selfcertification['this_month']  = $curr_month;
+            $cnt_selfcertification['this_week']   = $curr_week;
+            $cnt_selfcertification['last_30days'] = $last_30days;
+
+            return view('selfcertification.index', compact('selfcertifications','cnt_selfcertification'));
         }
         else
         {
@@ -176,5 +195,114 @@ class SelfCertificationController extends Controller
         {
             return redirect()->back()->with('error', __('Permission denied.'));
         } 
+    }
+
+    public function detailsStore($id, Request $request)
+    {
+        $selfcertification        = SelfCertification::find($id);
+        $selfcertification->details  = $request->detail;
+        $selfcertification->save();
+        return redirect()->back()->with('success', __('Self Certification Detail successfully saved.'));
+    }
+
+    public function fileUpload($id, Request $request)
+    {
+        $selfcertification = SelfCertification::find($id);
+        if (\Auth::user()->type == 'company' || \Auth::user()->type == 'hr') {
+            $request->validate(['file' => 'required']);
+            $dir = 'selfcertification_attachment/';
+            $files = $request->file->getClientOriginalName();
+            $path = Utility::upload_file($request, 'file', $files, $dir, []);
+            if ($path['flag'] == 1) {
+                $file = $path['url'];
+            } else {
+                return redirect()->back()->with('error', __($path['msg']));
+            }
+            $file                 = HealthFitnessAttachment::create(
+                [
+                    'selfcertification_id' => $selfcertification->id,
+                    'user_id' => \Auth::user()->id,
+                    'files' => $files,
+                ]
+            );
+            $return               = [];
+            $return['is_success'] = true;
+            $return['download']   = route(
+                'selfcertification.file.download',
+                [
+                    $selfcertification->id,
+                    $file->id,
+                ]
+            );
+            $return['delete']     = route(
+                'selfcertification.file.delete',
+                [
+                    $selfcertification->id,
+                    $file->id,
+                ]
+            );
+
+            return response()->json($return);
+        } else {
+            return response()->json(
+                [
+                    'is_success' => false,
+                    'error' => __('Permission Denied.'),
+                ],
+                401
+            );
+        }
+    }
+
+    public function fileDownload($id, $file_id)
+    {
+        $selfcertification = SelfCertification::find($id);
+        if ($selfcertification->created_by == \Auth::user()->creatorId()) {
+            $file = HealthFitnessAttachment::find($file_id);
+            if ($file) {
+                $file_path = storage_path('selfcertification_attachment/' . $file->files);
+
+                // $files = $file->files;
+
+                return \Response::download(
+                    $file_path,
+                    $file->files,
+                    [
+                        'Content-Length: ' . filesize($file_path),
+                    ]
+                );
+            } else {
+                return redirect()->back()->with('error', __('File is not exist.'));
+            }
+        } else {
+            return redirect()->back()->with('error', __('Permission Denied.'));
+        }
+    }
+
+    public function fileDelete($id, $file_id)
+    {
+        if (\Auth::user()->can('Delete Attachment')) {
+            $selfcertification = SelfCertification::find($id);
+            $file = HealthFitnessAttachment::find($file_id);
+            if ($file) {
+                $path = storage_path('selfcertification_attachment/' . $file->files);
+                if (file_exists($path)) {
+                    \File::delete($path);
+                }
+                $file->delete();
+
+                return redirect()->back()->with('success', __('Attachment successfully deleted!'));
+            } else {
+                return response()->json(
+                    [
+                        'is_success' => false,
+                        'error' => __('File is not exist.'),
+                    ],
+                    200
+                );
+            }
+        } else {
+            return redirect()->back()->with('error', __('Permission Denied.'));
+        }
     }
 }

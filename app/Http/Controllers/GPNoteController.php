@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\GPNote;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use App\Models\HealthFitnessAttachment;
+use App\Models\Utility;
 
 class GPNoteController extends Controller
 {
@@ -16,8 +18,25 @@ class GPNoteController extends Controller
         if(\Auth::user()->can('Manage Health And Fitness'))
         {
             $gpnotes = GPNote::where('created_by', '=', \Auth::user()->creatorId())->get();
+            
+            $total_gpnotes = GPNote::where('created_by', '=', \Auth::user()->creatorId())->count();
+            $curr_month  = GPNote::where('created_by', '=', \Auth::user()->creatorId())->whereMonth('created_at', '=', date('m'))->count();
+            $curr_week   = GPNote::where('created_by', '=', \Auth::user()->creatorId())->whereBetween(
+                'created_at',
+                [
+                    \Carbon\Carbon::now()->startOfWeek(),
+                    \Carbon\Carbon::now()->endOfWeek(),
+                ]
+            )->count();
+            $last_30days = GPNote::where('created_by', '=', \Auth::user()->creatorId())->whereDate('created_at', '>', \Carbon\Carbon::now()->subDays(30))->count();
 
-            return view('gpnote.index', compact('gpnotes'));
+            $cnt_gpnote                = [];
+            $cnt_gpnote['total']       = $total_gpnotes;
+            $cnt_gpnote['this_month']  = $curr_month;
+            $cnt_gpnote['this_week']   = $curr_week;
+            $cnt_gpnote['last_30days'] = $last_30days;
+
+            return view('gpnote.index', compact('gpnotes','cnt_gpnote'));
         }
         else
         {
@@ -185,5 +204,117 @@ class GPNoteController extends Controller
         {
             return redirect()->back()->with('error', __('Permission denied.'));
         } 
+    }
+
+    
+    public function assessmentDetailsStore($id, Request $request)
+    {
+        $gpnote        = GPNote::find($id);
+        $gpnote->plan  = $request->detail;
+        $gpnote->save();
+        return redirect()->back()->with('success', __('GPNote Detail successfully saved.'));
+        
+    }
+
+    
+    public function fileUpload($id, Request $request)
+    {
+        $gpnote = GPNote::find($id);
+        if (\Auth::user()->type == 'company' || \Auth::user()->type == 'hr') {
+            $request->validate(['file' => 'required']);
+            $dir = 'gpnote_attachment/';
+            $files = $request->file->getClientOriginalName();
+            $path = Utility::upload_file($request, 'file', $files, $dir, []);
+            if ($path['flag'] == 1) {
+                $file = $path['url'];
+            } else {
+                return redirect()->back()->with('error', __($path['msg']));
+            }
+            $file                 = HealthFitnessAttachment::create(
+                [
+                    'gpnotes_id' => $gpnote->id,
+                    'user_id' => \Auth::user()->id,
+                    'files' => $files,
+                ]
+            );
+            $return               = [];
+            $return['is_success'] = true;
+            $return['download']   = route(
+                'gpnote.file.download',
+                [
+                    $gpnote->id,
+                    $file->id,
+                ]
+            );
+            $return['delete']     = route(
+                'gpnote.file.delete',
+                [
+                    $gpnote->id,
+                    $file->id,
+                ]
+            );
+
+            return response()->json($return);
+        } else {
+            return response()->json(
+                [
+                    'is_success' => false,
+                    'error' => __('Permission Denied.'),
+                ],
+                401
+            );
+        }
+    }
+
+    public function fileDownload($id, $file_id)
+    {
+        $gpnote = GPNote::find($id);
+        if ($gpnote->created_by == \Auth::user()->creatorId()) {
+            $file = HealthFitnessAttachment::find($file_id);
+            if ($file) {
+                $file_path = storage_path('gpnote_attachment/' . $file->files);
+
+                // $files = $file->files;
+
+                return \Response::download(
+                    $file_path,
+                    $file->files,
+                    [
+                        'Content-Length: ' . filesize($file_path),
+                    ]
+                );
+            } else {
+                return redirect()->back()->with('error', __('File is not exist.'));
+            }
+        } else {
+            return redirect()->back()->with('error', __('Permission Denied.'));
+        }
+    }
+
+    public function fileDelete($id, $file_id)
+    {
+        if (\Auth::user()->can('Delete Attachment')) {
+            $gpnote = GPNote::find($id);
+            $file = HealthFitnessAttachment::find($file_id);
+            if ($file) {
+                $path = storage_path('gpnote_attachment/' . $file->files);
+                if (file_exists($path)) {
+                    \File::delete($path);
+                }
+                $file->delete();
+
+                return redirect()->back()->with('success', __('Attachment successfully deleted!'));
+            } else {
+                return response()->json(
+                    [
+                        'is_success' => false,
+                        'error' => __('File is not exist.'),
+                    ],
+                    200
+                );
+            }
+        } else {
+            return redirect()->back()->with('error', __('Permission Denied.'));
+        }
     }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\HealthAssessment;
 use App\Models\Employee;
+use App\Models\HealthFitnessAttachment;
+use App\Models\Utility;
 use Illuminate\Http\Request;
 
 class HealthAssessmentController extends Controller
@@ -211,5 +213,115 @@ class HealthAssessmentController extends Controller
         {
             return redirect()->back()->with('error', __('Permission denied.'));
         } 
+    }
+
+    public function assessmentResultStore($id, Request $request)
+    {
+        $assessment        = HealthAssessment::find($id);
+        $assessment->assessment_result= $request->assessment_result;
+        $assessment->save();
+        return redirect()->back()->with('success', __('Assessment Result successfully saved.'));
+        
+    }
+
+    public function fileUpload($id, Request $request)
+    {
+        $healthassessment = HealthAssessment::find($id);
+        if (\Auth::user()->type == 'company' || \Auth::user()->type == 'hr') {
+            $request->validate(['file' => 'required']);
+            $dir = 'healthfitness_attachment/';
+            $files = $request->file->getClientOriginalName();
+            $path = Utility::upload_file($request, 'file', $files, $dir, []);
+            if ($path['flag'] == 1) {
+                $file = $path['url'];
+            } else {
+                return redirect()->back()->with('error', __($path['msg']));
+            }
+            $file                 = HealthFitnessAttachment::create(
+                [
+                    'healthassessment_id' => $healthassessment->id,
+                    'user_id' => \Auth::user()->id,
+                    'files' => $files,
+                ]
+            );
+            $return               = [];
+            $return['is_success'] = true;
+            $return['download']   = route(
+                'healthassessment.file.download',
+                [
+                    $healthassessment->id,
+                    $file->id,
+                ]
+            );
+            $return['delete']     = route(
+                'healthassessment.file.delete',
+                [
+                    $healthassessment->id,
+                    $file->id,
+                ]
+            );
+
+            return response()->json($return);
+        } else {
+            return response()->json(
+                [
+                    'is_success' => false,
+                    'error' => __('Permission Denied.'),
+                ],
+                401
+            );
+        }
+    }
+
+    public function fileDownload($id, $file_id)
+    {
+        $healthassessment = HealthAssessment::find($id);
+        if ($healthassessment->created_by == \Auth::user()->creatorId()) {
+            $file = HealthFitnessAttachment::find($file_id);
+            if ($file) {
+                $file_path = storage_path('healthfitness_attachment/' . $file->files);
+
+                // $files = $file->files;
+
+                return \Response::download(
+                    $file_path,
+                    $file->files,
+                    [
+                        'Content-Length: ' . filesize($file_path),
+                    ]
+                );
+            } else {
+                return redirect()->back()->with('error', __('File is not exist.'));
+            }
+        } else {
+            return redirect()->back()->with('error', __('Permission Denied.'));
+        }
+    }
+
+    public function fileDelete($id, $file_id)
+    {
+        if (\Auth::user()->can('Delete Attachment')) {
+            $healthassessment = HealthAssessment::find($id);
+            $file = HealthFitnessAttachment::find($file_id);
+            if ($file) {
+                $path = storage_path('healthfitness_attachment/' . $file->files);
+                if (file_exists($path)) {
+                    \File::delete($path);
+                }
+                $file->delete();
+
+                return redirect()->back()->with('success', __('Attachment successfully deleted!'));
+            } else {
+                return response()->json(
+                    [
+                        'is_success' => false,
+                        'error' => __('File is not exist.'),
+                    ],
+                    200
+                );
+            }
+        } else {
+            return redirect()->back()->with('error', __('Permission Denied.'));
+        }
     }
 }

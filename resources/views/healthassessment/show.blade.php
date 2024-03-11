@@ -80,9 +80,6 @@
                                 <a href="#attachments"
                                     class="list-group-item list-group-item-action border-0">{{ __('Attachment') }} <div
                                         class="float-end"><i class="ti ti-chevron-right"></i></div></a>
-                                <a href="#notes"
-                                    class="list-group-item list-group-item-action border-0">{{ __('Assessment Details') }} <div
-                                        class="float-end"><i class="ti ti-chevron-right"></i></div></a>
                             </div>
                         </div>
                     </div>
@@ -112,13 +109,13 @@
                             </div>
                             <div class="card">
                                 <div class="card-header">
-                                    <h5 class="mb-0">{{ __('Assessment Results ') }}</h5>
+                                    <h5 class="mb-0">{{ __('Assessment Detail ') }}</h5>
                                 </div>
                                 <div class="card-body p-3">
-                                    {{ Form::open(['route' => ['contracts.description.store', $healthassessment->id]]) }}
+                                    {{ Form::open(['route' => ['healthassessment.result.store', $healthassessment->id]]) }}
                                     <div class="col-md-12">
                                         <div class="form-group mt-3">
-                                            <textarea class="summernote-simple" name="contract_description" id="contract_description" rows="3">{!! $healthassessment->assessment_result !!}</textarea>
+                                            <textarea class="summernote-simple" name="assessment_result" id="contract_description" rows="3">{!! $healthassessment->assessment_result !!}</textarea>
                                         </div>
                                     </div>
                                     @can('Create Contract')
@@ -142,23 +139,31 @@
                                             <h5>{{ __('Attachments') }}</h5>
                                         </div>
                                         <div class="card-body">
+                                            @if (\Auth::user()->type == 'company' || \Auth::user()->type == 'hr')
+                                                <div class=" ">
+                                                    <div class="col-md-12 dropzone browse-file" id="my-dropzone"></div>
+                                                </div>
+                                            @endif
+
+
+                                            @foreach ($healthassessment->files as $file)
                                                 <div class=" py-3">
                                                     <div class="list-group-item ">
                                                         <div class="row align-items-center">
                                                             <div class="col">
                                                                 <h6 class="text-sm mb-0">
-                                                                    <a href="#!">{{ $healthassessment->assessment_file }}</a>
+                                                                    <a href="#!">{{ $file->files }}</a>
                                                                 </h6>
 
                                                                 <p class="card-text small text-muted">
-                                                                    {{ number_format(\File::size(storage_path('contract_attechment/' .  $healthassessment->assessment_file)) / 1048576, 2) . ' ' . __('MB') }}
+                                                                    {{ number_format(\File::size(storage_path('healthfitness_attachment/' . $file->files)) / 1048576, 2) . ' ' . __('MB') }}
                                                                 </p>
                                                             </div>
                                                             @php
-                                                                $attachments = \App\Models\Utility::get_file('contract_attechment');
+                                                                $attachments = \App\Models\Utility::get_file('healthfitness_attachment');
                                                             @endphp
                                                             <div class="action-btn bg-warning p-0 w-auto    ">
-                                                                <a href="{{ $attachments . '/' .  $healthassessment->assessment_file }}"
+                                                                <a href="{{ $attachments . '/' . $file->files }}"
                                                                     class=" btn btn-sm d-inline-flex align-items-center"
                                                                     download="" data-bs-toggle="tooltip"
                                                                     title="Download">
@@ -168,11 +173,11 @@
                                                             </div>
                                                             <div class="col-auto actions">
                                                                 @can('Delete Attachment')
-                                                                    @if (1 == 1 || \Auth::user()->type == 'company' || \Auth::user()->type == 'hr')
+                                                                    @if (\Auth::user()->id == $file->user_id || \Auth::user()->type == 'company' || \Auth::user()->type == 'hr')
                                                                         <div class="action-btn bg-danger ms-2">
 
                                                                             <form action=""></form>
-                                                                            {!! Form::open(['method' => 'GET', 'route' => ['contracts.file.delete', [ $healthassessment->id,  1]]]) !!}
+                                                                            {!! Form::open(['method' => 'GET', 'route' => ['healthassessment.file.delete', [$healthassessment->id, $file->id]]]) !!}
                                                                             <a href="#!"
                                                                                 class="mx-3 btn btn-sm  align-items-center bs-pass-para"
                                                                                 data-bs-toggle="tooltip"
@@ -189,87 +194,13 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                            @endforeach
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div id="notes" role="tabpanel" aria-labelledby="pills-comments-tab">
-                            <div class="row pt-2">
-                                <div class="col-12">
-                                    <div id="notes">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h5>{{ __('Assessment Details') }}</h5>
-                                            </div>
-                                            <div class="card-body">
-
-                                                @if (\Auth::user()->type == 'company' || \Auth::user()->type == 'hr')
-                                                    <form action=""></form>
-                                                    {{ Form::open(['route' => ['contracts.note.store', $healthassessment->id]]) }}
-                                                    <div class="form-group">
-
-                                                        <textarea rows="3" id="summernote" class="form-control tox-target pc-tinymce summernotes grammer_textarea"
-                                                            name="note" data-toggle="autosize" placeholder="Add a notes..." spellcheck="false" required></textarea>
-                                                        <grammarly-extension data-grammarly-shadow-root="true"
-                                                            style="position: absolute; top: 0px; left: 0px; pointer-events: none; z-index: 1;"
-                                                            class="cGcvT"></grammarly-extension>
-                                                        <grammarly-extension data-grammarly-shadow-root="true"
-                                                            style="mix-blend-mode: darken; position: absolute; top: 0px; left: 0px; pointer-events: none; z-index: 1;"
-                                                            class="cGcvT"></grammarly-extension>
-                                                    </div>
-                                                    <div class="col-md-12 text-end mb-0">
-                                                        {{ Form::submit(__('Add'), ['class' => 'btn  btn-primary']) }}
-                                                    </div>
-                                                    {{ Form::close() }}
-                                                @elseif(\Auth::user()->type == 'employee' && $contract->status == 'accept')
-                                                    <form action=""></form>
-                                                    {{ Form::open(['route' => ['contracts.note.store', $contract->id]]) }}
-                                                    <div class="form-group">
-
-                                                        <textarea rows="3" id="summernote" class="form-control tox-target pc-tinymce summernotes" name="note"
-                                                            data-toggle="autosize" placeholder="Add a notes..." spellcheck="false" required></textarea>
-                                                        <grammarly-extension data-grammarly-shadow-root="true"
-                                                            style="position: absolute; top: 0px; left: 0px; pointer-events: none; z-index: 1;"
-                                                            class="cGcvT"></grammarly-extension>
-                                                        <grammarly-extension data-grammarly-shadow-root="true"
-                                                            style="mix-blend-mode: darken; position: absolute; top: 0px; left: 0px; pointer-events: none; z-index: 1;"
-                                                            class="cGcvT"></grammarly-extension>
-                                                    </div>
-                                                    <div class="col-md-12 text-end mb-0">
-                                                        {{ Form::submit(__('Add'), ['class' => 'btn  btn-primary']) }}
-                                                    </div>
-                                                    {{ Form::close() }}
-                                                @endif
-
-                                                {{-- @if ($contract->status == 'accept')
-                                                    <form action=""></form>
-                                                    {{ Form::open(['route' => ['contracts.note.store', $contract->id]]) }}
-                                                    <div class="form-group">
-
-                                                        <textarea rows="3" id="summernote" class="form-control tox-target pc-tinymce summernotes" name="note"
-                                                            data-toggle="autosize" placeholder="Add a notes..." spellcheck="false" required></textarea>
-                                                        <grammarly-extension data-grammarly-shadow-root="true"
-                                                            style="position: absolute; top: 0px; left: 0px; pointer-events: none; z-index: 1;"
-                                                            class="cGcvT"></grammarly-extension>
-                                                        <grammarly-extension data-grammarly-shadow-root="true"
-                                                            style="mix-blend-mode: darken; position: absolute; top: 0px; left: 0px; pointer-events: none; z-index: 1;"
-                                                            class="cGcvT"></grammarly-extension>
-                                                    </div>
-                                                    <div class="col-md-12 text-end mb-0">
-                                                        {{ Form::submit(__('Add'), ['class' => 'btn  btn-primary']) }}
-                                                    </div>
-                                                    {{ Form::close() }}
-                                                @endif --}}
-
-                                             
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -379,7 +310,7 @@
             // maxFilesize: 209715200,
             parallelUploads: 1,
             // acceptedFiles: ".jpeg,.jpg,.png,.pdf,.doc,.txt",
-            url: "{{ route('contracts.file.upload', [$healthassessment->id]) }}",
+            url: "{{ route('healthassessment.file.upload', [$healthassessment->id]) }}",
             success: function(file, response) {
                 if (response.is_success) {
                     dropzoneBtn(file, response);
