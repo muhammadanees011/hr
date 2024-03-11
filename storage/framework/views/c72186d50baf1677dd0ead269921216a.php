@@ -65,6 +65,9 @@ $lang = Auth::user()->lang;
                             <li class="dash-item">
                                 <a class="dash-link" href="<?php echo e(route('report.income-expense')); ?>"><?php echo e(__('Income Vs Expense')); ?></a>
                             </li>
+                            <li class="dash-item">
+                                <a class="dash-link" href="<?php echo e(route('report.p11-report')); ?>"><?php echo e(__('P11 Report')); ?></a>
+                            </li>
 
                             <li class="dash-item">
                                 <a class="dash-link" href="<?php echo e(route('report.monthly.attendance')); ?>"><?php echo e(__('Monthly Attendance')); ?></a>
@@ -156,10 +159,10 @@ $lang = Auth::user()->lang;
             <li class="dash-item <?php echo e(Request::segment(1) == 'employee-probation' ? 'active' : ''); ?>">
                 <a href="<?php echo e(route('employee.probation.index')); ?>" class="dash-link"><span class="dash-micon"><i class="ti ti-user"></i></span><span class="dash-mtext"><?php echo e(__('Probation')); ?></span></a>
             </li>
+            <?php endif; ?>
             <li class="dash-item <?php echo e(Request::segment(1) == 'meet-team' ? 'active' : ''); ?>">
                 <a href="<?php echo e(route('employee.meetTeam')); ?>" class="dash-link"><span class="dash-micon"><i class="ti ti-users"></i></span><span class="dash-mtext"><?php echo e(__('Meet Team')); ?></span></a>
             </li>
-            <?php endif; ?>
             <!-- employee-->
 
             <!-- payroll-->
@@ -479,6 +482,10 @@ $lang = Auth::user()->lang;
                             <li class="dash-item <?php echo e(Request::route()->getName() == 'job.create' ? 'active' : '-'); ?>">
                                 <a class="dash-link" href="<?php echo e(route('job.create')); ?>"><?php echo e(__('Job Create')); ?></a>
                             </li>
+
+                            <li class="dash-item <?php echo e(Request::route()->getName() == 'job.template' ? 'active' : '-'); ?>">
+                                <a class="dash-link" href="<?php echo e(route('job.template')); ?>"><?php echo e(__('Job Templates')); ?></a>
+                            </li>
                             <?php endif; ?>
 
                             <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Job Application')): ?>
@@ -569,17 +576,17 @@ $lang = Auth::user()->lang;
                             class="dash-mtext"><?php echo e(__('Health And Fitness')); ?></span><span class="dash-arrow"><i
                                 data-feather="chevron-right"></i></span></a>
                                 <ul class="dash-submenu">
-                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Resignation')): ?>
+                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Health And Fitness')): ?>
                                     <li class="dash-item <?php echo e(request()->is('healthassessment*') ? 'active' : ''); ?>">
                                         <a class="dash-link" href="<?php echo e(route('healthassessment.index')); ?>"><?php echo e(__('Health Assessments')); ?></a>
                                     </li>
                                     <?php endif; ?>
-                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Termination')): ?>
+                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Health And Fitness')): ?>
                                     <li class="dash-item <?php echo e(request()->is('gpnote*') ? 'active' : ''); ?>">
                                         <a class="dash-link" href="<?php echo e(route('gpnote.index')); ?>"><?php echo e(__('GP Notes')); ?></a>
                                     </li>
                                     <?php endif; ?>
-                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Retirement')): ?>
+                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Manage Health And Fitness')): ?>
                                     <li class="dash-item <?php echo e(request()->is('selfcertification*') ? 'active' : ''); ?>">
                                         <a class="dash-link"
                                         href="<?php echo e(route('selfcertification.index')); ?>"><?php echo e(__('Self Certifications')); ?></a>
@@ -727,39 +734,37 @@ class="dash-arrow"><i data-feather="chevron-right"></i></span></a>
 href="<?php echo e(route('report.income-expense')); ?>"><?php echo e(__('Income Vs Expense')); ?></a>
 </li>
 
-<li class="dash-item">
-<a class="dash-link"
-href="<?php echo e(route('report.monthly.attendance')); ?>"><?php echo e(__('Monthly Attendance')); ?></a>
-</li>
+                            <li class="dash-item">
+                                <a class="dash-link"
+                                href="<?php echo e(route('report.monthly.attendance')); ?>"><?php echo e(__('Monthly Attendance')); ?></a>
+                            </li>
 
-<li class="dash-item">
-<a class="dash-link"
-href="<?php echo e(route('report.leave')); ?>"><?php echo e(__('Leave')); ?></a>
-</li>
-
-
-<li class="dash-item">
-<a class="dash-link"
-href="<?php echo e(route('report.account.statement')); ?>"><?php echo e(__('Account Statement')); ?></a>
-</li>
+                            <li class="dash-item">
+                                <a class="dash-link"
+                                href="<?php echo e(route('report.leave')); ?>"><?php echo e(__('Leave')); ?></a>
+                            </li>
 
 
-<li class="dash-item">
-<a class="dash-link"
-href="<?php echo e(route('report.payroll')); ?>"><?php echo e(__('Payroll')); ?></a>
-</li>
+                            <li class="dash-item">
+                                <a class="dash-link"
+                                href="<?php echo e(route('report.account.statement')); ?>"><?php echo e(__('Account Statement')); ?></a>
+                            </li>
 
 
-<li class="dash-item">
-<a class="dash-link"
-href="<?php echo e(route('report.timesheet')); ?>"><?php echo e(__('Timesheet')); ?></a>
-</li>
-<?php endif; ?>
+                            <li class="dash-item">
+                                <a class="dash-link"
+                                href="<?php echo e(route('report.payroll')); ?>"><?php echo e(__('Payroll')); ?></a>
+                            </li>
 
 
-</ul>
-</li>
-<?php endif; ?> -->
+                            <li class="dash-item">
+                                <a class="dash-link"
+                                href="<?php echo e(route('report.timesheet')); ?>"><?php echo e(__('Timesheet')); ?></a>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </li>
+                <?php endif; ?>
 
 
 <!--constant-->

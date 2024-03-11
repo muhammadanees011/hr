@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('employee_id');
             $table->date('certification_date');
             $table->string('certification_type');
-            $table->string('details')->nullable();
+            $table->longText('details')->nullable();
             $table->string('certification_file')->nullable();
             $table->integer('created_by');
             $table->timestamps();

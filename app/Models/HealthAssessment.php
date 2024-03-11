@@ -13,4 +13,9 @@ class HealthAssessment extends Model
     {
         return $this->hasOne('App\Models\Employee', 'id', 'employee_id');
     }
+
+    public function files()
+    {
+        return $this->hasMany('App\Models\HealthFitnessAttachment', 'healthassessment_id' , 'id');
+    }
 }
