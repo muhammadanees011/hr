@@ -217,13 +217,13 @@
                                                 <div class="row mt-3 align-items-center">
                                                     <h6>{{ __('Contract Detail') }}</h6>
                                                     <div class="col-sm-4 h6 text-sm">{{ __('Employee Name') }}</div>
-                                                    <div class="col-sm-8 text-sm"> {{ $contract->employee->name }}</div>
+                                                    <div class="col-sm-8 text-sm"> {{ $contract->employee->name ?? "" }}</div>
 
                                                     <div class="col-sm-4 h6 text-sm">{{ __('Subject') }}</div>
                                                     <div class="col-sm-8 text-sm"> {{ $contract->subject }}</div>
 
                                                     <div class="col-sm-4 h6 text-sm">{{ __(' Type') }}</div>
-                                                    <div class="col-sm-8 text-sm">{{ $contract->contract_type->name }}
+                                                    <div class="col-sm-8 text-sm">{{ $contract->contract_type->name ?? ""}}
                                                     </div>
 
                                                     <div class="col-sm-4 h6 text-sm">{{ __('Value') }}</div>
@@ -246,16 +246,17 @@
                                 </div>
                             </div>
                             <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0">{{ __('Description ') }}</h5>
-                                </div>
-                                <div class="card-body p-3">
-                                    {{ Form::open(['route' => ['contracts.description.store', $contract->id]]) }}
-                                    <div class="col-md-12">
-                                        <div class="form-group mt-3">
-                                            <textarea class="summernote-simple" name="contract_description" id="contract_description" rows="3">{!! $contract->contract_description !!}</textarea>
-                                        </div>
+                            <div class="card-header">
+                                <h5 class="mb-0">{{ __('Description ') }}</h5>
+                            </div>
+                            <div class="card-body p-3">
+                                {{ Form::open(['route' => ['contracts.description.store', $contract->id]]) }}
+                                <div class="col-md-12">
+                                    <div class="form-group mt-3">
+                                        <textarea class="summernote-simple" name="contract_description" id="contract_description" rows="3">{!! $contract->contract_description . $contract->cover_letter !!}</textarea>
                                     </div>
+                                </div>
+                            </div>
                                     @can('Create Contract')
                                         <div class="col-md-12 text-end">
                                             <div class="form-group mt-3 me-3">
@@ -270,78 +271,105 @@
                         </div>
 
                         <div id="attachments">
-                            <div class="row ">
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h5>{{ __('Attachments') }}</h5>
-                                        </div>
-                                        <div class="card-body">
-                                            @if (\Auth::user()->type == 'company' || \Auth::user()->type == 'hr')
-                                                <div class=" ">
-                                                    <div class="col-md-12 dropzone browse-file" id="my-dropzone"></div>
-                                                </div>
-                                            @elseif(\Auth::user()->type == 'employee' && $contract->status == 'accept')
-                                                <div class=" ">
-                                                    <div class="col-md-12 dropzone browse-file" id="my-dropzone"></div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>{{ __('Attachments') }}</h5>
+                </div>
+                <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    @if (\Auth::user()->type == 'company' || \Auth::user()->type == 'hr')
+                        <div class=" ">
+                            <div class="col-md-12 dropzone browse-file" id="my-dropzone"></div>
+                        </div>
+                    @elseif(\Auth::user()->type == 'employee' && $contract->status == 'accept')
+                        <div class=" ">
+                            <div class="col-md-12 dropzone browse-file" id="my-dropzone"></div>
+                        </div>
+                    @endif
+
+                    @foreach ($contract->files as $file)
+                        <div class="py-3">
+                            <div class="list-group-item">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h6 class="text-sm mb-0">
+                                            <a href="#!">{{ $file->files }}</a>
+                                        </h6>
+                                        <p class="card-text small text-muted">
+                                            {{ number_format(\File::size(storage_path('contract_attechment/' . $file->files)) / 1048576, 2) . ' ' . __('MB') }}
+                                        </p>
+                                    </div>
+                                    @php
+                                        $attachments = \App\Models\Utility::get_file('contract_attechment');
+                                    @endphp
+                                    <div class="action-btn bg-warning p-0 w-auto">
+                                        <a href="{{ $attachments . '/' . $file->files }}" class="btn btn-sm d-inline-flex align-items-center" download="" data-bs-toggle="tooltip" title="Download">
+                                            <span class="text-white"><i class="ti ti-download"></i></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-auto actions">
+                                        @can('Delete Attachment')
+                                            @if (\Auth::user()->id == $file->user_id || \Auth::user()->type == 'company' || \Auth::user()->type == 'hr')
+                                                <div class="action-btn bg-danger ms-2">
+                                                    <form action=""></form>
+                                                    {!! Form::open(['method' => 'GET', 'route' => ['contracts.file.delete', [$contract->id, $file->id]]]) !!}
+                                                        <a href="#!" class="mx-3 btn btn-sm  align-items-center bs-pass-para" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __('Delete') }}">
+                                                            <i class="ti ti-trash text-white"></i>
+                                                        </a>
+                                                    {!! Form::close() !!}
                                                 </div>
                                             @endif
-
-
-                                            @foreach ($contract->files as $file)
-                                                <div class=" py-3">
-                                                    <div class="list-group-item ">
-                                                        <div class="row align-items-center">
-                                                            <div class="col">
-                                                                <h6 class="text-sm mb-0">
-                                                                    <a href="#!">{{ $file->files }}</a>
-                                                                </h6>
-
-                                                                <p class="card-text small text-muted">
-                                                                    {{ number_format(\File::size(storage_path('contract_attechment/' . $file->files)) / 1048576, 2) . ' ' . __('MB') }}
-                                                                </p>
-                                                            </div>
-                                                            @php
-                                                                $attachments = \App\Models\Utility::get_file('contract_attechment');
-                                                            @endphp
-                                                            <div class="action-btn bg-warning p-0 w-auto    ">
-                                                                <a href="{{ $attachments . '/' . $file->files }}"
-                                                                    class=" btn btn-sm d-inline-flex align-items-center"
-                                                                    download="" data-bs-toggle="tooltip"
-                                                                    title="Download">
-                                                                    <span class="text-white"><i
-                                                                            class="ti ti-download"></i></span>
-                                                                </a>
-                                                            </div>
-                                                            <div class="col-auto actions">
-                                                                @can('Delete Attachment')
-                                                                    @if (\Auth::user()->id == $file->user_id || \Auth::user()->type == 'company' || \Auth::user()->type == 'hr')
-                                                                        <div class="action-btn bg-danger ms-2">
-
-                                                                            <form action=""></form>
-                                                                            {!! Form::open(['method' => 'GET', 'route' => ['contracts.file.delete', [$contract->id, $file->id]]]) !!}
-                                                                            <a href="#!"
-                                                                                class="mx-3 btn btn-sm  align-items-center bs-pass-para"
-                                                                                data-bs-toggle="tooltip"
-                                                                                data-bs-placement="top"
-                                                                                title="{{ __('Delete') }}">
-                                                                                <i class="ti ti-trash text-white"></i>
-                                                                            </a>
-                                                                            {!! Form::close() !!}
-
-                                                                        </div>
-                                                                    @endif
-                                                                @endcan
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        </div>
+                                        @endcan
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+            
+            
+        
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    @if(!empty($contract->resume))
+                        <p>Resume</p>
+                        <img src="{{ asset('job-applications/'.$contract->resume) }}" style="height: auto; max-height: 250px; width: 250px; max-width: 500px;" alt="Resume Image">
+                    @else
+                        <p>No Resume available</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    @if(!empty($contract->profile))
+                        <p>Profile</p>
+                        <img src="{{ asset('job-applications/'.$contract->profile) }}" style="height: auto; max-height: 250px; width: 250px; max-width: 500px;" alt="Profile Image">
+                    @else
+                        <p>No profile available</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    </div>
+    </div>
+    </div>
+</div>
+
 
 
                         <div id="comment" role="tabpanel" aria-labelledby="pills-comments-tab">

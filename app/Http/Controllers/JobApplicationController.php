@@ -11,6 +11,7 @@ use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Document;
 use App\Models\Employee;
+use App\Models\ContractNote;
 use App\Models\EmployeeDocument;
 use App\Models\GenerateOfferLetter;
 use App\Models\InterviewSchedule;
@@ -224,6 +225,52 @@ class JobApplicationController extends Controller
         if(\Auth::user()->can('Move Job Application'))
         {
             $post = $request->all();
+            if($post['stage_id'] == 4){
+                $application = JobApplication::find($request->application_id);
+                $job =  $application->jobs;
+
+                $user = new User();
+                $user->name = $application->name;
+                $user->email = $application->email;
+                $user->type = "employee";
+                $user->save();
+
+                $employee = new Employee();
+                $employee->name = $application->name;
+                $employee->user_id = $user->id;
+                $employee->dob = $application->dob;
+                $employee->gender = $application->gender;
+                $employee->phone = $application->phone;
+                $employee->address = $application->address ?? "";
+                $employee->email = $application->email;
+                $employee->branch_id = $job->branch;
+                $employee->department_id = $job->department;
+                $employee->company_doj = $job->start_date;
+                $employee->created_by = $job->created_by;
+                $employee->save();
+
+                $contract = new Contract();
+                $contract->subject = $job->categories->title;                
+                $contract->employee_name = $employee->id;                
+                $contract->type = $job->contract_type;                
+                $contract->start_date = $job->start_date;                
+                $contract->end_date = $job->end_date;     
+                $contract->cover_letter = $application->cover_letter;
+                $contract->profile = $application->profile;
+                $contract->resume = $application->resume;           
+                $contract->status = "review";            
+                $contract->created_by = $job->created_by;
+                $contract->save();    
+
+                $applicant_notes = JobApplicationNote::where('created_by', $job->created_by)->get();
+                foreach($applicant_notes as $note){
+                    $contract_note = new ContractNote();
+                    $contract_note->contract_id = $contract->id;
+                    $contract_note->user_id = $user->id;
+                    $contract_note->note = $note->note;
+                    $contract_note->save();
+                }
+            }
             foreach($post['order'] as $key => $item)
             {
                 $application        = JobApplication::where('id', '=', $item)->first();

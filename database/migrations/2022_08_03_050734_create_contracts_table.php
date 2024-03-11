@@ -26,7 +26,10 @@ class CreateContractsTable extends Migration
             $table->string('status')->default('pending');
             $table->longText('description')->nullable();
             $table->longText('contract_description')->nullable();
+            $table->string('resume')->nullable();
+            $table->string('profile')->nullable();
             $table->longText('employee_signature')->nullable();
+            $table->longText('cover_letter')->nullable();
             $table->longText('company_signature')->nullable();
             $table->integer('created_by');
             $table->timestamps();
