@@ -12,7 +12,7 @@
 
 @section('action-button')
     <div class="row align-items-center m-1">
-        @can('Create Contract')
+        @can('Create Health And Fitness')
             <a href="#" data-size="lg" data-url="{{ route('selfcertification.create') }}" data-ajax-popup="true"
                 data-bs-toggle="tooltip" title="{{ __('Create New Self Certification') }}" data-title="{{ __('Create New Self Certification') }}" class="btn btn-sm btn-primary">
                 <i class="ti ti-plus"></i>

@@ -118,7 +118,7 @@
                                             <textarea class="summernote-simple" name="detail" id="contract_description" rows="3">{!! $selfcertification->details !!}</textarea>
                                         </div>
                                     </div>
-                                    @can('Create Contract')
+                                    @can('Create Health And Fitness')
                                         <div class="col-md-12 text-end">
                                             <div class="form-group mt-3 me-3">
                                                 {{ Form::submit(__('Add'), ['class' => 'btn  btn-primary']) }}
@@ -139,7 +139,7 @@
                                             <h5>{{ __('Attachments') }}</h5>
                                         </div>
                                         <div class="card-body">
-                                            @if (\Auth::user()->type == 'company' || \Auth::user()->type == 'hr')
+                                            @if (\Auth::user()->type == 'company' || \Auth::user()->type == 'hr'  || \Auth::user()->type == 'employee')
                                                 <div class=" ">
                                                     <div class="col-md-12 dropzone browse-file" id="my-dropzone"></div>
                                                 </div>
@@ -172,8 +172,8 @@
                                                                 </a>
                                                             </div>
                                                             <div class="col-auto actions">
-                                                                @can('Delete Attachment')
-                                                                    @if (\Auth::user()->id == $file->user_id || \Auth::user()->type == 'company' || \Auth::user()->type == 'hr')
+                                                                @can('Manage Health And Fitness')
+                                                                    @if (\Auth::user()->id == $file->user_id || \Auth::user()->type == 'company' || \Auth::user()->type == 'hr' ||  \Auth::user()->type == 'employee')
                                                                         <div class="action-btn bg-danger ms-2">
 
                                                                             <form action=""></form>

@@ -12,7 +12,7 @@
 
 @section('action-button')
     <div class="row align-items-center m-1">
-        @can('Create Contract')
+        @can('Create Health And Fitness')
             <a href="#" data-size="lg" data-url="{{ route('healthassessment.create') }}" data-ajax-popup="true"
                 data-bs-toggle="tooltip" title="{{ __('Create New Health Assessment') }}" data-title="{{ __('Create New Health Assessment') }}" class="btn btn-sm btn-primary">
                 <i class="ti ti-plus"></i>

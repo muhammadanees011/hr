@@ -208,7 +208,7 @@ class SelfCertificationController extends Controller
     public function fileUpload($id, Request $request)
     {
         $selfcertification = SelfCertification::find($id);
-        if (\Auth::user()->type == 'company' || \Auth::user()->type == 'hr') {
+        if (\Auth::user()->type == 'company' || \Auth::user()->type == 'hr' || \Auth::user()->type == 'employee') {
             $request->validate(['file' => 'required']);
             $dir = 'selfcertification_attachment/';
             $files = $request->file->getClientOriginalName();
@@ -281,7 +281,7 @@ class SelfCertificationController extends Controller
 
     public function fileDelete($id, $file_id)
     {
-        if (\Auth::user()->can('Delete Attachment')) {
+        if (\Auth::user()->can('Manage Health And Fitness')) {
             $selfcertification = SelfCertification::find($id);
             $file = HealthFitnessAttachment::find($file_id);
             if ($file) {
