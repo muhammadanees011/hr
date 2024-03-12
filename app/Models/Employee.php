@@ -218,6 +218,9 @@ class Employee extends Model
 
         return $over_time_json;
     }
+    public function overtimes(){
+        return $this->belongsTo(OverTime::class);
+    }
 
     public static function employee_id()
     {

@@ -285,6 +285,11 @@ class="dash-sidebar light-sidebar {{ isset($mode_setting['is_sidebar_transperent
                             <a class="dash-link" href="{{ route('carryover.index') }}">{{ __('CarryOver Request') }}</a>
                         </li>
                         @endcan
+                        @can('Manage Leave')
+                        <li class="dash-item {{ Request::segment(2) == 'leave' ? ' active' : '' }}">
+                            <a class="dash-link" href="{{ route('overtime.index') }}">{{ __('OverTimes') }}</a>
+                        </li>
+                        @endcan
 
                         @can('Manage Leave')
                         @if (\Auth::user()->type == 'employee')

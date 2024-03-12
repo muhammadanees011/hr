@@ -8,6 +8,13 @@ use Illuminate\Http\Request;
 
 class OvertimeController extends Controller
 {
+
+    public function index()
+    {
+        $overtimes = Overtime::where('created_by', \Auth::user()->creatorId())->get();
+        return view('overtimes.index', compact('overtimes'));
+    
+    }
     public function overtimeCreate($id)
     {
         $employee = Employee::find($id);
@@ -21,9 +28,8 @@ class OvertimeController extends Controller
         {
             $validator = \Validator::make(
                 $request->all(), [
-                                   'employee_id' => 'required',
                                    'title' => 'required',
-                                   'number_of_days' => 'required',
+                                   'days' => 'required',
                                    'hours' => 'required',
                                    'rate' => 'required',
                                ]
@@ -36,9 +42,9 @@ class OvertimeController extends Controller
             }
 
             $overtime                 = new Overtime();
-            $overtime->employee_id    = $request->employee_id;
+            $overtime->employee_id    = \Auth::user()->creatorId();
             $overtime->title          = $request->title;
-            $overtime->number_of_days = $request->number_of_days;
+            $overtime->number_of_days = $request->days;
             $overtime->hours          = $request->hours;
             $overtime->rate           = $request->rate;
             $overtime->created_by     = \Auth::user()->creatorId();
