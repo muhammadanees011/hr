@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Mail\UserCreate;
 use App\Models\Branch;
 use App\Models\Contract;
+use App\Models\ContractAttechment;
+use App\Models\ContractNote;
 use App\Models\ContractType;
 use App\Models\CustomQuestion;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Document;
 use App\Models\Employee;
-use App\Models\ContractNote;
 use App\Models\EmployeeDocument;
 use App\Models\GenerateOfferLetter;
 use App\Models\InterviewSchedule;
@@ -229,46 +230,87 @@ class JobApplicationController extends Controller
                 $application = JobApplication::find($request->application_id);
                 $job =  $application->jobs;
 
-                $user = new User();
-                $user->name = $application->name;
-                $user->email = $application->email;
-                $user->type = "employee";
-                $user->save();
+                $user =  User::create([
+                    'name' => $application->name,
+                    'email' => $application->email,
+                    'type' => 'employee'
+                ]);
 
-                $employee = new Employee();
-                $employee->name = $application->name;
-                $employee->user_id = $user->id;
-                $employee->dob = $application->dob;
-                $employee->gender = $application->gender;
-                $employee->phone = $application->phone;
-                $employee->address = $application->address ?? "";
-                $employee->email = $application->email;
-                $employee->branch_id = $job->branch;
-                $employee->department_id = $job->department;
-                $employee->company_doj = $job->start_date;
-                $employee->created_by = $job->created_by;
-                $employee->save();
+                $employee = Employee::create([
+                    'name' => $application->name,
+                    'user_id' => $user->id,
+                    'dob' => $application->dob,
+                    'gender' => $application->gender,
+                    'phone' => $application->phone,
+                    'address' => $application->address ?? "",
+                    'email' => $application->email,
+                    'branch_id' => $job->branch,
+                    'department_id' => $job->department,
+                    'company_doj' => $job->start_date,
+                    'created_by' => $job->created_by
+                ]);
 
-                $contract = new Contract();
-                $contract->subject = $job->categories->title;                
-                $contract->employee_name = $employee->id;                
-                $contract->type = $job->contract_type;                
-                $contract->start_date = $job->start_date;                
-                $contract->end_date = $job->end_date;     
-                $contract->cover_letter = $application->cover_letter;
-                $contract->profile = $application->profile;
-                $contract->resume = $application->resume;           
-                $contract->status = "review";            
-                $contract->created_by = $job->created_by;
-                $contract->save();    
+                $contractCategory = ContractType::where('name', $job->contract_type)->first();
+                if(empty($contractCategory)){
+                    $title = strtoupper(str_replace('-',' ', $job->contract_type));
+                    $contractCategory = ContractType::create([
+                        'name' => $title,
+                        'created_by' => \Auth::user()->creatorId()
+                    ]);
+                }
 
-                $applicant_notes = JobApplicationNote::where('created_by', $job->created_by)->get();
-                foreach($applicant_notes as $note){
-                    $contract_note = new ContractNote();
-                    $contract_note->contract_id = $contract->id;
-                    $contract_note->user_id = $user->id;
-                    $contract_note->note = $note->note;
-                    $contract_note->save();
+                $contract = Contract::create([
+                    'subject' => $job->categories->title,                
+                    'employee_name' => $user->id,                
+                    'type' => $contractCategory->id,                
+                    'start_date' => $job->start_date,                
+                    'end_date' => $job->end_date,     
+                    'cover_letter' => $application->cover_letter,
+                    'profile' => $application->profile,
+                    'resume' => $application->resume,           
+                    'status' => "review",            
+                    'created_by' => $job->created_by,
+                ]);
+
+                // check if profile exists then move file under contract attachments
+                if(!empty($application->profile)){
+                    $profile_path      =  storage_path('uploads/job/profile/'.$application->profile);
+                    if(\File::exists($profile_path)){
+                        \File::copy($profile_path, storage_path('contract_attechment/'.$application->profile));    
+                    }
+                    ContractAttechment::create([
+                        'contract_id' => $contract->id,
+                        'user_id' => \Auth::user()->id,
+                        'files' => $application->profile,
+                    ]);
+                }
+
+                // check if resume exists then move file under contract attachments
+                if(!empty($application->resume)){
+                    $resume_path      =  storage_path('uploads/job/resume/'.$application->resume);
+                    if(\File::exists($resume_path)){
+                        \File::copy($resume_path, storage_path('contract_attechment/'.$application->resume));    
+                    }
+                    ContractAttechment::create([
+                        'contract_id' => $contract->id,
+                        'user_id' => \Auth::user()->id,
+                        'files' => $application->resume,
+                    ]);
+                }
+
+                $applicant_notes = JobApplicationNote::where('application_id', $request->application_id)->get()->toArray();
+                if(!empty($applicant_notes)){
+                    $notes = [];
+
+                    foreach($applicant_notes as $note){
+                        $notes[] = [
+                            'contract_id' => $contract->id,
+                            'user_id' => $user->id,
+                            'note' => $note['note'],
+                            'created_at' => \Carbon\Carbon::now()
+                        ];
+                    }
+                    ContractNote::insert($notes);
                 }
             }
             foreach($post['order'] as $key => $item)
