@@ -136,6 +136,9 @@
                                                 @elseif($contract->status == 'pending')
                                                     <span
                                                         class="status_badge badge bg-warning p-2 px-3 rounded">{{ __('Pending') }}</span>
+                                                @elseif($contract->status == 'review')
+                                                    <span
+                                                        class="status_badge badge bg-warning p-2 px-3 rounded">{{ __('Review') }}</span>
                                                 @endif
                                             </td>
                                             <td class="Action">
