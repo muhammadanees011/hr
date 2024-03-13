@@ -323,4 +323,8 @@ class Employee extends Model
             }
         });
     }
+    public function flexitime()
+    {
+        return $this->hasOne(FlexiTime::class);
+    }
 }
