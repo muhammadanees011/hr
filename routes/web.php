@@ -28,6 +28,7 @@ use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DucumentUploadController;
 use App\Http\Controllers\EclaimController;
+use App\Http\Controllers\FlexiTimeController;
 use App\Http\Controllers\EclaimTypeController;
 use App\Http\Controllers\EmailTemplateController;
 use App\Http\Controllers\EmployeeController;
@@ -1493,6 +1494,9 @@ Route::group(['middleware' => ['verified']], function () {
 
     // videos
     Route::resource('video', VideoController::class)->middleware(['auth',  'XSS']);
+
+    // flexi time
+    Route::resource('flexi-time', FlexiTimeController::class)->middleware(['auth',  'XSS']);
 
     // cache
     Route::get('/config-cache', function () {
