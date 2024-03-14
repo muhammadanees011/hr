@@ -6,13 +6,13 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
-    <li class="breadcrumb-item">{{ __('Eclaim') }}</li>
+    <li class="breadcrumb-item">{{ __('FlexiTime') }}</li>
 @endsection
 
 @section('action-button')
-   @can('Create Eclaim')
-        <a href="#" data-url="{{ route('flexi-time.create') }}" data-ajax-popup="true"
-            data-title="{{ __('Request A New Ecla') }}" data-bs-toggle="tooltip" title="" class="btn btn-sm btn-primary"
+   @can('Create FlexiTime')
+        <a href="#" data-url="{{ route('flexi-time.create') }}" data-ajax-popup="true" data-size="lg"
+            data-title="{{ __('Request A New Time') }}" data-bs-toggle="tooltip" title="" class="btn btn-sm btn-primary"
             data-bs-original-title="{{ __('Creates') }}">
             <i class="ti ti-plus"></i>
         </a>
@@ -30,8 +30,8 @@
                             <tr>
                                 @if(\Auth::user()->type !="employee")
                                     <th>{{ __('Employee') }}</th>
-                                    <th>{{ __('Date') }}</th>
                                 @endif
+                                <th>{{ __('Date') }}</th>
                                 <th>{{ __('Start Time') }}</th>
                                 <th>{{ __('End Time') }}</th>
                                 <th>{{ __('Remark') }}</th>
@@ -43,9 +43,10 @@
                         <tbody>
                             @foreach ($records as $record)
                                 <tr>
-                                    
+                                    @if(\Auth::user()->type !="employee")
                                         <th>{{ $record->employee->name ??  "" }}</th>
-                                        <td>{{ $record->start_date ?? "" }}</td>
+                                    @endif
+                                    <td>{{ $record->start_date ?? "" }}</td>
                                     <td>{{ $record->start_time ?? ""}}</td>
                                     <td>{{ $record->end_time ?? ""}}</td>
                                     <td>{{ $record->remark ?? ""}}</td>
@@ -64,19 +65,20 @@
                                     
                                     <td class="Action">
                                         <span>
-                                            @can('Edit Eclaim')
+                                            @can('Edit FlexiTime')
                                                 <div class="action-btn bg-info ms-2">
                                                     <a href="#" class="mx-3 btn btn-sm  align-items-center"
+                                                        data-size="lg"
                                                         data-url="{{ URL::to('eclaim/' . $record->id . '/edit') }}"
                                                         data-ajax-popup="true" data-size="md" data-bs-toggle="tooltip" title=""
-                                                        data-title="{{ __('Edit Eclaim') }}"
+                                                        data-title="{{ __('Edit FlexiTime') }}"
                                                         data-bs-original-title="{{ __('Edit') }}">
                                                         <i class="ti ti-pencil text-white"></i>
                                                     </a>
                                                 </div>
                                             @endcan
 
-                                            @can('Delete Eclaim')
+                                            @can('Delete FlexiTime')
                                                 <div class="action-btn bg-danger ms-2">
                                                     {!! Form::open(['method' => 'DELETE', 'route' => ['eclaim.destroy', $record->id], 'id' => 'delete-form-' . $record->id]) !!}
                                                     <a href="#" class="mx-3 btn btn-sm  align-items-center bs-pass-para"
@@ -87,7 +89,7 @@
                                                 </div>
                                             @endcan
 
-                                            @can('Manage Eclaim')
+                                            @can('Manage FlexiTime')
                                                 <div class="action-btn bg-info ms-2">
                                                     <a href="#" class="mx-3 btn btn-sm bg-info  align-items-center"
                                                     data-url="{{ URL::to('eclaim/showReceipt/' . $record->id ) }}"
@@ -103,7 +105,7 @@
                                                         <a href="#" class="mx-3 btn btn-sm bg-danger  align-items-center"
                                                             data-url="{{ URL::to('eclaim/' . $record->id . '/reject') }}"
                                                             data-ajax-popup="true" data-size="md" data-bs-toggle="tooltip" title=""
-                                                            data-title="{{ __('Reject Eclaim') }}"
+                                                            data-title="{{ __('Reject FlexiTime') }}"
                                                             data-bs-original-title="{{ __('Reject') }}">
                                                             <i class="ti ti-trash-off text-white"></i>
                                                         </a>
@@ -118,17 +120,6 @@
                                                         </a>
                                                     </div>
                                                 @endif
-                                            @endcan
-                                            @can('Manage Eclaim')
-                                                <div class="action-btn bg-info ms-2">
-                                                    <a href="#" class="mx-3 btn btn-sm bg-info  align-items-center"
-                                                        data-url="{{ URL::to('eclaim/showHistory/' . $record->id ) }}"
-                                                        data-ajax-popup="true" data-size="lg" data-bs-toggle="tooltip" title=""
-                                                        data-title="{{ __('Eclaim History') }}"
-                                                        data-bs-original-title="{{ __('View History') }}">
-                                                        <i class="ti ti-eye text-white"></i>
-                                                    </a>
-                                                </div>
                                             @endcan
                                         </span>
                                     </td>

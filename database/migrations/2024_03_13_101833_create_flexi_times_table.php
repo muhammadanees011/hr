@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('end_time')->nullable();
             $table->longText('remark')->nullable();
             $table->string('status')->default('pending');
+            $table->integer('hours');
             $table->unsignedBigInteger('employee_id');
             $table->integer('created_by');
             $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');

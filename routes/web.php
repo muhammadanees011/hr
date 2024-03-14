@@ -1488,14 +1488,15 @@ Route::group(['middleware' => ['verified']], function () {
     Route::get('eclaim/{id}/approve', [EclaimController::class, 'renderApprovalForm'])->middleware(['auth',  'XSS']);
     Route::post('eclaim/save-approval-form/{id}', [EclaimController::class, 'saveApprovalForm'])->middleware(['auth',  'XSS']);
     Route::resource('eclaim', EclaimController::class)->middleware(['auth',  'XSS']);
-    Route::resource('flexi-time', FlexiTimeController::class)->middleware(['auth',  'XSS']);
-    Route::get('flexi-time', [FlexiTimeController::class, 'index'])->name('flexi-time.index');
     Route::post('eclaim/{id}/edit', [EclaimController::class, 'edit']);
     Route::get('eclaim/showHistory/{id}', [EclaimController::class, 'showHistory']);
     Route::get('eclaim/showReceipt/{id}', [EclaimController::class, 'showReceipt']);
 
     // videos
     Route::resource('video', VideoController::class)->middleware(['auth',  'XSS']);
+
+    // flexi time
+    Route::resource('flexi-time', FlexiTimeController::class)->middleware(['auth',  'XSS']);
 
     // cache
     Route::get('/config-cache', function () {

@@ -12,11 +12,13 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 class FlexiTimeController extends Controller
 {
+    protected $hours = ["9:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00"];
+
     public function index()
     {
-        if (\Auth::user()->can('Manage Eclaim')) {
+        if (\Auth::user()->can('Manage FlexiTime')) {
             $query = new FlexiTime();
-            if(\Auth::user()->type=="hr" && \Auth::user()->can('Approve Eclaim')){
+            if(\Auth::user()->type=="hr" && \Auth::user()->can('Approve FlexiTime')){
                 $query = $query->where('status', 'pending');
             } else {
                 $query = $query->where('created_by', \Auth::user()->id);
@@ -30,7 +32,7 @@ class FlexiTimeController extends Controller
 
     public function create()
     {
-        if (\Auth::user()->can('Create Eclaim')) {
+        if (\Auth::user()->can('Create FlexiTime')) {
             $eClaimTypes = EclaimType::get()->pluck('title', 'id');
             $startDate = !empty($request->start_date) ? $request->input('start_date') : Carbon::now()->subDays(30)->toDateString();
             $endDate = !empty($request->end_date) ? $request->input('end_date') : Carbon::now()->toDateString();
@@ -39,7 +41,8 @@ class FlexiTimeController extends Controller
             } else {
                 $employees = Employee::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             }
-            return view('flexiTime.create', compact('eClaimTypes','employees', 'startDate', 'endDate'));   
+            $hours = $this->hours;
+            return view('flexiTime.create', compact('hours','employees', 'startDate', 'endDate'));   
         } else {
             return response()->json(['error' => __('Permission denied.')], 401);
         }
@@ -47,34 +50,35 @@ class FlexiTimeController extends Controller
 
     public function store(Request $request)
 {
-    if (\Auth::user()->can('Create Eclaim')) {
+    if (\Auth::user()->can('Create FlexiTime')) {
 
         $validator = \Validator::make(
             $request->all(),
             [
-                'start_date' => 'string',
-                'end_date' => 'string',
-                'start_time' => 'string',
-                'end_time' => 'string',
-                'remark'=> 'string'
+                'start_date' => 'required|string',
+                'end_date' => 'required|string',
+                'start_time' => 'required|string',
+                'end_time' => 'required|string',
+                'remark'=> 'required|string',
+                'hours' => 'required|string'
             ]
         );
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        
+        FlexiTime::create([
+            'employee_id' => $request->employee_id,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
+            'hours' => $request->hours,
+            'remark' => $request->remark,
+            'created_by' => \Auth::user()->creatorId()
+        ]);
 
-        $flexi_time = new FlexiTime();
-        $flexi_time->employee_id = $request->employee_id;
-        $flexi_time->start_date = $request->start_date;
-        $flexi_time->end_date = $request->end_date;
-        $flexi_time->start_time = $request->start_time;
-        $flexi_time->end_time = $request->end_time;
-        $flexi_time->remark = $request->remark;
-        $flexi_time->created_by = \Auth::id();
-        $flexi_time->save();
-        return redirect()->route('flexi-time.index')->with('success', __('Record successfully created.'));
+        return redirect()->route('flexi-time.index')->with('success', __('FlexiTime Request Generated Successfully.'));
     } else {
         return redirect()->back()->with('error', __('Permission denied.'));
     }
@@ -83,12 +87,12 @@ class FlexiTimeController extends Controller
 
     public function show(EclaimType $eclaim)
     {
-        return redirect()->route('eclaim_type.index');
+        return redirect()->route('flexi-time.index');
     }
 
     public function edit($id)
     {
-        if (\Auth::user()->can('Edit Eclaim')) {
+        if (\Auth::user()->can('Edit FlexiTime')) {
             $eclaim = Eclaim::find($id);
             if ((\Auth::user()->type=="employee" && $eclaim->created_by == \Auth::user()->id) || $eclaim->created_by== \Auth::user()->creatorId()) {
                 $eclaim = Eclaim::where('id', $id)->first();
@@ -111,7 +115,7 @@ class FlexiTimeController extends Controller
 
     public function update(Request $request, Eclaim $eclaim)
 {
-    if (\Auth::user()->can('Edit Eclaim')) {
+    if (\Auth::user()->can('Edit FlexiTime')) {
         if ((\Auth::user()->type=="employee" && $eclaim->created_by == \Auth::user()->id) || $eclaim->created_by== \Auth::user()->creatorId()) {
             $eclaim_id =  $eclaim->id;
             $validator = \Validator::make(
@@ -156,7 +160,7 @@ class FlexiTimeController extends Controller
 
     public function destroy(Eclaim $eclaim)
     {
-        if (\Auth::user()->can('Delete Eclaim')) {
+        if (\Auth::user()->can('Delete FlexiTime')) {
             if ((\Auth::user()->type=="employee" && $eclaim->created_by == \Auth::user()->id) || $eclaim->created_by== \Auth::user()->creatorId()) {
                 $id =  $eclaim->id;
                 $eclaim = Eclaim::find($id);
@@ -179,11 +183,11 @@ class FlexiTimeController extends Controller
     public function showReceipt(Eclaim $eclaim, $id)
     {
             $eclaim = Eclaim::find($id);
-            return view('eclaim.receipt', compact('eclaim'));
+            return view('eclaim.receipt', compact('FlexiTime'));
     }
     
     public function rejectForm(Request $request, $id){
-        if (\Auth::user()->can('Manage Eclaim')) {
+        if (\Auth::user()->can('Manage FlexiTime')) {
             $eclaim = Eclaim::find($id);
             $url = "eclaim/save-reject-form/".$eclaim->id;
             return view('eclaim.comment-form', compact('url'));
@@ -194,7 +198,7 @@ class FlexiTimeController extends Controller
 
 
     public function saveRejectionForm(Request $request, $id){
-        if (\Auth::user()->can('Manage Eclaim')) {
+        if (\Auth::user()->can('Manage FlexiTime')) {
             $validator = \Validator::make(
                 $request->all(),
                 [
@@ -231,7 +235,7 @@ class FlexiTimeController extends Controller
 
 
     public function renderApprovalForm(Request $request, $id){
-        if (\Auth::user()->can('Manage Eclaim')) {
+        if (\Auth::user()->can('Manage FlexiTime')) {
             $eclaim = Eclaim::find($id);
             $url = "eclaim/save-approval-form/".$eclaim->id;
             return view('eclaim.comment-form', compact('url'));
@@ -241,7 +245,7 @@ class FlexiTimeController extends Controller
     }
 
     public function saveApprovalForm(Request $request, $id){
-        if (\Auth::user()->can('Manage Eclaim')) {
+        if (\Auth::user()->can('Manage FlexiTime')) {
             $validator = \Validator::make(
                 $request->all(),
                 [
